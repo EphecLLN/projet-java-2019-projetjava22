@@ -22,20 +22,20 @@ public class clicker {
 	static int petValue = 20;
 	
 	public static void kill() {
-		if (monstrePV == 0 && nbrMonstre == nbrBoss) {
+		if (monstrePV <= 0 && nbrMonstre == nbrBoss) {
 			goldValue += goldValue;
 			monstreValue += monstreValue;
 			nbrMonstre = 0;
 			monstrePV = monstreValue;
 			System.out.println("le monstre est mort");
 		}
-		if (monstrePV == 0 && nbrMonstre == (nbrBoss -1)) {
+		if (monstrePV <= 0 && nbrMonstre == (nbrBoss -1)) {
 			monstrePV = monstreValue * 3;
 			nbrMonstre++;
 			System.out.println("le monstre est mort");
 		}
 		
-		if (monstrePV == 0) {
+		if (monstrePV <= 0) {
 			monstrePV = monstreValue;
 			nbrMonstre ++;
 			System.out.println("le monstre est mort");
@@ -43,7 +43,7 @@ public class clicker {
 	}
 	
 	public static void goldDrop() {
-		if (monstrePV == 0) {
+		if (monstrePV <= 0) {
 			gold += goldValue;
 		}
 	}
