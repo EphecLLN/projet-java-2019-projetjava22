@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  *
  */
 public class clicker {
-	 static int degats = 1;
+	 static int degats = 10;
 	 String equipement = "epee";
 	 static double monstrePV = 10;
 	 static double monstreValue = 10;
@@ -29,8 +29,9 @@ public class clicker {
 	 static int upgradeValue = 10;
 	 static int nbrMonstre= 0;
 	 static int nbrBoss = 10;
+	 static int implementation = 30;
 	 static int goldValue = 6;
-	 static int nbrPet = 1;
+	 static int nbrPet = 0;
 	 static int petValue = 20;
 	 static int petDmg = 1;
 	 static double petPourcent = 0.01;
@@ -96,9 +97,9 @@ public class clicker {
 			System.out.println("le monstre est mort");
 		}
 		if (monstrePV <= 0 && nbrMonstre == (nbrBoss -1)) {
-			monstrePV = monstreValue * 3;
 			nbrMonstre++;
 			System.out.println("le monstre est mort");
+			preparerBoss();
 		}
 		
 		if (monstrePV <= 0) {
@@ -120,6 +121,19 @@ public class clicker {
 		kill();
 	}
 	
+	public static class MinuteurBoss extends TimerTask {
+	    public void run() {
+	    	if (implementation >= 0) {
+	    		System.out.println("Temps restant pour vaincre le monstre : " + implementation);
+	    		implementation --;
+	    	}
+	    }
+	}
+	
+	public static void preparerBoss() {
+		monstrePV = monstreValue * 3;
+	}
+
 	public static void buyPet() {
 		if (gold >= petValue) {
 			nbrPet ++;
@@ -131,6 +145,7 @@ public class clicker {
 			System.out.println("Vous n'avez pas assez d'argent pour acheter une familier supplementaire. Il vous manque " + ((petValue + 1) - gold) + " gold pour en acquerir un.");
 		}
 	}
+	
 	public void upgrade() { // commande pour améliorer les dégâts
 		if (gold >= upgradeValue) {
 			pourcent += 0.01;
@@ -156,7 +171,6 @@ public class clicker {
 			goldDrop();
 			kill();
 			PVLabel.setText("monstre PV : " + monstrePV);
-			System.out.println("Aille");
 	    }
 	}
 	/**
@@ -168,7 +182,9 @@ public class clicker {
 		//Generation des clics reguliers de la part des familiers
 		Timer timer = new Timer();
 		PetsDamages aille = new PetsDamages();
+		MinuteurBoss tempsBoss = new MinuteurBoss();
 		timer.schedule(aille, 0, 1000);
+		timer.schedule(tempsBoss, 0, 1000);
 	}
 
 }
