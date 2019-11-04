@@ -31,7 +31,7 @@ public class clicker {
 	 static int nbrBoss = 10;
 	 static int implementation = 30;
 	 static int goldValue = 6;
-	 static int nbrPet = 0;
+	 static int nbrPet = 1;
 	 static int petValue = 20;
 	 static int petDmg = 1;
 	 static double petPourcent = 0.01;
@@ -198,6 +198,26 @@ public class clicker {
 				argentLabel.setText("argent : " + gold );
 			}
 	 }
+	
+	public static class upgrade implements ActionListener{
+        public void actionPerformed(ActionEvent event) {
+               upgrade();
+               argentLabel.setText("argent : " + gold );
+               degatLabel.setText("dégâts actuels :" + degats*( pourcent * 100));
+               coutUPLabel.setText("coût : " + upgradeValue);
+           }
+    }
+	
+	public static class PetsDamages extends TimerTask {
+	    public void run() {
+	    	monstrePV = monstrePV - ((petDmg*( petPourcent * 100))*nbrPet);
+			goldDrop();
+			kill();
+			PVLabel.setText("monstre PV : " + monstrePV);
+			System.out.println("Aille");
+	    }
+	}
+	
 	/**
 	 * @param args
 	 */
