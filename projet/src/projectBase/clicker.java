@@ -27,6 +27,7 @@ public class clicker {
 	 static int nbrMonstre= 1;
 	 static int nbrBoss = 10;
 	 static int goldValue = 6;
+	 static int nbrPet = 0;
 	 static int petDmg = 0;
 	 static int petValue = 20;
 	 static int croissanceUpgrade = 2;
@@ -121,12 +122,15 @@ public class clicker {
 		kill();
 	}
 	
-	public void pet() { //cr�ation de familier (pas encore fini)
-		if (gold >= petValue && petDmg == 0) {
-			petDmg += 1;
-		}
+	public static void buyPet() {
 		if (gold >= petValue) {
-			petDmg += petDmg;
+			nbrPet ++;
+			gold = gold - petValue;
+			petValue += petValue;
+			System.out.println("Vous avez acquéri un nouveau familier.");
+		}
+		else {
+			System.out.println("Vous n'avez pas assez d'argent pour acheter une familier supplémentaire. Il vous manque " + ((petValue + 1) - gold) + " gold pour en acquérir un.");
 		}
 	}
 	
