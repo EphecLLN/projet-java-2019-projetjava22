@@ -24,14 +24,14 @@ public class clicker {
 	 static double pourcent = 0.01;
 	 static int gold = 0;
 	 static int upgradeValue = 10;
-	 static int nbrMonstre= 0;
+	 static int nbrMonstre= 1;
 	 static int nbrBoss = 10;
 	 static int goldValue = 6;
 	 static int petDmg = 0;
 	 static int petValue = 20;
 	 static int croissanceUpgrade = 2;
 	 static JLabel PVLabel = new JLabel(); // pv en int. graph.
-	 static JLabel parSec = new JLabel(); // pas encore implémenter (dégâts par seconde en int. graph.
+	 static JLabel argentLabel = new JLabel(); // pas encore implémenter (dégâts par seconde en int. graph.
 	 static action actionClic = new action();
 	 
 	/**
@@ -70,12 +70,14 @@ public class clicker {
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
+		PVLabel.setText("monstre PV : " + monstrePV);
 		compteur.add(PVLabel);
 		
-		parSec.setForeground(Color.white );
-		Font parSecEcriture = new Font("Comic Sans MS", Font.PLAIN, 5);
-		parSec.setFont(parSecEcriture);
-		compteur.add(parSec);
+		argentLabel.setForeground(Color.black );
+		Font argentFont = new Font("Comic Sans MS", Font.PLAIN, 12);
+		argentLabel.setFont(argentFont);
+		argentLabel.setText("argent : " + gold );
+		compteur.add(argentLabel);
 		
 		
 		
@@ -84,22 +86,26 @@ public class clicker {
 
 	public static void kill() { //commande vérifiant le nbr de monstre tués et réinitialisant les monstres selon si c'est un boss ou normal
 		if (monstrePV <= 0 && nbrMonstre == nbrBoss) {
+			gold += gold / 5 ;
 			goldValue += goldValue;
 			monstreValue += monstreValue;
-			nbrMonstre = 0;
+			nbrMonstre = 1;
 			monstrePV = monstreValue;
 			System.out.println("le monstre est mort");
+			System.out.println("vous possédez :" + gold);
 		}
 		if (monstrePV <= 0 && nbrMonstre == (nbrBoss -1)) {
 			monstrePV = monstreValue * 3;
 			nbrMonstre++;
 			System.out.println("le monstre est mort");
+			System.out.println("vous possédez :" + gold);
 		}
 		
 		if (monstrePV <= 0) {
 			monstrePV = monstreValue;
 			nbrMonstre ++;
 			System.out.println("le monstre est mort");
+			System.out.println("vous possédez :" + gold);
 		}
 	}
 	
@@ -139,7 +145,7 @@ public class clicker {
 		 public void actionPerformed(ActionEvent event) {
 				clic();
 				PVLabel.setText("monstre PV : " + monstrePV);
-				
+				argentLabel.setText("argent : " + gold );
 			}
 	 }
 	/**
