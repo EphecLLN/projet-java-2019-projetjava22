@@ -33,7 +33,10 @@ public class clicker {
 	 static int croissanceUpgrade = 2;
 	 static JLabel PVLabel = new JLabel(); // pv en int. graph.
 	 static JLabel argentLabel = new JLabel(); // pas encore implémenter (dégâts par seconde en int. graph.
-	 static action actionClic = new action();
+	 static clic actionClic = new clic();
+	 static upgrade UP = new upgrade();
+	 static JLabel degatLabel = new JLabel();
+	 static JLabel coutUPLabel = new JLabel();
 	 
 	/**
 	 * @author lulu 
@@ -42,13 +45,13 @@ public class clicker {
 	public static void genererUI() { //commande générant l'inteface ainsi que les bouttons
 		 
 		JFrame window = new JFrame();
-		window.setSize(800, 600);
+		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
 		window.setLayout(null);
 		
 		JPanel monstrePanel = new JPanel();
-		monstrePanel.setBounds(100, 220, 200, 200);
+		monstrePanel.setBounds(100, 400, 200, 200);
 		monstrePanel.setBackground(Color.blue);
 		window.add(monstrePanel);
 		
@@ -62,24 +65,49 @@ public class clicker {
 		bouttonMonstre.addActionListener(actionClic); // activation de clic() en int.graph.
 		monstrePanel.add(bouttonMonstre);
 		
+		JPanel ensembleBoutton = new JPanel();
+		ensembleBoutton.setLayout(new GridLayout(6,1));
+		ensembleBoutton.setBounds(600,100,150,400);
+		ensembleBoutton.setBackground(Color.white);
+		window.add(ensembleBoutton);
+		
+		ImageIcon UPIcon = new ImageIcon(clicker.class.getResource("/images/anim up.gif"));
+		
+		JButton buttonUP = new JButton();
+		buttonUP.setBackground(Color.white);
+		buttonUP.setFocusPainted(false);
+		buttonUP.setBorder(null);
+		buttonUP.setIcon(UPIcon);
+		buttonUP.addActionListener(UP);
+		ensembleBoutton.add(buttonUP);
+		
 		JPanel compteur = new JPanel();
-		compteur.setBounds(100,100,200,100);
-		compteur.setBackground(Color.white);
-		compteur.setLayout(new GridLayout(2,1));
+		compteur.setBounds(100,100,400,200);
+		compteur.setBackground(Color.GRAY);
+		compteur.setLayout(new GridLayout(4,1));
 		window.add(compteur);
 		
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("monstre PV : " + monstrePV);
+		PVLabel.setText("PV : " + monstrePV);
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
-		Font argentFont = new Font("Comic Sans MS", Font.PLAIN, 12);
-		argentLabel.setFont(argentFont);
+		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
+		argentLabel.setFont(stats);
 		argentLabel.setText("argent : " + gold );
 		compteur.add(argentLabel);
 		
+		degatLabel.setForeground(Color.black);
+		degatLabel.setFont(stats);
+		degatLabel.setText("dégâts actuels :" + degats*( pourcent * 100));
+		compteur.add(degatLabel);
+		
+		coutUPLabel.setForeground(Color.black);
+		coutUPLabel.setFont(stats);
+		coutUPLabel.setText("coût : " + upgradeValue);
+		ensembleBoutton.add(coutUPLabel);
 		
 		
 		window.setVisible(true);
@@ -134,7 +162,7 @@ public class clicker {
 		}
 	}
 	
-	public void upgrade() { // commande pour améliorer les dégâts
+	public static void upgrade() { // commande pour améliorer les dégâts
 		if (gold >= upgradeValue) {
 			pourcent += 0.01;
 			gold -= upgradeValue;
@@ -145,11 +173,20 @@ public class clicker {
 		}
 	}
 	
-	public static class action implements ActionListener{
+	public static class clic implements ActionListener{
 		 public void actionPerformed(ActionEvent event) {
 				clic();
 				PVLabel.setText("monstre PV : " + monstrePV);
 				argentLabel.setText("argent : " + gold );
+			}
+	 }
+	
+	public static class upgrade implements ActionListener{
+		 public void actionPerformed(ActionEvent event) {
+				upgrade();
+				argentLabel.setText("argent : " + gold );
+				degatLabel.setText("dégâts actuels :" + degats*( pourcent * 100));
+				coutUPLabel.setText("coût : " + upgradeValue);
 			}
 	 }
 	/**
