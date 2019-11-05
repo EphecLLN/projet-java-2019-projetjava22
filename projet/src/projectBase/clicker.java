@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  *
  */
 public class clicker {
-	 static int degats = 10;
+	 static int degats = 1;
 	 String equipement = "epee";
 	 static double monstrePV = 10;
 	 static double monstreValue = 10;
@@ -29,9 +29,9 @@ public class clicker {
 	 static int upgradeValue = 10;
 	 static int nbrMonstre= 1;
 	 static int nbrBoss = 10;
-	 static int implementation = 30;
+	 static int implementation = 10;
 	 static int goldValue = 6;
-	 static int nbrPet = 1;
+	 static int nbrPet = 0;
 	 static int petValue = 20;
 	 static int petDmg = 1;
 	 static double petPourcent = 0.01;
@@ -42,6 +42,9 @@ public class clicker {
 	 static upgrade UP = new upgrade();
 	 static JLabel degatLabel = new JLabel();
 	 static JLabel coutUPLabel = new JLabel();
+	 static Timer timerBoss = new Timer();
+	 static int checkBoss = 0;
+
 	 
 	/**
 	 * @author lulu 
@@ -106,12 +109,12 @@ public class clicker {
 		
 		degatLabel.setForeground(Color.black);
 		degatLabel.setFont(stats);
-		degatLabel.setText("d�g�ts actuels :" + degats*( pourcent * 100));
+		degatLabel.setText("degats actuels :" + degats*( pourcent * 100));
 		compteur.add(degatLabel);
 		
 		coutUPLabel.setForeground(Color.black);
 		coutUPLabel.setFont(stats);
-		coutUPLabel.setText("co�t : " + upgradeValue);
+		coutUPLabel.setText("cout : " + upgradeValue);
 		ensembleBoutton.add(coutUPLabel);
 		
 		
@@ -126,20 +129,21 @@ public class clicker {
 			nbrMonstre = 1;
 			monstrePV = monstreValue;
 			System.out.println("le monstre est mort");
-			System.out.println("vous poss�dez :" + gold);
+			System.out.println("vous possedez :" + gold);
+			checkBoss = 0;
 		}
 		if (monstrePV <= 0 && nbrMonstre == (nbrBoss -1)) {
 			nbrMonstre++;
 			System.out.println("le monstre est mort");
 			preparerBoss();
-			System.out.println("vous poss�dez :" + gold);
+			System.out.println("vous possedez :" + gold);
 		}
 		
 		if (monstrePV <= 0) {
 			monstrePV = monstreValue;
 			nbrMonstre ++;
 			System.out.println("le monstre est mort");
-			System.out.println("vous poss�dez :" + gold);
+			System.out.println("vous possedez :" + gold);
 		}
 	}
 	
@@ -155,17 +159,33 @@ public class clicker {
 		kill();
 	}
 	
+	public static void reborn() {
+		System.out.println("Reborn...");
+	}
+	
 	public static class MinuteurBoss extends TimerTask {
 	    public void run() {
-	    	if (implementation >= 0) {
-	    		System.out.println("Temps restant pour vaincre le monstre : " + implementation);
+	    	if (implementation > 0 && checkBoss == 1) {
+	    		System.out.println("Temps restant pour vaincre le boss : " + implementation);
 	    		implementation --;
+	    	}
+	    	else if (implementation == 0 && checkBoss == 1) {
+	    		System.out.println("Vous avez perdu. Chargement du premier montre...");
+	    		reborn();
+	    		checkBoss = 0;
+	    	}
+	    	else {
+	    		return;
 	    	}
 	    }
 	}
 	
 	public static void preparerBoss() {
 		monstrePV = monstreValue * 3;
+		checkBoss = 1;
+		implementation = 10;
+		MinuteurBoss tempsBoss = new MinuteurBoss();
+		timerBoss.schedule(tempsBoss, 0, 1100);
 	}
 
 	public static void buyPet() {
@@ -214,7 +234,6 @@ public class clicker {
 			goldDrop();
 			kill();
 			PVLabel.setText("monstre PV : " + monstrePV);
-			System.out.println("Aille");
 	    }
 	}
 	
@@ -225,11 +244,9 @@ public class clicker {
 		genererUI();
 		
 		//Generation des clics reguliers de la part des familiers
-		Timer timer = new Timer();
+		Timer timerPets = new Timer();
 		PetsDamages aille = new PetsDamages();
-		MinuteurBoss tempsBoss = new MinuteurBoss();
-		timer.schedule(aille, 0, 1000);
-		timer.schedule(tempsBoss, 0, 1000);
+		timerPets.schedule(aille, 0, 1000);
 	}
 
 }
