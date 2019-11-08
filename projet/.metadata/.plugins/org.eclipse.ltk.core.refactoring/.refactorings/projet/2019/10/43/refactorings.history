@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;projet/project/src/projectBase/perso.java&apos; to &apos;clicker.java&apos;" description="Rename resource &apos;perso.java&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="project/src/projectBase/perso.java" name="clicker.java" stamp="1571986838411" updateReferences="true"/>
-</session>
