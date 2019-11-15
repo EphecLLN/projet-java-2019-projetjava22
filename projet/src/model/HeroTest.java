@@ -23,7 +23,7 @@ class HeroTest {
 		Hero testArt3 = new Hero(0,20);
 		
 		
-		expectedGold = 0;
+		expectedGold = 50;
 		expectedPetCount = 0;
 		testPet1.buyPet();
 		if(Hero.gold != expectedGold || Hero.petCount != expectedPetCount) {
