@@ -3,40 +3,40 @@ package model;
 public class Pets {
 	
 	/**
-	 * Cette méthode sert à améliorer les dégâts des pets
+	 * Cette mÃ©thode sert Ã  amÃ©liorer les dÃ©gÃ¢ts des pets
 	 * @param petDamage
-	 * 		dégâts initiaux(avant l'amélioration) des pets (valeur positive)
+	 * 		dÃ©gÃ¢ts initiaux(avant l'amÃ©lioration) des pets (valeur positive)
 	 * @param petIncrease
-	 * 		valeur d'amélioration des dégâts
+	 * 		valeur d'amÃ©lioration des dÃ©gÃ¢ts
 	 * @param gold (valeur strictement positive)
-	 * 		solde obtenu par le héros, il faut obligatoirement être supérieur ou égal à l'amélioration
+	 * 		solde obtenu par le hÃ©ros, il faut obligatoirement Ãªtre supÃ©rieur ou Ã©gal Ã  l'amÃ©lioration
 	 * 		pour pouvoir effectuer celle-ci (valeur positive)
 	 * @param costUpgrade
-	 * 		coût de l'amélioration, il faut avoir un montant supérieur ou égal de golds pour pouvoir
-	 * 		effectuer l'amélioration (valeur positive)
+	 * 		coÃ»t de l'amÃ©lioration, il faut avoir un montant supÃ©rieur ou Ã©gal de golds pour pouvoir
+	 * 		effectuer l'amÃ©lioration (valeur positive)
 	 * @return petDamage
-	 * 		retourne les dégâts des pets après avoir été améliorés	
+	 * 		retourne les dÃ©gÃ¢ts des pets aprÃ¨s avoir Ã©tÃ© amÃ©liorÃ©s	
 	 */
 	
 	static int upgradePet(int petDamage, int petIncrease, int gold, int costUpgrade) {
 		if(gold >= costUpgrade) {
 			petDamage = petDamage + petIncrease;
-			gold -= 30;
+			gold -= costUpgrade;
 		}
 		else {
-			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
+			System.out.println("Vous n'avez pas assez de gold pour amÃ©liorer.");
 		}
 		return petDamage;
 	}
 	
 	/**
-	 * Cette méthode sert à calculer les dégâts totaux des pets
+	 * Cette mÃ©thode sert Ã  calculer les dÃ©gÃ¢ts totaux des pets
 	 * @param petDamage
-	 * 		dégâts initiaux(avant l'amélioration) des pets
+	 * 		dÃ©gÃ¢ts initiaux(avant l'amÃ©lioration) des pets
 	 * @param petNumber
-	 * 		nombre de pets possédés par le héros
+	 * 		nombre de pets possÃ©dÃ©s par le hÃ©ros
 	 * @return damages
-	 * 		retourne les dégâts totaux des pets	
+	 * 		retourne les dÃ©gÃ¢ts totaux des pets	
 	 */
 	
 	static int attackPet(int petDamage, int petNumber) {
