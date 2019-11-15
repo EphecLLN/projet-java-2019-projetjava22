@@ -16,7 +16,7 @@ public class Hero {
 	
 	Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
-		Hero.artefactCost = artefactCost;
+		Hero.artefactCost = artefactGold;
 	}
 	
 	/**
