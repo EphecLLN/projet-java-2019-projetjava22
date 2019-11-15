@@ -1,7 +1,11 @@
 package model;
 
 public class Pets {
-	
+	static int petDamages;
+	static int petIncrease;
+	static int petNumber;
+	static int gold;
+	static int petCostUpgrade;
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
 	 * @param petDamage
@@ -18,7 +22,7 @@ public class Pets {
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
-	static int upgradePet(int petDamage, int petIncrease, int gold, int costUpgrade) {
+	static int upgradePet(petDamage, petIncrease, gold, costUpgrade) {
 		if(gold >= costUpgrade) {
 			petDamage = petDamage + petIncrease;
 			gold -= costUpgrade;
@@ -39,7 +43,7 @@ public class Pets {
 	 * 		retourne les dégâts totaux des pets	
 	 */
 	
-	static int attackPet(int petDamage, int petNumber) {
+	static int attackPet(petDamage, petNumber) {
 		int damages = petDamage * petNumber;
 		return damages;
 	}
