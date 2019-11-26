@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class MonsterTest {
 
-	@Test
+	/*@Test
 	void testDie() {
 		
 		int goldAttendu;
@@ -69,5 +69,5 @@ class MonsterTest {
 		}
 		
 	}
-
+*/
 }

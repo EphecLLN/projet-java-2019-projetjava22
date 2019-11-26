@@ -18,7 +18,7 @@ public class Monster {
 	 * méthode vérifiant q'un monstre est mort pour le remplacer par un autre
 	 * 
 	 */
-	public static void die(int PV,int Number,int bossNumber, int gold, int goldIncrease, int Increase) {
+	public void die(int PV,int Number,int bossNumber, int gold, int goldIncrease, int Increase) {
 		if (PV <= 0 && Number == bossNumber) { 	//vérifie que le boss est mort
 			gold += goldIncrease;
 			gold += gold / 5 ;					//donne un grosse prime dépendant du montant d'argent que possède le héros actuellement
