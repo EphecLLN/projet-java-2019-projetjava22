@@ -8,31 +8,16 @@ package model;
 public class Hero {
 
 	static int gold = 0; 			//artefactMoney : l'argent que le héros possède 
-	static int petCount = 0;		//nombre de pet que le héros possède
-	static int petCost = 100; 		//prix d'un pet DOIT être > 0
-	
+	int damage = 1;
 	static int artefactMoney = 0;	// l'argent que le héros possède 
 	static int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
 	
-	Hero(int petGold,int artefactGold){ //constructeur pour le test
+	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
-	}
+	}*/
 	
-	/**
-	 * Cette méthode sert à acheter un nouveau pet
-	 */
 	
-	public void buyPet() {
-		if(gold >= petCost) {
-			petCount++;
-			gold -= petCost;
-			petCost += petCost * 10/100;
-			System.out.print("Vous avez acheté un nouveau pet.");			}
-		else {
-			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
-		}
-	}
 	
 	/**
 	 * Cette méthode sert à acheter un nouvel artefact

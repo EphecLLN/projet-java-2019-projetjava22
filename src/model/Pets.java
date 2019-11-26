@@ -1,11 +1,10 @@
 package model;
 
 public class Pets {
-	static int petDamages;
-	static int petIncrease;
-	static int petNumber;
-	static int gold;
-	static int petCostUpgrade;
+	static int petDamages = 1 ;
+	static int petDmgIncrease = 1;
+	static int petNumber = 0;
+	static int petCostUpgrade = 100;
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
 	 * @param petDamage
@@ -22,7 +21,7 @@ public class Pets {
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
-	static int upgradePet(petDamage, petIncrease, gold, costUpgrade) {
+	static int upgradePet(int petDamage, int petIncrease,int gold,int costUpgrade) {
 		if(gold >= costUpgrade) {
 			petDamage = petDamage + petIncrease;
 			gold -= costUpgrade;
@@ -43,8 +42,23 @@ public class Pets {
 	 * 		retourne les dégâts totaux des pets	
 	 */
 	
-	static int attackPet(petDamage, petNumber) {
+	static int attackPet(int petDamage, int petNumber) {
 		int damages = petDamage * petNumber;
 		return damages;
 	}
+	/**
+	 * Cette méthode sert à acheter un nouveau pet
+	 */
+	
+	public void buyPet() {
+		if(game.gold >= petCostUpgrade) {
+			petNumber++;
+			game.gold -= petCostUpgrade;
+			petCostUpgrade += petCostUpgrade * 10/100;
+			System.out.print("Vous avez acheté un nouveau pet.");			}
+		else {
+			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
+		}
+	}
+	
 }

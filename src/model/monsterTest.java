@@ -4,39 +4,67 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class monsterTest {
+class MonsterTest {
 
 	@Test
 	void testDie() {
-		int PV;
-		int Gold;
-		monster test1 = new monster(0,10,0,6);
-		monster test2 = new monster(0,10,6,6);
-		monster test3 = new monster(0,20,0,6);
-		monster test4 = new monster(0,20,6,0);
 		
-		PV = 10;
-		Gold = 6;
-		test1.die();
-		if (test1.PV != PV && test1.gold != Gold) {
+		int goldAttendu;
+		int pvAttendu;
+		int PV;
+		int Number;
+		int bossNumber; 
+		int gold; 
+		int goldIncrease;
+		int Increase;
+
+		
+		pvAttendu = 10;
+		goldAttendu = 6;
+		PV = 0;
+		Number = 1;
+		bossNumber = 10;
+		gold = 0;
+		goldIncrease = 6;
+		Increase = 10;
+		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
+		if (pvAttendu != PV && goldAttendu != gold) {
 			fail("pv basic and gold basic");
 		}
-		PV = 10;
-		Gold = 12;
-		test2.die();
-		if (test2.PV != PV && test2.gold != Gold) {
+		pvAttendu = 10;
+		goldAttendu = 12;
+		PV = 0;
+		Number = 1;
+		bossNumber = 10;
+		gold = 0;
+		goldIncrease = 12;
+		Increase = 10;
+		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
+		if (pvAttendu != PV && goldAttendu != gold) {
 			fail("pv basic and gold 2x");
 		}
-		PV = 20;
-		Gold = 6;
-		test3.die();
-		if (test3.PV != PV && test3.gold != Gold) {
-			fail("pv 2x and gold basic");
+		pvAttendu = 30;
+		goldAttendu = 6;
+		PV = 0;
+		Number = 9;
+		bossNumber = 10;
+		gold = 0;
+		goldIncrease = 6;
+		Increase = 10;
+		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
+		if (pvAttendu != PV && goldAttendu != gold) {
+			fail("pv 3x and gold basic");
 		}
-		PV = 10;
-		Gold = 6;
-		test4.die();
-		if (test4.PV != PV && test4.gold != Gold) {
+		pvAttendu = 10;
+		goldAttendu = 6;
+		PV = 0;
+		Number = 1;
+		bossNumber = 10;
+		gold = 6;
+		goldIncrease = 0;
+		Increase = 10;
+		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
+		if (pvAttendu != PV && goldAttendu != gold) {
 			fail("pv basic and gold non-up");
 		}
 		
