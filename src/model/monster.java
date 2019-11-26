@@ -6,17 +6,17 @@ package model;
  * classe créant les monstres 
  */
 public class monster {
-	int monsterPV;							//pv du monstre actuel
-	int monsterIncrease;					//incrémentation des pvs
-	int monsterNumber = 1;					//Numero du monstre dans la vague
+	int PV = 10 ;							//pv du monstre actuel
+	int Increase = 10;					//incrémentation des pvs
+	int Number = 1;					//Numero du monstre dans la vague
 	int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	int waveNumber = 1;						//Nombre de monstre tués au total
-	int goldIncrease;				
+	int goldIncrease = 6;				
 	int gold;								//simule Hero.gold pour le test
 	
 	monster(int PV,int Increase,int Gold,int goldIncrease) { //constructeur pour le test
-		this.monsterPV = PV;
-		this.monsterIncrease = Increase;
+		this.PV = PV;
+		this.Increase = Increase;
 		this.goldIncrease = goldIncrease;
 		this.gold = Gold;
 	}
@@ -26,23 +26,24 @@ public class monster {
 	 * 
 	 */
 	public void die() {
-		if (monsterPV <= 0 && monsterNumber == bossNumber) { //vérifie que le boss est mort
+		if (PV <= 0 && Number == bossNumber) { //vérifie que le boss est mort
 			gold += goldIncrease;
 			gold += gold / 5 ;						//donne un grosse prime dépendant du montant d'argent que possède le héros actuellement
 			goldIncrease += goldIncrease; 			//augmente le nombre de pièce que les prochain monstre donnerons
-			monsterIncrease += monsterIncrease;		//augmente les pvs des prochains monstres
-			monsterNumber = 1;
-			monsterPV = monsterIncrease;
+
+			Increase += Increase;		//augmente les pvs des prochains monstres
+			Number = 1;
+			PV = Increase;
 		}
-		if (monsterPV <= 0 && monsterNumber == (bossNumber -1)) { //prépare le boss
-			monsterNumber++;
-			monsterPV = monsterIncrease*3;
+		if (PV <= 0 && Number == (bossNumber -1)) { //prépare le boss
+			Number++;
+			PV = Increase*3;
 			gold += goldIncrease;
 		}
 		
-		if (monsterPV <= 0) {
-			monsterPV = monsterIncrease;
-			monsterNumber ++;
+		if (PV <= 0) {
+			PV = Increase;
+			Number ++;
 			gold += goldIncrease;	//donne de l'argent à la mort du monstre(ancien goldDrop())
 		}
 	}
