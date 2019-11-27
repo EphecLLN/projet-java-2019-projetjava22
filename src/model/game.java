@@ -23,18 +23,18 @@ public class game {
 	static int gold = 0;
 	int upgradeValue = 10;
 	int upgradecroissance = 2;
-	Monster monstre = new Monster();
+	Monster myMonster = new Monster();
 	Hero heroJeu = new Hero();
-	JLabel PVLabel = new JLabel(); // pv en int. graph.
-	JLabel argentLabel = new JLabel(); // pas encore impl�menter (d�g�ts par seconde en int. graph.
-	clic actionClic = new clic();
-	upgrade UP = new upgrade();
+	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
+	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (d�g�ts par seconde en int. graph.
+	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
+	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	
 	void attack(Monster monstre,Hero heroJeu) {
-		monstre.PV = monstre.PV - heroJeu.damage;
-		monstre.die(upgradeValue, monstre.Number, monstre.bossNumber,gold, monstre.goldIncrease, monstre.pvIncrease);
+		monstre.PV -= heroJeu.damage;
+		monstre.die(myMonster,this);
 	}
 	void upgrade(Hero heroJeu) {
 		if (gold >= upgradeValue) {
@@ -104,7 +104,7 @@ public class game {
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("PV : " + monstre.PV);
+		PVLabel.setText("PV : " + myMonster.PV);
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
@@ -129,8 +129,8 @@ public class game {
 	
 	public class clic implements ActionListener{
 		 public void actionPerformed(ActionEvent event) {
-				attack(monstre,heroJeu);
-				PVLabel.setText("monstre PV : " + monstre.PV);
+				attack(myMonster,heroJeu);
+				PVLabel.setText("monstre PV : " + myMonster.PV);
 				argentLabel.setText("argent : " + gold );
 			}
 	 }
