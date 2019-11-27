@@ -3,7 +3,7 @@ package model;
 public class Pets {
 	static int petDamages = 1 ;
 	static int petDmgIncrease = 1;
-	static int petNumber = 0;
+	int petNumber = 0;
 	static int petCostUpgrade = 100;
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets

@@ -20,11 +20,13 @@ import javax.swing.JPanel;
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
 public class game {
+	int nbrClic = 0;
 	static int gold = 0;
 	int upgradeValue = 10;
 	int upgradecroissance = 2;
+	Artefact myArtf = new Artefact();
 	Monster myMonster = new Monster();
-	Hero heroJeu = new Hero();
+	Hero myHero = new Hero();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (d�g�ts par seconde en int. graph.
 	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
@@ -32,23 +34,25 @@ public class game {
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	
-	void attack(Monster monstre,Hero heroJeu) {
-		monstre.PV -= heroJeu.damage;
+	void attack(Monster monstre,Hero heroGame, Artefact artf) {
+		monstre.PV -= heroGame.damage;
 		monstre.die(myMonster,this);
+		this.nbrClic ++;
+		artf.applyArtefacts(null, monstre, heroGame, this);
 	}
-	void upgrade(Hero heroJeu) {
+	void upgrade(Hero heroGame) {
 		if (gold >= upgradeValue) {
-			heroJeu.damage ++ ;
+			heroGame.damage ++ ;
 			gold -= upgradeValue;
 			upgradeValue += upgradecroissance ;
 			upgradecroissance  += 2 ;
 			System.out.println("vous avez ameliore vos degats");
-			System.out.println("Vous infligez maintenant : " + heroJeu.damage + " degats");
+			System.out.println("Vous infligez maintenant : " + heroGame.damage + " degats");
 		}
 	}
 	
-	void reborn(Monster monstre,Hero heroJeu) {
-		heroJeu.damage = 1;
+	void reborn(Monster monstre,Hero heroGame) {
+		heroGame.damage = 1;
 		monstre.goldIncrease = 6;
 		monstre.PV = 10;
 		monstre.pvIncrease = 10;
@@ -115,7 +119,7 @@ public class game {
 		
 		degatLabel.setForeground(Color.black);
 		degatLabel.setFont(stats);
-		degatLabel.setText("d�g�ts actuels :" + heroJeu.damage);
+		degatLabel.setText("d�g�ts actuels :" + myHero.damage);
 		compteur.add(degatLabel);
 		
 		coutUPLabel.setForeground(Color.black);
@@ -129,7 +133,7 @@ public class game {
 	
 	public class clic implements ActionListener{
 		 public void actionPerformed(ActionEvent event) {
-				attack(myMonster,heroJeu);
+				attack(myMonster,myHero,myArtf);
 				PVLabel.setText("monstre PV : " + myMonster.PV);
 				argentLabel.setText("argent : " + gold );
 			}
@@ -137,9 +141,9 @@ public class game {
 	
 	public class upgrade implements ActionListener{
        public void actionPerformed(ActionEvent event) {
-              upgrade(heroJeu);
+              upgrade(myHero);
               argentLabel.setText("argent : " + gold );
-              degatLabel.setText("d�g�ts actuels :" + heroJeu.damage);
+              degatLabel.setText("d�g�ts actuels :" + myHero.damage);
               coutUPLabel.setText("co�t : " + upgradeValue);
           }
    }
@@ -147,8 +151,10 @@ public class game {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		game monJeu = new game();
-		monJeu.genererUI();
+		game myGame = new game();
+		myGame.myHero.buyArtefact(myGame.myArtf);
+		myGame.genererUI();
+		
 	}
 
 }
