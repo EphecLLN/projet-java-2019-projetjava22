@@ -15,18 +15,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Vue.Console;
+
 /**
  * @author Lucas Pastori
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
 public class game {
 	int nbrClic = 0;
-	static int gold = 0;
-	int upgradeValue = 10;
+	public static int gold = 0;
+	private int upgradeValue = 10;
 	int upgradecroissance = 2;
-	Artefact myArtf = new Artefact();
-	Monster myMonster = new Monster();
-	Hero myHero = new Hero();
+	public Artefact myArtf = new Artefact();
+	public Monster myMonster = new Monster();
+	public Hero myHero = new Hero();
+	public Pets myPet = new Pets();
+	Console myConsole = new Console();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (d�g�ts par seconde en int. graph.
 	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
@@ -34,32 +38,62 @@ public class game {
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	
-	void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		monstre.PV -= heroGame.damage;
+	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
+		monstre.setPV(monstre.getPV() - heroGame.getDamage());
 		monstre.die(myMonster,this);
 		this.nbrClic ++;
-		artf.applyArtefacts(null, monstre, heroGame, this);
+		this.applyArtefacts();
 	}
-	void upgrade(Hero heroGame) {
-		if (gold >= upgradeValue) {
-			heroGame.damage ++ ;
-			gold -= upgradeValue;
-			upgradeValue += upgradecroissance ;
+	public void upgrade(Hero heroGame) {
+		if (gold >= getUpgradeValue()) {
+			heroGame.constDamage ++;
+			gold = gold - getUpgradeValue();
+			setUpgradeValue(getUpgradeValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
+			this.applyArtefacts();
 			System.out.println("vous avez ameliore vos degats");
-			System.out.println("Vous infligez maintenant : " + heroGame.damage + " degats");
+			System.out.println("Vous infligez maintenant : " + heroGame.getDamage() + " degats");
 		}
 	}
 	
-	void reborn(Monster monstre,Hero heroGame) {
-		heroGame.damage = 1;
-		monstre.goldIncrease = 6;
-		monstre.PV = 10;
-		monstre.pvIncrease = 10;
-		monstre.goldIncrease = 6;
-		monstre.Number = 1;
-		monstre.waveNumber = 1;
+	public void reborn(Monster monstre,Hero heroGame) {
+		heroGame.setDamage(1);
+		monstre.setGoldIncrease(6);
+		monstre.setPV(10);
+		monstre.setPvIncrease(10);
+		monstre.setGoldIncrease(6);
+		monstre.setNumber(1);
+		monstre.setWaveNumber(1);
+		this.applyArtefacts();
 	}
+	
+	public void applyArtefacts() {
+		for (int i = 0; i<this.myArtf.currentArtefacts.length ; i++) {
+			if (this.myArtf.currentArtefacts[i].contentEquals("doublePet")) {
+				this.myPet.petNumber = this.myPet.petNumber * 2;
+				this.myHero.setDamage(this.myHero.constDamage);
+			}
+			if (this.myArtf.currentArtefacts[i].contentEquals("doubleDMG") ) {
+				this.myHero.setDamage(this.myHero.constDamage * 2);
+			}
+			if (this.myArtf.currentArtefacts[i].contentEquals("+5DMG")) {
+				this.myHero.setDamage(this.myHero.constDamage + 5);
+			}
+			if (this.myArtf.currentArtefacts[i].contentEquals("-1Boss")) {
+				this.myMonster.setbossNumber(9);
+				this.myHero.setDamage(this.myHero.constDamage);
+			}
+			if (this.myArtf.currentArtefacts[i].contentEquals("every10Hit")) {
+				if(this.nbrClic % 10 == 0) {
+					this.myHero.setDamage(this.myHero.constDamage + this.myHero.constDamage * 5);
+				}
+				 if(this.nbrClic % 10 == 1) {
+					 this.myHero.setDamage(this.myHero.constDamage - this.myHero.constDamage / 5);
+				}
+			}
+		}
+	}
+		
 	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
 		 
 		JFrame window = new JFrame();
@@ -108,7 +142,7 @@ public class game {
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("PV : " + myMonster.PV);
+		PVLabel.setText("PV : " + myMonster.getPV());
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
@@ -119,22 +153,30 @@ public class game {
 		
 		degatLabel.setForeground(Color.black);
 		degatLabel.setFont(stats);
-		degatLabel.setText("d�g�ts actuels :" + myHero.damage);
+		degatLabel.setText("d�g�ts actuels :" + myHero.getDamage());
 		compteur.add(degatLabel);
 		
 		coutUPLabel.setForeground(Color.black);
 		coutUPLabel.setFont(stats);
-		coutUPLabel.setText("co�t : " + upgradeValue);
+		coutUPLabel.setText("co�t : " + getUpgradeValue());
 		ensembleBoutton.add(coutUPLabel);
 		
 		
 		window.setVisible(true);
 	}
 	
+	public int getUpgradeValue() {
+		return upgradeValue;
+	}
+	public void setUpgradeValue(int upgradeValue) {
+		this.upgradeValue = upgradeValue;
+	}
+
+
 	public class clic implements ActionListener{
 		 public void actionPerformed(ActionEvent event) {
 				attack(myMonster,myHero,myArtf);
-				PVLabel.setText("monstre PV : " + myMonster.PV);
+				PVLabel.setText("monstre PV : " + myMonster.getPV());
 				argentLabel.setText("argent : " + gold );
 			}
 	 }
@@ -143,8 +185,8 @@ public class game {
        public void actionPerformed(ActionEvent event) {
               upgrade(myHero);
               argentLabel.setText("argent : " + gold );
-              degatLabel.setText("d�g�ts actuels :" + myHero.damage);
-              coutUPLabel.setText("co�t : " + upgradeValue);
+              degatLabel.setText("d�g�ts actuels :" + myHero.getDamage());
+              coutUPLabel.setText("co�t : " + getUpgradeValue());
           }
    }
 	/**
@@ -152,8 +194,9 @@ public class game {
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
+		myGame.applyArtefacts();
 		myGame.genererUI();
+		myGame.myConsole.Scan(myGame);
 		
 	}
-
 }
