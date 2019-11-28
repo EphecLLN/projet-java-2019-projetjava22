@@ -34,11 +34,16 @@ public class game {
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	
+<<<<<<< Updated upstream
 	void attack(Monster monstre,Hero heroGame, Artefact artf) {
 		monstre.PV -= heroGame.damage;
 		monstre.die(myMonster,this);
 		this.nbrClic ++;
 		artf.applyArtefacts(null, monstre, heroGame, this);
+=======
+	void attack(Monster monster, Hero Hero) {
+		monster.PV = monster.PV - Hero.damage;
+>>>>>>> Stashed changes
 	}
 	void upgrade(Hero heroGame) {
 		if (gold >= upgradeValue) {

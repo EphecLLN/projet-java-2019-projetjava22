@@ -1,17 +1,14 @@
 package model;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
-
-/**
- * @author matthieu
- *
- */
 class PetsTest {
 
 	@Test
 	void test() {
-		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
+int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
 		
 		//Test de la fonction upgradePet
 		
@@ -79,7 +76,7 @@ class PetsTest {
 			resultatObtenu = Pets.attackPet(petDamage, petNumber);
 				if(resultatAttendu != resultatObtenu) {
 					fail("attack D-1 N-1");
-				}	
+				}
 	}
 
 }

@@ -5,8 +5,11 @@
 /game.class
 /monster.class
 /monsterTest.class
+<<<<<<< Updated upstream
 /Monster.class
 /MonsterTest.class
 /game$clic.class
 /game$upgrade.class
 /Artefact.class
+=======
+>>>>>>> Stashed changes

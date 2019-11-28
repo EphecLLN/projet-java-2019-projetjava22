@@ -1,10 +1,18 @@
 package model;
 
 public class Pets {
+<<<<<<< Updated upstream
 	static int petDamages = 1 ;
 	static int petDmgIncrease = 1;
 	int petNumber = 0;
 	static int petCostUpgrade = 100;
+=======
+	static int petDamage;
+	static int petIncrease;
+	static int petNumber;
+	static int gold;
+	static int petCostUpgrade;
+>>>>>>> Stashed changes
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
 	 * @param petDamage
@@ -21,10 +29,15 @@ public class Pets {
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
+<<<<<<< Updated upstream
 	static int upgradePet(int petDamage, int petIncrease,int gold,int costUpgrade) {
 		if(gold >= costUpgrade) {
+=======
+	static int upgradePet(int petDamage, int petIncrease, int gold, int petCostUpgrade) {
+		if(gold >= petCostUpgrade) {
+>>>>>>> Stashed changes
 			petDamage = petDamage + petIncrease;
-			gold -= costUpgrade;
+			gold -= petCostUpgrade;
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
