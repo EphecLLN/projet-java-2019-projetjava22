@@ -152,7 +152,6 @@ public class game {
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
-		myGame.myHero.buyArtefact(myGame.myArtf);
 		myGame.genererUI();
 		
 	}
