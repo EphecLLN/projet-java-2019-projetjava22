@@ -1,12 +1,13 @@
 package model;
 
 public class Pets {
-	int petDamages = 1 ;
+	int petDamages = 1;
 	int petDmgIncrease = 1;
-	int petNumber = 1;
-	int petCostUpgrade = 100;
-	int petBuyIncrease = 1;
-	int petsAttackSpeed = 1000;
+	static int petNumber = 0;
+	int petCostUpgrade = 150;
+	static int petBuyIncrease = 1;
+	int petsAttackSpeed = 2000;
+	int petCostBuy = 100;
 	
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
@@ -54,21 +55,54 @@ public class Pets {
 	 */
 	
 	public void buyPet() {
-		if(game.gold >= petCostUpgrade) {
-<<<<<<< HEAD
-			game.gold -= petCostUpgrade;
-=======
-			petNumber++;
-			game.gold = game.gold - petCostUpgrade;
->>>>>>> master
-			petCostUpgrade += petCostUpgrade * 10/100;
-			System.out.print("Vous avez acheté un nouveau pet.");			}
+		game myGame = new game();
+		if(myGame.gold >= petCostBuy) {
+			myGame.gold -= petCostBuy;
+			myGame.myPets.petNumber += myGame.myPets.petBuyIncrease;
+			petCostBuy += petCostBuy * 10/100;
+			System.out.println("Vous avez desormais " + myGame.myPets.petNumber + " familiers.");
+			System.out.println("Vous avez desormais " + myGame.myPets.petBuyIncrease + " petBuyIncrease.");
+		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}
 	}
 	
-
+	public int getPetDamage() {
+		return petDamages;
+	}
+	
+	public int getPetDmgIncrease() {
+		return petDmgIncrease;
+	}
+	
+	public int getPetNumber() {
+		return petNumber;
+	}
+	
+	public int getPetCostUpgrade() {
+		return petCostUpgrade;
+	}
+	
+	public int getPetBuyIncrease() {
+		return petBuyIncrease;
+	}
+	
+	public int getPetsAttackSpeed() {
+		return petsAttackSpeed;
+	}
+	
+	public int getPetCostBuy() {
+		return petCostBuy;
+	}
+	
+	public void setAddPetNumber(int addPetNumber) {
+		this.petNumber += addPetNumber;
+	}
+	
+	public void setPetBuyIncrease(int petincrease) {
+		this.petBuyIncrease = petincrease;
+	}
 	
 	public static void main(String[] args) {
 		

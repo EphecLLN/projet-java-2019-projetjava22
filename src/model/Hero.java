@@ -7,8 +7,8 @@ package model;
  */
 public class Hero {
 	private int damage = 1;
-	int constDamage = 1; 			//variable préservant damage d'être constament modifié
-	static int artefactMoney = 0;	//artefactMoney : l'argent que le hÃ©ros possÃ¨de 
+	int constDamage = 1; 			//variable prï¿½servant damage d'ï¿½tre constament modifiï¿½
+	static int artefactMoney = 10;	//artefactMoney : l'argent que le hÃ©ros possÃ¨de 
 	static int artefactCost = 10; 	//prix d'un artefact DOIT Ãªtre > 0
 	
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test

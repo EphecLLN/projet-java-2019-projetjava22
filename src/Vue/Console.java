@@ -1,8 +1,10 @@
 package Vue;
 
 import java.util.Scanner;
+import java.util.Timer;
 
 import model.game;
+import model.game.PetsDamages;
 
 public class Console {
 	
@@ -11,13 +13,13 @@ public class Console {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("attaque / amélioration / solde ?");
+			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter pet (" + game.myPets.getPetCostBuy() + ") / Solde : " + game.getGold());
 
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("attaque")) {
 				game.attack(game.myMonster,game.myHero,game.myArtf);
 			}
-			if (userAction.contentEquals("amélioration")) {
+			if (userAction.contentEquals("amelioration")) {
 				game.upgrade(game.myHero);
 				System.out.println("vous avez ameliore vos degats");
 				System.out.println("Vous infligez maintenant : " + game.myHero.getDamage() + " degats");
@@ -26,7 +28,11 @@ public class Console {
 				game.reborn(game.myMonster, game.myHero);
 			}
 			if (userAction.contentEquals("solde")) {
-				System.out.println("vous avez " + model.game.gold + " pièces d'or");
+				System.out.println("vous avez " + model.game.gold + " pieces d'or");
+			}
+			if (userAction.contentEquals("acheter pet")) {
+				game.myPets.buyPet();
+				System.out.println("Vous avez acquÃ©ri un nouveau familier.");
 			}
 		}
 }
