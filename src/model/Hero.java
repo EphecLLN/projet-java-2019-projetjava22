@@ -6,8 +6,9 @@ package model;
  *
  */
 public class Hero {
-	int damage = 1;
-	static int artefactMoney = 10;	//artefactMoney : l'argent que le hÃ©ros possÃ¨de 
+	private int damage = 1;
+	int constDamage = 1; 			//variable préservant damage d'être constament modifié
+	static int artefactMoney = 0;	//artefactMoney : l'argent que le hÃ©ros possÃ¨de 
 	static int artefactCost = 10; 	//prix d'un artefact DOIT Ãªtre > 0
 	
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
@@ -35,6 +36,14 @@ public class Hero {
 		}
 	}
 	
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
 	public static void main(String[] args) {
 		
 	}

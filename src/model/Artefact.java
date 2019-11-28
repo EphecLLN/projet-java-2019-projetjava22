@@ -12,6 +12,7 @@ public class Artefact {
 	String[] currentArtefacts = {"","","","",""};
 	String[] noArtefacts = {"doublePet","doubleDMG","+5DMG","-1Boss","every10Hit"};
 
+<<<<<<< HEAD
 	public void applyArtefacts(Pets pet, Monster monster, Hero JeanClaude, game myGame) {
 		for (int i = 0; i<this.currentArtefacts.length ; i++) {
 			if (this.currentArtefacts[i] == "doublePet") {
@@ -38,6 +39,8 @@ public class Artefact {
 		}
 					
 	}
+=======
+>>>>>>> master
 	/**
 	 * @param args
 	 */

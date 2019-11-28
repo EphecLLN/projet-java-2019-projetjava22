@@ -11,9 +11,14 @@
 /game$clic.class
 /game$upgrade.class
 /Artefact.class
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 /Archer.class
 /game$PetsDamages.class
 /PetsDamages.class
 /game$choixArcher.class
+=======
+/clic.class
+/upgrade.class
+>>>>>>> master

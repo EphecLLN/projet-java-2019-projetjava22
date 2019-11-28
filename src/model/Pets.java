@@ -55,7 +55,12 @@ public class Pets {
 	
 	public void buyPet() {
 		if(game.gold >= petCostUpgrade) {
+<<<<<<< HEAD
 			game.gold -= petCostUpgrade;
+=======
+			petNumber++;
+			game.gold = game.gold - petCostUpgrade;
+>>>>>>> master
 			petCostUpgrade += petCostUpgrade * 10/100;
 			System.out.print("Vous avez acheté un nouveau pet.");			}
 		else {
