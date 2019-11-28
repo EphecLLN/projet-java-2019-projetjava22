@@ -5,7 +5,7 @@ package model;
 
 /**
  * @author lucas Pastori
- * classe regoupant les différents artéfacts (pouvoirs supplémentaires) 
+ * classe regoupant les diffï¿½rents artï¿½facts (pouvoirs supplï¿½mentaires) 
  * et les activant si il se trouvent dans le bon tableau.
  */
 public class Artefact {
@@ -16,6 +16,7 @@ public class Artefact {
 		for (int i = 0; i<this.currentArtefacts.length ; i++) {
 			if (this.currentArtefacts[i] == "doublePet") {
 				pet.petNumber = pet.petNumber * 2;
+				pet.petBuyIncrease = 2;
 			}
 			if (this.currentArtefacts[i] == "doubleDMG") {
 				JeanClaude.damage = JeanClaude.damage * 2;

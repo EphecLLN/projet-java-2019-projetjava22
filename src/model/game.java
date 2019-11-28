@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TimerTask;
+import java.util.Timer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -24,27 +26,34 @@ public class game {
 	static int gold = 0;
 	int upgradeValue = 10;
 	int upgradecroissance = 2;
+	Pets myPets = new Pets();
 	Artefact myArtf = new Artefact();
 	Monster myMonster = new Monster();
+	Archer myArcher = new Archer();
 	Hero myHero = new Hero();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (d�g�ts par seconde en int. graph.
+	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (degats par seconde en int. graph.
 	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
+	private Timer timerPets = new Timer();
 	
-<<<<<<< Updated upstream
 	void attack(Monster monstre,Hero heroGame, Artefact artf) {
+		artf.applyArtefacts(null, monstre, heroGame, this);
 		monstre.PV -= heroGame.damage;
 		monstre.die(myMonster,this);
 		this.nbrClic ++;
-		artf.applyArtefacts(null, monstre, heroGame, this);
-=======
-	void attack(Monster monster, Hero Hero) {
-		monster.PV = monster.PV - Hero.damage;
->>>>>>> Stashed changes
+
 	}
+	
+	void attackPets(Monster monstre, Pets monToutou, Artefact artf) {
+		artf.applyArtefacts(monToutou, monstre, null, this);
+		monstre.PV -= monToutou.petDamages * monToutou.petNumber;
+		monstre.die(myMonster,this);
+		
+	}
+	
 	void upgrade(Hero heroGame) {
 		if (gold >= upgradeValue) {
 			heroGame.damage ++ ;
@@ -65,7 +74,32 @@ public class game {
 		monstre.Number = 1;
 		monstre.waveNumber = 1;
 	}
-	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
+	
+	public void timerPets() {
+		game myGame = new game();
+		Pets myPets = new Pets();
+		timerPets = new Timer();
+		PetsDamages aille = myGame.new PetsDamages();
+		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
+	}
+	
+	void heroChoice() {
+		
+	}
+	
+	public void archerChoice() {
+		myPets.petsAttackSpeed = myArcher.petsAttackSpeed;
+		this.timerPets.cancel();
+	}
+	
+	void mageChoice() {
+		
+	}
+	
+	void berzerkerChoice() {
+		
+	}
+	public void genererUI() { //commande generant l'inteface ainsi que les bouttons
 		 
 		JFrame window = new JFrame();
 		window.setSize(1200, 900);
@@ -78,7 +112,7 @@ public class game {
 		monstrePanel.setBackground(Color.blue);
 		window.add(monstrePanel);
 		
-		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime_bleu.png")); //cr�ation d'une image en tant que ic�ne.
+		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime_bleu.png")); //creation d'une image en tant que ic�ne.
 		
 		JButton bouttonMonstre = new JButton();
 		bouttonMonstre.setBackground(Color.white);
@@ -102,7 +136,7 @@ public class game {
 		buttonUP.setBorder(null);
 		buttonUP.setIcon(UPIcon);
 		buttonUP.addActionListener(UP);
-		ensembleBoutton.add(buttonUP);
+		ensembleBoutton.add(buttonUP);	
 		
 		JPanel compteur = new JPanel();
 		compteur.setBounds(100,100,400,200);
@@ -113,7 +147,7 @@ public class game {
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("PV : " + myMonster.PV);
+		PVLabel.setText("monstre PV : " + myMonster.PV);
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
@@ -124,12 +158,12 @@ public class game {
 		
 		degatLabel.setForeground(Color.black);
 		degatLabel.setFont(stats);
-		degatLabel.setText("d�g�ts actuels :" + myHero.damage);
+		degatLabel.setText("degats actuels :" + myHero.damage);
 		compteur.add(degatLabel);
 		
 		coutUPLabel.setForeground(Color.black);
 		coutUPLabel.setFont(stats);
-		coutUPLabel.setText("co�t : " + upgradeValue);
+		coutUPLabel.setText("cout : " + upgradeValue);
 		ensembleBoutton.add(coutUPLabel);
 		
 		
@@ -148,17 +182,41 @@ public class game {
        public void actionPerformed(ActionEvent event) {
               upgrade(myHero);
               argentLabel.setText("argent : " + gold );
-              degatLabel.setText("d�g�ts actuels :" + myHero.damage);
-              coutUPLabel.setText("co�t : " + upgradeValue);
+              degatLabel.setText("degats actuels :" + myHero.damage);
+              coutUPLabel.setText("cout : " + upgradeValue);
           }
-   }
+	}
+	
+	public class choixArcher implements ActionListener{
+	       public void actionPerformed(ActionEvent event) {
+	              upgrade(myHero);
+	              argentLabel.setText("argent : " + gold );
+	              degatLabel.setText("degats actuels :" + myHero.damage);
+	              coutUPLabel.setText("cout : " + upgradeValue);
+	       }
+	}
+	
+	public class PetsDamages extends TimerTask {
+	    public void run() {
+	    	attackPets(myMonster, myPets, myArtf);
+			PVLabel.setText("monstre PV : " + myMonster.PV);
+			argentLabel.setText("argent : " + gold );
+	    }
+	}
+	
+
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		game myGame = new game();
-		myGame.genererUI();
-		
-	}
+		Monster myMonster = new Monster();
 
+		if(myMonster.waveNumber == 2) {
+			System.out.println("Choix du heros");
+		}
+		game myGame = new game();
+		myGame.genererUI();		
+		myGame.heroChoice();
+	}
 }
