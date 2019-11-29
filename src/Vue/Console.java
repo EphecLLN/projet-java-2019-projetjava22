@@ -13,7 +13,7 @@ public class Console {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter pet (" + game.myPets.getPetCostBuy() + ") / Solde : " + game.getGold());
+			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter familier (" + game.myPets.getPetCostBuy() + ") / solde : " + game.getGold());
 
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("attaque")) {
@@ -33,6 +33,10 @@ public class Console {
 			if (userAction.contentEquals("acheter pet")) {
 				game.myPets.buyPet();
 				System.out.println("Vous avez acquéri un nouveau familier.");
+			}
+			if (userAction.contentEquals("archer")) {
+				game.archerChoice();
+				System.out.println("AttackSpeed fixee a 0.7/sec");
 			}
 		}
 }
