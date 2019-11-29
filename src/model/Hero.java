@@ -7,7 +7,7 @@ package model;
  */
 public class Hero {
 	private int damage = 1;
-	int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
+	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
 	static int artefactMoney = 10;	//artefactMoney : l'argent que le héros possède 
 	static int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
 	
@@ -42,6 +42,14 @@ public class Hero {
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+
+	public int getConstDamage() {
+		return constDamage;
+	}
+
+	public void setConstDamage(int constDamage) {
+		this.constDamage = constDamage;
 	}
 
 	public static void main(String[] args) {

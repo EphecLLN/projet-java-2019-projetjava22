@@ -26,8 +26,9 @@ import Vue.Console;
 public class game {
 	int nbrClic = 0;
 	public static int gold = 0;
-	private int upgradeValue = 10;
+	private int upgradeMonyeValue = 10;
 	int upgradecroissance = 2;
+	int constUpgradeDamage = 1;
 	Archer myArcher = new Archer();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
@@ -51,19 +52,25 @@ public class game {
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		monstre.setPV(monstre.getPV() - heroGame.getDamage());
-		monstre.die(myMonster,this);
-		this.nbrClic ++;
-		this.applyArtefacts();
+		if (this.myArtf.activate10hit == true && this.nbrClic % 10 == 0) {
+			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
+			monstre.die(myMonster,this);
+			this.nbrClic ++;
+		}
+		else {
+			monstre.setPV(monstre.getPV() - heroGame.getDamage());
+			monstre.die(myMonster,this);
+			this.nbrClic ++;
+		}
+		
 	}
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeValue()) {
-			heroGame.constDamage ++;
-			heroGame.setDamage(heroGame.constDamage);
+			heroGame.setConstDamage(heroGame.getConstDamage() + constUpgradeDamage);
+			heroGame.setDamage(heroGame.getConstDamage());
 			gold = gold - getUpgradeValue();
 			setUpgradeValue(getUpgradeValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
-			this.applyArtefacts();
 		}
 	}
 	
@@ -107,27 +114,22 @@ public class game {
 		for (int i = 0; i<this.myArtf.currentArtefacts.length ; i++) {
 			if (this.myArtf.currentArtefacts[i].contentEquals("doublePet")) {
 				Pets.petNumber = (Pets.petNumber * 2);
-				Pets.petBuyIncrease = 2;
-				this.myHero.setDamage(this.myHero.constDamage);
+				Pets.petBuyIncrease = 2;	
 			}
 			if (this.myArtf.currentArtefacts[i].contentEquals("doubleDMG") ) {
-				this.myHero.setDamage(this.myHero.constDamage * 2);
+				this.myHero.setConstDamage(this.myHero.getConstDamage() + 1);
+				this.constUpgradeDamage ++;
 			}
 			if (this.myArtf.currentArtefacts[i].contentEquals("+5DMG")) {
-				this.myHero.setDamage(this.myHero.constDamage + 5);
+				this.myHero.setConstDamage(myHero.getConstDamage() + 5);
 			}
 			if (this.myArtf.currentArtefacts[i].contentEquals("-1Boss")) {
 				this.myMonster.setbossNumber(9);
-				this.myHero.setDamage(this.myHero.constDamage);
 			}
 			if (this.myArtf.currentArtefacts[i].contentEquals("every10Hit")) {
-				if(this.nbrClic % 10 == 0) {
-					this.myHero.setDamage(this.myHero.constDamage + this.myHero.constDamage * 5);
-				}
-				 if(this.nbrClic % 10 == 1) {
-					 this.myHero.setDamage(this.myHero.constDamage - this.myHero.constDamage / 5);
-				}
+				this.myArtf.activate10hit = true;
 			}
+			this.myHero.setDamage(this.myHero.getConstDamage());
 		}
 	}
 		
@@ -203,14 +205,14 @@ public class game {
 	}
 	
 	public int getUpgradeValue() {
-		return upgradeValue;
+		return upgradeMonyeValue;
 	}
 	
 	public int getGold() {
 		return gold;
 	}
 	public void setUpgradeValue(int upgradeValue) {
-		this.upgradeValue = upgradeValue;
+		this.upgradeMonyeValue = upgradeValue;
 	}
 
 
@@ -236,7 +238,7 @@ public class game {
 	              upgrade(myHero);
 	              argentLabel.setText("argent : " + gold );
 	              degatLabel.setText("degats actuels :" + myHero.getDamage());
-	              coutUPLabel.setText("cout : " + upgradeValue);
+	              coutUPLabel.setText("cout : " + upgradeMonyeValue);
 	       }
 	}
 	
