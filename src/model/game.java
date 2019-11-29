@@ -41,6 +41,7 @@ public class game {
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	Timer timerPets = new Timer();
+	Timer timerArcher = new Timer();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
 		game myGame = new game();
@@ -83,6 +84,7 @@ public class game {
 		Pets myPets = new Pets();
 		PetsDamages aille = myGame.new PetsDamages();
 		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
+		this.timerArcher.schedule(aille, 0, myPets.petsAttackSpeed);
 	}
 	
 	void heroChoice() {
@@ -91,8 +93,7 @@ public class game {
 	
 	public void archerChoice() {
 		myPets.petsAttackSpeed = myArcher.petsAttackSpeed;
-		game myGame = new game();
-		this.timerPets.cancel();
+
 
 	}
 	

@@ -13,7 +13,7 @@ public class Console {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter pet (" + game.myPets.getPetCostBuy() + ") / Solde : " + game.getGold());
+			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter familier (" + game.myPets.getPetCostBuy() + ") / solde : " + game.getGold());
 
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("attaque")) {
