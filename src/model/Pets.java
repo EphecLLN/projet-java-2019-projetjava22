@@ -60,9 +60,7 @@ public class Pets {
 			myGame.gold -= petCostBuy;
 			myGame.myPets.petNumber += myGame.myPets.petBuyIncrease;
 			petCostBuy += petCostBuy * 10/100;
-			System.out.println("Vous avez desormais " + myGame.myPets.petNumber + " familiers.");
-			System.out.println("Vous avez desormais " + myGame.myPets.petBuyIncrease + " petBuyIncrease.");
-		}
+			System.out.println("Vous avez desormais " + myGame.myPets.petNumber + " familiers.");		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}

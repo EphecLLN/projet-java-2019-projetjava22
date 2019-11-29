@@ -16,7 +16,6 @@ public class Artefact {
 			if (this.currentArtefacts[i] == "doublePet") {
 				pet.petNumber = pet.petNumber * 2;
 				pet.setPetIncrease(2);
-				System.out.println("Coucou");
 			}
 			if (this.currentArtefacts[i] == "doubleDMG") {
 				myGame.jeanClaude.getDamage() = myGame.jeanClaude.getDamage() * 2);
