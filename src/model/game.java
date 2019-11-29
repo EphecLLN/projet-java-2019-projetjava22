@@ -25,7 +25,7 @@ import Vue.Console;
  */
 public class game {
 	int nbrClic = 0;
-	public static int gold = 0;
+	public static int gold = 2000;
 	private int upgradeValue = 10;
 	int upgradecroissance = 2;
 	Archer myArcher = new Archer();
@@ -40,8 +40,6 @@ public class game {
 	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
-	Timer timerPets = new Timer();
-	Timer timerArcher = new Timer();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
 		game myGame = new game();
@@ -79,22 +77,24 @@ public class game {
 		this.applyArtefacts();
 	}
 	
+	/*
 	public void timerPets() {
 		game myGame = new game();
 		Pets myPets = new Pets();
 		PetsDamages aille = myGame.new PetsDamages();
 		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
-		this.timerArcher.schedule(aille, 0, myPets.petsAttackSpeed);
+		PetsDamages ouille = myGame.new PetsDamages();
+		this.timerArcher.schedule(ouille, 0, myArcher.petsAttackSpeed);
 	}
+	*/
 	
 	void heroChoice() {
 		
 	}
 	
 	public void archerChoice() {
-		myPets.petsAttackSpeed = myArcher.petsAttackSpeed;
-
-
+		this.myArcher.setCheckClassArcher(1);
+		System.out.println("Vous avez choisi la classe archer");
 	}
 	
 	void mageChoice() {
@@ -250,6 +250,13 @@ public class game {
 	    }
 	}
 	
+	public class ArcherPetsDamages extends TimerTask {
+	    public void run() {
+	    	if(myArcher.checkClassArcher == 1) {
+	    		attackPets(myMonster, myPets);
+	    	}
+	    }
+	}
 	
 
 
@@ -259,14 +266,15 @@ public class game {
 	public static void main(String[] args) {
 		game myGame = new game();
 		Timer timerPets = new Timer();
+		Timer timerArcher = new Timer();
 		PetsDamages aille = myGame.new PetsDamages();
-		timerPets.schedule(aille, 0, myGame.myPets.getPetsAttackSpeed());
+		timerPets.schedule(aille, 0, 2000);
+		ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
+		timerArcher.schedule(ouille, 1000, 2000);
 		myGame.heroChoice();
 		myGame.myHero.buyArtefact(myGame.myArtf);
 		myGame.applyArtefacts();
 		myGame.genererUI();
 		myGame.myConsole.Scan(myGame);
-
-
 	}
 }
