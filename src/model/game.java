@@ -40,7 +40,7 @@ public class game {
 	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
-	private Timer timerPets = new Timer();
+	Timer timerPets = new Timer();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
 		game myGame = new game();
@@ -81,7 +81,6 @@ public class game {
 	public void timerPets() {
 		game myGame = new game();
 		Pets myPets = new Pets();
-		timerPets = new Timer();
 		PetsDamages aille = myGame.new PetsDamages();
 		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
 	}
@@ -92,7 +91,9 @@ public class game {
 	
 	public void archerChoice() {
 		myPets.petsAttackSpeed = myArcher.petsAttackSpeed;
+		game myGame = new game();
 		this.timerPets.cancel();
+
 	}
 	
 	void mageChoice() {

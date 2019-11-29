@@ -34,6 +34,10 @@ public class Console {
 				game.myPets.buyPet();
 				System.out.println("Vous avez acquéri un nouveau familier.");
 			}
+			if (userAction.contentEquals("archer")) {
+				game.archerChoice();
+				System.out.println("AttackSpeed fixee a 0.7/sec");
+			}
 		}
 }
 	
