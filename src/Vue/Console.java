@@ -13,24 +13,24 @@ public class Console {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("attaque / amelioration (" + game.getUpgradeValue() + ") / acheter familier (" + game.myPets.getPetCostBuy() + ") / solde : " + game.getGold());
+			System.out.println("attaque (enter) / amelioration (a) (" + game.getUpgradeValue() + ") / acheter familier (f) (" + game.myPets.getPetCostBuy() + ") / \nsolde : " + game.getGold());
 
 			String userAction = myScan.nextLine();  
-			if (userAction.contentEquals("attaque")) {
+			if (userAction.contentEquals("")) {
 				game.attack(game.myMonster,game.myHero,game.myArtf);
 			}
-			if (userAction.contentEquals("amelioration")) {
+			if (userAction.contentEquals("a")) {
 				game.upgrade(game.myHero);
 				System.out.println("vous avez ameliore vos degats");
 				System.out.println("Vous infligez maintenant : " + game.myHero.getDamage() + " degats");
 			}	
 			if (userAction.contentEquals("reborn")) {
-				game.reborn(game.myMonster, game.myHero);
+				game.reborn(game.myMonster, game.myHero, game.myPets);
 			}
-			if (userAction.contentEquals("solde")) {
+			if (userAction.contentEquals("s")) {
 				System.out.println("vous avez " + model.game.gold + " pieces d'or");
 			}
-			if (userAction.contentEquals("acheter pet")) {
+			if (userAction.contentEquals("f")) {
 				game.myPets.buyPet();
 				System.out.println("Vous avez acquéri un nouveau familier.");
 			}

@@ -18,17 +18,28 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Vue.Console;
+import Vue.GUI;
 
 /**
  * @author Lucas Pastori
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
 public class game {
+	
+	/*----------------------------------------------
+	 * variables de game
+	 * ---------------------------------------------*/
+
 	int nbrClic = 0;
 	public static int gold = 0;
 	private int upgradeMonyeValue = 10;
 	int upgradecroissance = 2;
 	int constUpgradeDamage = 1;
+	int nbrUpgrade = 0;
+	
+	/*----------------------------------------------
+	 * variables utile
+	 * ---------------------------------------------*/
 	Archer myArcher = new Archer();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
@@ -55,15 +66,16 @@ public class game {
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
 		if (this.myArtf.activate10hit == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
-			monstre.die(myMonster,this);
+			monstre.die(monstre,this);
 			this.nbrClic ++;
 		}
 		else {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
-			monstre.die(myMonster,this);
+			monstre.die(monstre,this);
 			this.nbrClic ++;
+			
 		}
-		
+		System.out.println("il reste " + monstre.getPV() + " pv au monstre");
 	}
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeValue()) {
@@ -72,10 +84,11 @@ public class game {
 			gold = gold - getUpgradeValue();
 			setUpgradeValue(getUpgradeValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
+			nbrUpgrade ++;
 		}
 	}
 	
-	public void reborn(Monster monstre,Hero heroGame) {
+	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
 		heroGame.setDamage(1);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
@@ -83,7 +96,7 @@ public class game {
 		monstre.setGoldIncrease(6);
 		monstre.setNumber(1);
 		monstre.setWaveNumber(1);
-		this.applyArtefacts();
+		myPet.petNumber = 0;
 	}
 	
 	public void timerPets() {
@@ -260,6 +273,7 @@ public class game {
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
+		GUI myGUI = new GUI();
 		Timer timerPets = new Timer();
 		PetsDamages aille = myGame.new PetsDamages();
 		timerPets.schedule(aille, 0, myGame.myPets.getPetsAttackSpeed());

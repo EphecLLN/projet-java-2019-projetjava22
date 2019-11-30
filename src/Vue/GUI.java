@@ -3,6 +3,8 @@ package Vue;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,18 +16,16 @@ import model.Hero;
 import model.Monster;
 import model.Pets;
 import model.game;
-import model.game.clic;
-import model.game.upgrade;
 
-public class GUI {
-	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	JLabel argentLabel = new JLabel(); 	// pas encore impl�menter (d�g�ts par seconde en int. graph.
-	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
-	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
+public class GUI implements ActionListener{
+	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
+	JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
+	JButton buttonUP = new JButton();		
+	JButton bouttonMonstre = new JButton();
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel(); 
 	
-	public void genererUI(Monster monstre,Hero hero,Pets pet,game game) { //commande g�n�rant l'inteface ainsi que les bouttons
+	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
 		 
 		JFrame window = new JFrame();
 		window.setSize(1200, 900);
@@ -40,12 +40,12 @@ public class GUI {
 		
 		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime_bleu.png")); //cr�ation d'une image en tant que ic�ne.
 		
-		JButton bouttonMonstre = new JButton();
+		
 		bouttonMonstre.setBackground(Color.white);
 		bouttonMonstre.setFocusPainted(false);
 		bouttonMonstre.setBorder(null);
 		bouttonMonstre.setIcon(slimeBleu); // attribution de l'ic�ne au boutton (faire ressembler a un monstre).
-		bouttonMonstre.addActionListener(actionClic); // activation de clic() en int.graph.
+											// activation de clic() en int.graph.
 		monstrePanel.add(bouttonMonstre);
 		
 		JPanel ensembleBoutton = new JPanel();
@@ -56,12 +56,12 @@ public class GUI {
 		
 		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 		
-		JButton buttonUP = new JButton();
+		
 		buttonUP.setBackground(Color.white);
 		buttonUP.setFocusPainted(false);
 		buttonUP.setBorder(null);
 		buttonUP.setIcon(UPIcon);
-		buttonUP.addActionListener(UP);
+
 		ensembleBoutton.add(buttonUP);
 		
 		JPanel compteur = new JPanel();
@@ -73,13 +73,13 @@ public class GUI {
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("PV : " + game.getMyMonster().getPV());
+		PVLabel.setText("PV : " + myGame.myMonster.getPV());
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
 		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
 		argentLabel.setFont(stats);
-		argentLabel.setText("argent : " + game.getGold() );
+		argentLabel.setText("argent : " + myGame.getGold() );
 		compteur.add(argentLabel);
 		
 		degatLabel.setForeground(Color.black);
@@ -89,11 +89,33 @@ public class GUI {
 		
 		coutUPLabel.setForeground(Color.black);
 		coutUPLabel.setFont(stats);
-		coutUPLabel.setText("co�t : " + game.getUpgradeValue());
+		coutUPLabel.setText("co�t : " + myGame.getUpgradeValue());
 		ensembleBoutton.add(coutUPLabel);
 		
 		
 		window.setVisible(true);
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == bouttonMonstre) {
+			attack(myMonster,myHero,myArtf);
+			PVLabel.setText("monstre PV : " + myMonster.getPV());
+			argentLabel.setText("argent : " + gold );
+		}
+		if (e.getSource() == buttonUP ) {
+			
+		}
+			
+	}
+	
+	public static void main(String[] args) {
+		GUI myGUI = new GUI();
+		game myGame = new game();
+		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
+	}
+
 }
+
+
 

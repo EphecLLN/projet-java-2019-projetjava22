@@ -30,7 +30,7 @@ public class Monster {
 			monstre.Number = 1;											
 			monstre.PV = monstre.pvIncrease;
 			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
-			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
+			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague numero " + monstre.waveNumber + ".");
 			if(monstre.waveNumber == 2) {
 				game.heroChoice();
 			}
@@ -39,17 +39,14 @@ public class Monster {
 			monstre.Number++;
 			monstre.PV = monstre.pvIncrease*3;
 			model.game.gold += monstre.goldIncrease;
-			System.out.println("Vous etes au boss de la vague n°" + monstre.waveNumber + ". Force à vous !");
+			System.out.println("Vous etes au boss de la vague numero " + monstre.waveNumber + ". Force à vous !");
 		}
 		
 		if (monstre.PV <= 0) {
 			monstre.PV = monstre.pvIncrease;
 			monstre.Number ++;
 			model.game.gold += monstre.goldIncrease;	//donne de l'argent a la mort du monstre(ancien goldDrop())
-			System.out.println("Vous etes au monstre : " + monstre.Number + " de la vague n°" + monstre.waveNumber);
-		}
-		else {
-			System.out.println("il reste " + game.myMonster.getPV() + " pv au monstre");
+			System.out.println("Vous etes au monstre : " + monstre.Number + " de la vague numero " + monstre.waveNumber);
 		}
 	}
 
