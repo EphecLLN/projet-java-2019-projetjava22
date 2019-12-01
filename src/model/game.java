@@ -258,6 +258,18 @@ public class game {
 	    }
 	}
 	
+	public class ChronoMonstre extends TimerTask {
+		public void run() {
+			if(myMonster.getTempsBoss() == 0) {
+				System.out.println("Vous avez perdu.");
+			}
+			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
+				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
+				System.out.println(myMonster.getTempsBoss());
+			}
+		}
+	}
+	
 
 
 	/**
@@ -265,12 +277,22 @@ public class game {
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
+		
+		// Timer pour les degats des pets
 		Timer timerPets = new Timer();
-		Timer timerArcher = new Timer();
 		PetsDamages aille = myGame.new PetsDamages();
 		timerPets.schedule(aille, 0, 2000);
+		
+		// Timer pour les dégats supplémentaires de la classe Archer
+		Timer timerArcher = new Timer();
 		ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
 		timerArcher.schedule(ouille, 1000, 2000);
+		
+		// Timer pour le décompte de 30 secondes au moment des boss
+		Timer timerBoss = new Timer();
+		ChronoMonstre chrono = myGame.new ChronoMonstre();
+		timerBoss.schedule(chrono, 0, 1000);
+		
 		myGame.heroChoice();
 		myGame.myHero.buyArtefact(myGame.myArtf);
 		myGame.applyArtefacts();

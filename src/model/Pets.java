@@ -6,7 +6,6 @@ public class Pets {
 	static int petNumber = 0;
 	int petCostUpgrade = 150;
 	static int petBuyIncrease = 1;
-	int petsAttackSpeed = 2000;
 	int petCostBuy = 100;
 	
 	/**
@@ -84,10 +83,6 @@ public class Pets {
 	
 	public int getPetBuyIncrease() {
 		return petBuyIncrease;
-	}
-	
-	public int getPetsAttackSpeed() {
-		return petsAttackSpeed;
 	}
 	
 	public int getPetCostBuy() {

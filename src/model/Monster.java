@@ -11,7 +11,8 @@ public class Monster {
 	private int Number = 1;							//Numero du monstre dans la vague
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
-	private int goldIncrease = 6;				
+	private int goldIncrease = 6;
+	int tempsBoss = 30;
 	
 	/**
 	 * @author Lucas Pastori
@@ -97,6 +98,14 @@ public class Monster {
 
 	public void setGoldIncrease(int goldIncrease) {
 		this.goldIncrease = goldIncrease;
+	}
+	
+	public int getTempsBoss() {
+		return tempsBoss;
+	}
+	
+	public void setTempsBoss(int tempsboss) {
+		this.tempsBoss = tempsboss;
 	}
 
 	//la m�thode goldDrop() a �t� directement mise dans die()
