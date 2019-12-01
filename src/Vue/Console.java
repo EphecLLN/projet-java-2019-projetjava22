@@ -36,7 +36,12 @@ public class Console {
 			}
 			if (userAction.contentEquals("archer")) {
 				game.archerChoice();
-				System.out.println("AttackSpeed fixee a 0.7/sec");
+			}
+			if (userAction.contentEquals("mage")) {
+				game.mageChoice();
+			}
+			if (userAction.contentEquals("berzerker")) {
+				game.berzerkerChoice();
 			}
 		}
 }

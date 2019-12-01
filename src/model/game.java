@@ -25,10 +25,12 @@ import Vue.Console;
  */
 public class game {
 	int nbrClic = 0;
-	public static int gold = 2000;
+	public static int gold = 0;
 	private int upgradeValue = 10;
 	int upgradecroissance = 2;
 	Archer myArcher = new Archer();
+	Mage myMage = new Mage();
+	Berzerker myBerzerker = new Berzerker();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
@@ -50,10 +52,28 @@ public class game {
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		monstre.setPV(monstre.getPV() - heroGame.getDamage());
-		monstre.die(myMonster,this);
-		this.nbrClic ++;
-		this.applyArtefacts();
+		if(myBerzerker.getCheckClassBerzerker() == 1) {
+			double randomBerzerker = (Math.random() *100) % 5;
+			if((int) randomBerzerker == 1) {
+				System.out.println("CRITIQUE !");
+				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
+				monstre.die(myMonster,this);
+				this.nbrClic ++;
+				this.applyArtefacts();
+			}
+			else {
+				monstre.setPV(monstre.getPV() - heroGame.getDamage());
+				monstre.die(myMonster,this);
+				this.nbrClic ++;
+				this.applyArtefacts();
+			}
+		}
+		else {
+			monstre.setPV(monstre.getPV() - heroGame.getDamage());
+			monstre.die(myMonster,this);
+			this.nbrClic ++;
+			this.applyArtefacts();
+		}
 	}
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeValue()) {
@@ -68,6 +88,11 @@ public class game {
 	
 	public void reborn(Monster monstre,Hero heroGame) {
 		heroGame.setDamage(1);
+		game.gold = 0;
+		myArcher.setCheckClassArcher(0);;
+		myBerzerker.setCheckClassBerzerker(0);
+		myMage.setCheckClassMage(0);
+		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
 		monstre.setPvIncrease(10);
@@ -77,32 +102,25 @@ public class game {
 		this.applyArtefacts();
 	}
 	
-	/*
-	public void timerPets() {
-		game myGame = new game();
-		Pets myPets = new Pets();
-		PetsDamages aille = myGame.new PetsDamages();
-		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
-		PetsDamages ouille = myGame.new PetsDamages();
-		this.timerArcher.schedule(ouille, 0, myArcher.petsAttackSpeed);
-	}
-	*/
-	
 	void heroChoice() {
-		
+		System.out.println("Vous avez débloqué 3 nouveau héros, choisissez-en un :");
+		System.out.println("archer / mage / berzerker");
 	}
 	
 	public void archerChoice() {
 		this.myArcher.setCheckClassArcher(1);
-		System.out.println("Vous avez choisi la classe archer");
+		System.out.println("Vous avez choisi la classe archer. Vos familiers doublent leur vitesse d'attaque.");
 	}
 	
-	void mageChoice() {
-		
+	public void mageChoice() {
+		this.myMage.setCheckClassMage(1);
+		myMonster.setTempsBoss(25);
+		System.out.println("Vous avez choisi la classe mage. Vous gagnez 5 secondes suppémentaire pour vaincre chaque boss.");
 	}
 	
-	void berzerkerChoice() {
-		
+	public void berzerkerChoice() {
+		this.myBerzerker.setCheckClassBerzerker(1);
+		System.out.println("Vous avez choisi la classe berzerker. Vous avez désormais 20% de chance d'effectuez un coup critique.");
 	}
 
 	public void applyArtefacts() {
@@ -262,6 +280,7 @@ public class game {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
 				System.out.println("Vous avez perdu.");
+				reborn(myMonster, myHero);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
@@ -288,12 +307,11 @@ public class game {
 		ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
 		timerArcher.schedule(ouille, 1000, 2000);
 		
-		// Timer pour le décompte de 30 secondes au moment des boss
+		// Timer pour le décompte de 20/25 secondes au moment des boss
 		Timer timerBoss = new Timer();
 		ChronoMonstre chrono = myGame.new ChronoMonstre();
 		timerBoss.schedule(chrono, 0, 1000);
 		
-		myGame.heroChoice();
 		myGame.myHero.buyArtefact(myGame.myArtf);
 		myGame.applyArtefacts();
 		myGame.genererUI();

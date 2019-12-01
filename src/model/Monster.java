@@ -12,7 +12,7 @@ public class Monster {
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
-	int tempsBoss = 30;
+	int tempsBoss = 20;
 	
 	/**
 	 * @author Lucas Pastori
@@ -32,7 +32,13 @@ public class Monster {
 			monstre.PV = monstre.pvIncrease;
 			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
 			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
-			if(monstre.waveNumber == 2) {
+			if(game.myMage.getCheckClassMage() == 1) {
+				monstre.tempsBoss = 25;
+			}
+			else {
+				monstre.tempsBoss = 20;
+			}
+			if(monstre.waveNumber == 10) {
 				game.heroChoice();
 			}
 		}
