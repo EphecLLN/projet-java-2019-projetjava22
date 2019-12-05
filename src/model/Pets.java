@@ -1,11 +1,13 @@
 package model;
 
-public class Pets {
+import java.util.Observable;
+
+public class Pets extends Observable {
 	int petDamages = 1;
 	int petDmgIncrease = 1;
-	static int petNumber = 0;
+	int petNumber = 0;
 	int petCostUpgrade = 150;
-	static int petBuyIncrease = 1;
+	int petBuyIncrease = 1;
 	int petsAttackSpeed = 2000;
 	int petCostBuy = 100;
 	
@@ -54,13 +56,12 @@ public class Pets {
 	 * Cette méthode sert à acheter un nouveau pet
 	 */
 	
-	public void buyPet() {
-		game myGame = new game();
-		if(myGame.gold >= petCostBuy) {
-			myGame.gold -= petCostBuy;
-			myGame.myPets.petNumber += myGame.myPets.petBuyIncrease;
+	public void buyPet(game game) {
+		if(game.getGold() >= petCostBuy) {
+			game.setGold( game.getGold() - petCostBuy);
+			game.myPets.petNumber += game.myPets.petBuyIncrease;
 			petCostBuy += petCostBuy * 10/100;
-			System.out.println("Vous avez desormais " + myGame.myPets.petNumber + " familiers.");		}
+			System.out.println("Vous avez desormais " + game.myPets.petNumber + " familiers.");		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}
@@ -96,10 +97,14 @@ public class Pets {
 	
 	public void setAddPetNumber(int addPetNumber) {
 		this.petNumber += addPetNumber;
+		setChanged();
+        notifyObservers();
 	}
 	
 	public void setPetBuyIncrease(int petincrease) {
 		this.petBuyIncrease = petincrease;
+		setChanged();
+        notifyObservers();
 	}
 	
 	public static void main(String[] args) {

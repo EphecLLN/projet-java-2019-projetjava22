@@ -1,11 +1,14 @@
 package model;
+
+import java.util.Observable;
+
 /**
  * 
  * Classe qui créé et enregistre les données liées au héros
  * @author Nathan Debongnie 2TL2
  *
  */
-public class Hero {
+public class Hero extends Observable {
 	private int damage = 1;
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
 	static int artefactMoney = 10;	//artefactMoney : l'argent que le héros possède 
@@ -27,9 +30,7 @@ public class Hero {
 			artefactMoney -= artefactCost;
 			artefactCost += artefactCost;
 			double nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
-			artf.currentArtefacts[(int) nbrNoArtf] += artf.noArtefacts[(int) nbrNoArtf];
-			System.out.println("Vous avez acheté un nouvel Artefact.");
-			System.out.println(artf.currentArtefacts[(int) nbrNoArtf]);
+			artf.getCurrentArtefacts()[(int) nbrNoArtf] += artf.noArtefacts[(int) nbrNoArtf];
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
@@ -42,6 +43,8 @@ public class Hero {
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+		setChanged();
+        notifyObservers();
 	}
 
 	public int getConstDamage() {
@@ -50,6 +53,8 @@ public class Hero {
 
 	public void setConstDamage(int constDamage) {
 		this.constDamage = constDamage;
+		setChanged();
+        notifyObservers();
 	}
 
 	public static void main(String[] args) {

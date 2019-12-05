@@ -1,20 +1,39 @@
 package Vue;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 
-public class Console {
+public class Console extends gameVue implements Observer{
+
 	
-	
+	public Console(game model, gameController controller) {
+		super(model, controller);
+		
+	}
+
 	public void Scan(game game) {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("attaque (enter) / amelioration (a) (" + game.getUpgradeValue() + ") / acheter familier (f) (" + game.myPets.getPetCostBuy() + ") / \nsolde : " + game.getGold());
-
+			System.out.println("\n\n\n\n");
+			System.out.println("solde : " + model.getGold());
+			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
+			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+			System.out.println("-------------------------------------------------------------------------------------");
+			System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
+			System.out.println("Vous etes à la vague : " + model.myMonster.getWaveNumber());
+			System.out.println("monstre : " + model.myMonster.getPV() + " pv");
+			System.out.println("-------------------------------------------------------------------------------------");
+			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
+			System.out.println("-------------------------------------------------------------------------------------"); // crée une séparation pour plus de propreté
+			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ")");
+			
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("")) {
 				game.attack(game.myMonster,game.myHero,game.myArtf);
@@ -22,20 +41,18 @@ public class Console {
 			if (userAction.contentEquals("a")) {
 				game.upgrade(game.myHero);
 				System.out.println("vous avez ameliore vos degats");
-				System.out.println("Vous infligez maintenant : " + game.myHero.getDamage() + " degats");
+				
 			}	
 			if (userAction.contentEquals("reborn")) {
 				game.reborn(game.myMonster, game.myHero, game.myPets);
 			}
 			if (userAction.contentEquals("s")) {
-				System.out.println("vous avez " + model.game.gold + " pieces d'or");
 			}
 			if (userAction.contentEquals("f")) {
-				game.myPets.buyPet();
-				System.out.println("Vous avez acquÃ©ri un nouveau familier.");
+				game.myPets.buyPet(game);
 			}
 			if (userAction.contentEquals("archer")) {
-				game.archerChoice();
+				game.archerChoice(game.myPets, game.myArcher);
 				System.out.println("AttackSpeed fixee a 0.7/sec");
 			}
 		}
@@ -44,4 +61,33 @@ public class Console {
 	public static void main(String[] args) {
 	    
    	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		System.out.println("\n\n\n\n");
+		System.out.println("solde : " + model.getGold());
+		System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
+		System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+		System.out.println("-------------------------------------------------------------------------------------");
+		System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
+		System.out.println("Vous etes à la vague : " + model.myMonster.getWaveNumber());
+		System.out.println("monstre : " + model.myMonster.getPV() + " pv");
+		System.out.println("-------------------------------------------------------------------------------------");
+		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
+		System.out.println("-------------------------------------------------------------------------------------"); // crée une séparation pour plus de propreté
+		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ")");
+		
+	}
+
+	@Override
+	public void enableWarning() {
+		System.out.println("Alerte");
+		
+	}
+
+	@Override
+	public void disableWarning() {
+		
+	}
 }

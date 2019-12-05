@@ -1,11 +1,12 @@
 package model;
 
+import java.util.Observable;
 
 /**
  * @author Lucas Pastori
  * classe cr�ant les monstres 
  */
-public class Monster {				
+public class Monster extends Observable {				
 	private int PV = 10 ;							//pv du monstre actuel
 	private int pvIncrease = 10;					//incr�mentation des pvs
 	private int Number = 1;							//Numero du monstre dans la vague
@@ -20,8 +21,8 @@ public class Monster {
 	 */
 	public void die(Monster monstre, game game) {
 		if (monstre.PV <= 0 && monstre.Number == monstre.bossNumber) { 	//verifie que le boss est mort
-			model.game.gold += monstre.goldIncrease;
-			model.game.gold += model.game.gold / 5 ;					//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
+			game.setGold(game.getGold() + monstre.goldIncrease);
+			game.setGold(game.getGold() + game.getGold() / 5) ;					//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
 			monstre.goldIncrease += monstre.goldIncrease;				//augmente le nombre de pi�ce que les prochain monstre donnerons
 			monstre.pvIncrease += monstre.pvIncrease;					//augmente les pvs des prochains monstres
 			
@@ -38,15 +39,14 @@ public class Monster {
 		if (monstre.PV <= 0 && monstre.Number == (monstre.bossNumber -1)) { //prepare le boss
 			monstre.Number++;
 			monstre.PV = monstre.pvIncrease*3;
-			model.game.gold += monstre.goldIncrease;
-			System.out.println("Vous etes au boss de la vague numero " + monstre.waveNumber + ". Force à vous !");
+			game.setGold(game.getGold() + monstre.goldIncrease);
+			System.out.println("Vous etes au boss. Force à vous !");
 		}
 		
 		if (monstre.PV <= 0) {
 			monstre.PV = monstre.pvIncrease;
 			monstre.Number ++;
-			model.game.gold += monstre.goldIncrease;	//donne de l'argent a la mort du monstre(ancien goldDrop())
-			System.out.println("Vous etes au monstre : " + monstre.Number + " de la vague numero " + monstre.waveNumber);
+			game.setGold(game.getGold() + monstre.goldIncrease);	//donne de l'argent a la mort du monstre(ancien goldDrop())
 		}
 	}
 
@@ -55,12 +55,16 @@ public class Monster {
 	}
 	public void setPV(int pV) {
 		PV = pV;
+		setChanged();
+        notifyObservers();
 	}
 	public int getPvIncrease() {
 		return pvIncrease;
 	}
 	public void setPvIncrease(int pvIncrease) {
 		this.pvIncrease = pvIncrease;
+		setChanged();
+        notifyObservers();
 	}
 
 	public int getNumber() {
@@ -69,6 +73,8 @@ public class Monster {
 
 	public void setNumber(int number) {
 		Number = number;
+		setChanged();
+        notifyObservers();
 	}
 	
 	public int getbossNumber() {
@@ -78,6 +84,8 @@ public class Monster {
 
 	public void setbossNumber(int bossnumber) {
 		bossNumber = bossnumber;
+		setChanged();
+        notifyObservers();
 	}
 
 	public int getWaveNumber() {
@@ -86,6 +94,8 @@ public class Monster {
 
 	public void setWaveNumber(int waveNumber) {
 		this.waveNumber = waveNumber;
+		setChanged();
+        notifyObservers();
 	}
 
 	public int getGoldIncrease() {
@@ -94,6 +104,8 @@ public class Monster {
 
 	public void setGoldIncrease(int goldIncrease) {
 		this.goldIncrease = goldIncrease;
+		setChanged();
+        notifyObservers();
 	}
 
 	//la m�thode goldDrop() a �t� directement mise dans die()
