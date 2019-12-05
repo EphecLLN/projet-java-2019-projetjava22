@@ -28,9 +28,9 @@ public class game {
 	public static int gold = 0;
 	private int upgradeValue = 10;
 	int upgradecroissance = 2;
-	Archer myArcher = new Archer();
-	Mage myMage = new Mage();
-	Berzerker myBerzerker = new Berzerker();
+	public Archer myArcher = new Archer();
+	public Mage myMage = new Mage();
+	public Berzerker myBerzerker = new Berzerker();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
@@ -86,10 +86,10 @@ public class game {
 		}
 	}
 	
-	public void reborn(Monster monstre,Hero heroGame) {
+	public void reborn(Monster monstre,Hero heroGame, Archer archer) {
 		heroGame.setDamage(1);
 		game.gold = 0;
-		myArcher.setCheckClassArcher(0);;
+		archer.setCheckClassArcher(0);;
 		myBerzerker.setCheckClassBerzerker(0);
 		myMage.setCheckClassMage(0);
 		monstre.setTempsBoss(20);
@@ -280,7 +280,7 @@ public class game {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
 				System.out.println("Vous avez perdu.");
-				reborn(myMonster, myHero);
+				reborn(myMonster, myHero, myArcher);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);

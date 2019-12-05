@@ -25,7 +25,7 @@ public class Console {
 				System.out.println("Vous infligez maintenant : " + game.myHero.getDamage() + " degats");
 			}	
 			if (userAction.contentEquals("reborn")) {
-				game.reborn(game.myMonster, game.myHero);
+				game.reborn(game.myMonster, game.myHero, game.myArcher);
 			}
 			if (userAction.contentEquals("solde")) {
 				System.out.println("vous avez " + model.game.gold + " pieces d'or");
