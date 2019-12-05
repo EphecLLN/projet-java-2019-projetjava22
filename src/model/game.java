@@ -42,6 +42,8 @@ public class game extends Observable {
 	 * variables utile
 	 * ---------------------------------------------*/
 	public Archer myArcher = new Archer();
+	Mage myMage = new Mage();
+	Berzerker myBerzerker = new Berzerker();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
@@ -51,8 +53,6 @@ public class game extends Observable {
 	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
-	Timer timerPets = new Timer();
-	Timer timerArcher = new Timer();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
 		monstre.setPV(monstre.getPV() - monToutou.getPetDamage() * monToutou.getPetNumber());
@@ -64,17 +64,31 @@ public class game extends Observable {
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
+		if(myBerzerker.getCheckClassBerzerker() == 1) {
+			double randomBerzerker = (Math.random() *100) % 5;
+			if((int) randomBerzerker == 1) {
+				System.out.println("CRITIQUE !");
+				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
+				monstre.die(myMonster,this);
+				this.nbrClic ++;
+			}
+			else {
+				monstre.setPV(monstre.getPV() - heroGame.getDamage());
+				monstre.die(myMonster,this);
+				this.nbrClic ++;
+			}
+		}
+        if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
 			monstre.die(monstre,this);
 			this.nbrClic ++;
 		}
 		else {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
-			monstre.die(monstre,this);
+			monstre.die(myMonster,this);
 			this.nbrClic ++;
-			
 		}
+		
 		setChanged();
         notifyObservers();
 	}
@@ -93,6 +107,11 @@ public class game extends Observable {
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
 		heroGame.setDamage(1);
+		game.gold = 0;
+		myArcher.setCheckClassArcher(0);;
+		myBerzerker.setCheckClassBerzerker(0);
+		myMage.setCheckClassMage(0);
+		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
 		monstre.setPvIncrease(10);
@@ -104,30 +123,25 @@ public class game extends Observable {
         notifyObservers();
 	}
 	
-	public void timerPets() {
-		game myGame = new game();
-		Pets myPets = new Pets();
-		PetsDamages aille = myGame.new PetsDamages();
-		this.timerPets.schedule(aille, 0, myPets.petsAttackSpeed);
-		this.timerArcher.schedule(aille, 0, myPets.petsAttackSpeed);
-	}
-	
 	void heroChoice() {
-		
+		System.out.println("Vous avez débloqué 3 nouveau héros, choisissez-en un :");
+		System.out.println("archer / mage / berzerker");
 	}
 	
 	public void archerChoice(Pets familier, Archer archer) {
-		familier.petsAttackSpeed = archer.petsAttackSpeed;
-
-
+		this.myArcher.setCheckClassArcher(1);
+		System.out.println("Vous avez choisi la classe archer. Vos familiers doublent leur vitesse d'attaque.");
 	}
 	
-	void mageChoice() {
-		
+	public void mageChoice() {
+		this.myMage.setCheckClassMage(1);
+		myMonster.setTempsBoss(25);
+		System.out.println("Vous avez choisi la classe mage. Vous gagnez 5 secondes suppémentaire pour vaincre chaque boss.");
 	}
 	
-	void berzerkerChoice() {
-		
+	public void berzerkerChoice() {
+		this.myBerzerker.setCheckClassBerzerker(1);
+		System.out.println("Vous avez choisi la classe berzerker. Vous avez désormais 20% de chance d'effectuez un coup critique.");
 	}
 
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
@@ -188,6 +202,26 @@ public class game extends Observable {
 	    }
 	}
 	
+	public class ArcherPetsDamages extends TimerTask {
+	    public void run() {
+	    	if(myArcher.checkClassArcher == 1) {
+	    		attackPets(myMonster, myPets);
+	    	}
+	    }
+	}
+	
+	public class ChronoMonstre extends TimerTask {
+		public void run() {
+			if(myMonster.getTempsBoss() == 0) {
+				System.out.println("Vous avez perdu.");
+				reborn(myMonster, myHero);
+			}
+			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
+				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
+				System.out.println(myMonster.getTempsBoss());
+			}
+		}
+	}
 	
 
 
@@ -198,10 +232,22 @@ public class game extends Observable {
 		game myGame = new game();
 		GUI myGUI = new GUI(myGame, null);
 		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
+		
+		// Timer pour les degats des pets
 		Timer timerPets = new Timer();
 		PetsDamages aille = myGame.new PetsDamages();
-		timerPets.schedule(aille, 0, myGame.myPets.getPetsAttackSpeed());
-		myGame.heroChoice();
+		timerPets.schedule(aille, 0, 2000);
+		
+		// Timer pour les dégats supplémentaires de la classe Archer
+		Timer timerArcher = new Timer();
+		ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
+		timerArcher.schedule(ouille, 1000, 2000);
+		
+		// Timer pour le décompte de 20/25 secondes au moment des boss
+		Timer timerBoss = new Timer();
+		ChronoMonstre chrono = myGame.new ChronoMonstre();
+		timerBoss.schedule(chrono, 0, 1000);
+		
 		myGame.myHero.buyArtefact(myGame.myArtf);
 		myGame.applyArtefacts(myGame.myArtf, myGame.myPets, myGame.myHero, myGame.myMonster);
 		myGame.myConsole.Scan(myGame);

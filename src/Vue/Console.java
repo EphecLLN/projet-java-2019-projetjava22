@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import Contrôleur.gameController;
+import Contrï¿½leur.gameController;
 import model.game;
 import model.game.PetsDamages;
 
@@ -27,11 +27,11 @@ public class Console extends gameVue implements Observer{
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
-			System.out.println("Vous etes à la vague : " + model.myMonster.getWaveNumber());
+			System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
 			System.out.println("monstre : " + model.myMonster.getPV() + " pv");
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
-			System.out.println("-------------------------------------------------------------------------------------"); // crée une séparation pour plus de propreté
+			System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
 			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ")");
 			
 			String userAction = myScan.nextLine();  
@@ -54,6 +54,13 @@ public class Console extends gameVue implements Observer{
 			if (userAction.contentEquals("archer")) {
 				game.archerChoice(game.myPets, game.myArcher);
 				System.out.println("AttackSpeed fixee a 0.7/sec");
+				game.archerChoice();
+			}
+			if (userAction.contentEquals("mage")) {
+				game.mageChoice();
+			}
+			if (userAction.contentEquals("berzerker")) {
+				game.berzerkerChoice();
 			}
 		}
 }
@@ -71,11 +78,11 @@ public class Console extends gameVue implements Observer{
 		System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
-		System.out.println("Vous etes à la vague : " + model.myMonster.getWaveNumber());
+		System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
 		System.out.println("monstre : " + model.myMonster.getPV() + " pv");
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
-		System.out.println("-------------------------------------------------------------------------------------"); // crée une séparation pour plus de propreté
+		System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
 		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ")");
 		
 	}

@@ -7,7 +7,7 @@ public class Pets extends Observable {
 	int petDmgIncrease = 1;
 	int petNumber = 0;
 	int petCostUpgrade = 150;
-	int petBuyIncrease = 1;
+	static int petBuyIncrease = 1;
 	int petsAttackSpeed = 2000;
 	int petCostBuy = 100;
 	
@@ -85,10 +85,6 @@ public class Pets extends Observable {
 	
 	public int getPetBuyIncrease() {
 		return petBuyIncrease;
-	}
-	
-	public int getPetsAttackSpeed() {
-		return petsAttackSpeed;
 	}
 	
 	public int getPetCostBuy() {

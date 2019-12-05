@@ -12,7 +12,8 @@ public class Monster extends Observable {
 	private int Number = 1;							//Numero du monstre dans la vague
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
-	private int goldIncrease = 6;				
+	private int goldIncrease = 6;
+	int tempsBoss = 20;
 	
 	/**
 	 * @author Lucas Pastori
@@ -31,8 +32,14 @@ public class Monster extends Observable {
 			monstre.Number = 1;											
 			monstre.PV = monstre.pvIncrease;
 			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
-			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague numero " + monstre.waveNumber + ".");
-			if(monstre.waveNumber == 2) {
+			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
+			if(game.myMage.getCheckClassMage() == 1) {
+				monstre.tempsBoss = 25;
+			}
+			else {
+				monstre.tempsBoss = 20;
+			}
+			if(monstre.waveNumber == 10) {
 				game.heroChoice();
 			}
 		}
@@ -106,6 +113,14 @@ public class Monster extends Observable {
 		this.goldIncrease = goldIncrease;
 		setChanged();
         notifyObservers();
+	}
+	
+	public int getTempsBoss() {
+		return tempsBoss;
+	}
+	
+	public void setTempsBoss(int tempsboss) {
+		this.tempsBoss = tempsboss;
 	}
 
 	//la m�thode goldDrop() a �t� directement mise dans die()
