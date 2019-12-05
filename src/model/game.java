@@ -42,6 +42,12 @@ public class game {
 	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
+	JButton buttonUP = new JButton();
+	JFrame window = new JFrame();
+	JPanel choiceClass = new JPanel();
+	JButton buttonArcher = new JButton();
+	JButton buttonMage = new JButton();
+	JButton buttonBerzerker = new JButton();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
 		game myGame = new game();
@@ -150,10 +156,38 @@ public class game {
 			}
 		}
 	}
+	
+	public void ajouterClasses() {
+		ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
+		ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
+		ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));	
 		
+		buttonArcher.setBackground(Color.white);
+		buttonArcher.setFocusPainted(false);
+		buttonArcher.setBorder(null);
+		buttonArcher.setIcon(ArcherIcon);
+		buttonArcher.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		buttonMage.setBackground(Color.white);
+		buttonMage.setFocusPainted(false);
+		buttonMage.setBorder(null);
+		buttonMage.setIcon(MageIcon);
+		buttonMage.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		buttonBerzerker.setBackground(Color.white);
+		buttonBerzerker.setFocusPainted(false);
+		buttonBerzerker.setBorder(null);
+		buttonBerzerker.setIcon(BerzerkerIcon);
+		buttonBerzerker.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		choiceClass.add(buttonArcher);
+		choiceClass.add(buttonMage);
+		choiceClass.add(buttonBerzerker);
+	}
+	
 	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
-		 
-		JFrame window = new JFrame();
+		
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -180,9 +214,13 @@ public class game {
 		ensembleBoutton.setBackground(Color.white);
 		window.add(ensembleBoutton);
 		
+		choiceClass.setLayout(new GridLayout(1,3));
+		choiceClass.setBounds(600,510,540,250);
+		choiceClass.setBackground(Color.black);
+		window.add(choiceClass);
+		
 		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 		
-		JButton buttonUP = new JButton();
 		buttonUP.setBackground(Color.white);
 		buttonUP.setFocusPainted(false);
 		buttonUP.setBorder(null);

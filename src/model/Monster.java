@@ -38,8 +38,9 @@ public class Monster {
 			else {
 				monstre.tempsBoss = 20;
 			}
-			if(monstre.waveNumber == 10) {
+			if(monstre.waveNumber == 2) {
 				game.heroChoice();
+				game.ajouterClasses();
 			}
 		}
 		if (monstre.PV <= 0 && monstre.Number == (monstre.bossNumber -1)) { //prepare le boss
