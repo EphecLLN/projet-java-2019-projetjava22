@@ -39,7 +39,7 @@ public class game extends Observable {
 	int nbrUpgrade = 0;
 	
 	/*----------------------------------------------
-	 * variables utile
+	 * variables utile à game 
 	 * ---------------------------------------------*/
 	public Archer myArcher = new Archer();
 	Mage myMage = new Mage();
@@ -107,7 +107,8 @@ public class game extends Observable {
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
 		heroGame.setDamage(1);
-		game.gold = 0;
+		heroGame.setConstDamage(1);
+		gold = 0;
 		myArcher.setCheckClassArcher(0);;
 		myBerzerker.setCheckClassBerzerker(0);
 		myMage.setCheckClassMage(0);
@@ -119,6 +120,10 @@ public class game extends Observable {
 		monstre.setNumber(1);
 		monstre.setWaveNumber(1);
 		myPet.petNumber = 0;
+		myPet.petCostBuy= 100;
+		myPet.petCostUpgrade = 150;
+		setUpgradeValue(10);
+		applyArtefacts(myArtf, myPet, heroGame, monstre);
 		setChanged();
         notifyObservers();
 	}
@@ -214,7 +219,7 @@ public class game extends Observable {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
 				System.out.println("Vous avez perdu.");
-				reborn(myMonster, myHero);
+				reborn(myMonster, myHero, myPets);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);

@@ -5,10 +5,16 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import Contrï¿½leur.gameController;
+
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
-
+/**
+ * 
+ * @author Lucas Pastori
+ *	interface console se mettant a jour régulièrement
+ *	liée avec l'interface graphique
+ */
 public class Console extends gameVue implements Observer{
 
 	
@@ -16,12 +22,16 @@ public class Console extends gameVue implements Observer{
 		super(model, controller);
 		
 	}
-
+	/**
+	 * donne une première fois le texte a l'utilisateur et permet d'activer une méthode 
+	 * en encodant la bonne input dans la console 
+	 * @param game classe du modèle affectée
+	 */
 	public void Scan(game game) {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("\n\n\n\n");
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au même niveau 
 			System.out.println("solde : " + model.getGold());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
@@ -48,13 +58,12 @@ public class Console extends gameVue implements Observer{
 			}
 			if (userAction.contentEquals("s")) {
 			}
-			if (userAction.contentEquals("f")) {
+			if (userAction.contentEquals("f")) { 
 				game.myPets.buyPet(game);
 			}
 			if (userAction.contentEquals("archer")) {
 				game.archerChoice(game.myPets, game.myArcher);
 				System.out.println("AttackSpeed fixee a 0.7/sec");
-				game.archerChoice();
 			}
 			if (userAction.contentEquals("mage")) {
 				game.mageChoice();
@@ -70,7 +79,7 @@ public class Console extends gameVue implements Observer{
    	}
 
 	@Override
-	public void update(Observable o, Object arg) {
+	public void update(Observable o, Object arg) { // remet à régulièrement l'interface console 
 		
 		System.out.println("\n\n\n\n");
 		System.out.println("solde : " + model.getGold());
@@ -89,7 +98,7 @@ public class Console extends gameVue implements Observer{
 
 	@Override
 	public void enableWarning() {
-		System.out.println("Alerte");
+		System.out.println("Alerte"); // prévient en cas de problème
 		
 	}
 
