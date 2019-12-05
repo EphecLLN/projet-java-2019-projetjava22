@@ -7,19 +7,7 @@ package model;
  */
 
 public class Archer extends Hero {
-	int checkClassArcher = 0;
-	
-	public int getCheckClassArcher() {
-		return checkClassArcher;
+	public Archer() {
+		this.checkClassArcher = 1;
 	}
-	
-	public void setCheckClassArcher(int binary) {
-		this.checkClassArcher = binary;
-	}
-	
-	
-	public static void main(String[] args) {
-
-	}
-
 }

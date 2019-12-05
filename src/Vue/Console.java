@@ -25,7 +25,7 @@ public class Console {
 				System.out.println("Vous infligez maintenant : " + game.myHero.getDamage() + " degats");
 			}	
 			if (userAction.contentEquals("reborn")) {
-				game.reborn(game.myMonster, game.myHero, game.myArcher);
+				game.reborn(game.myMonster, game.myHero);
 			}
 			if (userAction.contentEquals("solde")) {
 				System.out.println("vous avez " + model.game.gold + " pieces d'or");
@@ -35,13 +35,13 @@ public class Console {
 				System.out.println("Vous avez acquéri un nouveau familier.");
 			}
 			if (userAction.contentEquals("archer")) {
-				game.archerChoice();
+				game.archerChoice(game.myHero);
 			}
 			if (userAction.contentEquals("mage")) {
-				game.mageChoice();
+				game.mageChoice(game.myHero);
 			}
 			if (userAction.contentEquals("berzerker")) {
-				game.berzerkerChoice();
+				game.berzerkerChoice(game.myHero);
 			}
 		}
 }

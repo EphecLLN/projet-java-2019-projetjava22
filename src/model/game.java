@@ -52,7 +52,7 @@ public class game {
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		if(myBerzerker.getCheckClassBerzerker() == 1) {
+		if(heroGame.getCheckClassBerzerker() == 1) {
 			double randomBerzerker = (Math.random() *100) % 5;
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
@@ -86,12 +86,12 @@ public class game {
 		}
 	}
 	
-	public void reborn(Monster monstre,Hero heroGame, Archer archer) {
+	public void reborn(Monster monstre,Hero heroGame) {
 		heroGame.setDamage(1);
 		game.gold = 0;
-		archer.setCheckClassArcher(0);;
-		myBerzerker.setCheckClassBerzerker(0);
-		myMage.setCheckClassMage(0);
+		heroGame.setCheckClassArcher(0);;
+		heroGame.setCheckClassBerzerker(0);
+		heroGame.setCheckClassMage(0);
 		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
@@ -107,19 +107,19 @@ public class game {
 		System.out.println("archer / mage / berzerker");
 	}
 	
-	public void archerChoice() {
-		this.myArcher.setCheckClassArcher(1);
+	public void archerChoice(Hero heroGame) {
+		heroGame.setCheckClassArcher(1);
 		System.out.println("Vous avez choisi la classe archer. Vos familiers doublent leur vitesse d'attaque.");
 	}
 	
-	public void mageChoice() {
-		this.myMage.setCheckClassMage(1);
+	public void mageChoice(Hero heroGame) {
+		heroGame.setCheckClassMage(1);
 		myMonster.setTempsBoss(25);
 		System.out.println("Vous avez choisi la classe mage. Vous gagnez 5 secondes suppémentaire pour vaincre chaque boss.");
 	}
 	
-	public void berzerkerChoice() {
-		this.myBerzerker.setCheckClassBerzerker(1);
+	public void berzerkerChoice(Hero heroGame) {
+		heroGame.setCheckClassBerzerker(1);
 		System.out.println("Vous avez choisi la classe berzerker. Vous avez désormais 20% de chance d'effectuez un coup critique.");
 	}
 
@@ -280,7 +280,7 @@ public class game {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
 				System.out.println("Vous avez perdu.");
-				reborn(myMonster, myHero, myArcher);
+				reborn(myMonster, myHero);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);

@@ -7,20 +7,7 @@ package model;
  */
 
 public class Mage extends Hero {
-	int checkClassMage = 0;
-	
-	public int getCheckClassMage() {
-		return checkClassMage;
+	public Mage() {
+		this.checkClassMage = 1;
 	}
-	
-	public void setCheckClassMage(int binary) {
-		this.checkClassMage = binary;
-	}
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

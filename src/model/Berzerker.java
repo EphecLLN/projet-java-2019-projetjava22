@@ -7,20 +7,8 @@ package model;
  */
 
 public class Berzerker extends Hero {
-	int checkClassBerzerker = 0;
-	
-	public int getCheckClassBerzerker() {
-		return checkClassBerzerker;
+	public Berzerker() {
+		this.checkClassBerzerker = 1;
 	}
-	
-	public void setCheckClassBerzerker(int binary) {
-		this.checkClassBerzerker = binary;
-	}
-	
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
+
