@@ -18,16 +18,28 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Vue.Console;
+import Vue.GUI;
+import java.util.Observable;
 
 /**
  * @author Lucas Pastori
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
-public class game {
+public class game extends Observable {
+	
+	/*----------------------------------------------
+	 * variables de game
+	 * ---------------------------------------------*/
+
 	int nbrClic = 0;
-	public static int gold = 0;
-	private int upgradeValue = 10;
+	private int gold = 0;
+	private int upgradeMonyeValue = 10;
 	int upgradecroissance = 2;
+	int constUpgradeDamage = 1;
+	int nbrUpgrade = 0;
+	/*----------------------------------------------
+	 * variables utile à game 
+	 * ---------------------------------------------*/
 	public Archer myArcher = new Archer();
 	public Mage myMage = new Mage();
 	public Berzerker myBerzerker = new Berzerker();
@@ -35,11 +47,9 @@ public class game {
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
-	Console myConsole = new Console();
+	Console myConsole = new Console(this, null);
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.
-	clic actionClic = new clic();		//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
-	upgrade UP = new upgrade();			//devra être remplacer par des event.getsource pour éviter le surplus de classe par bouton
+	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
 	JLabel degatLabel = new JLabel();
 	JLabel coutUPLabel = new JLabel();
 	JButton buttonUP = new JButton();
@@ -50,11 +60,12 @@ public class game {
 	JButton buttonBerzerker = new JButton();
 	
 	void attackPets(Monster monstre, Pets monToutou) {
-		game myGame = new game();
-		monstre.setPV(monstre.getPV() - myGame.myPets.getPetDamage() * myGame.myPets.getPetNumber());
-		if(Pets.petNumber != 0) {
+		monstre.setPV(monstre.getPV() - monToutou.getPetDamage() * monToutou.getPetNumber());
+		if(monToutou.petNumber != 0) {
 			monstre.die(myMonster,this);
 		}
+		setChanged();
+        notifyObservers();
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
@@ -65,39 +76,46 @@ public class game {
 				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
 				monstre.die(myMonster,this);
 				this.nbrClic ++;
-				this.applyArtefacts();
 			}
 			else {
 				monstre.setPV(monstre.getPV() - heroGame.getDamage());
 				monstre.die(myMonster,this);
 				this.nbrClic ++;
-				this.applyArtefacts();
 			}
+		}
+        if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
+			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
+			monstre.die(monstre,this);
+			this.nbrClic ++;
 		}
 		else {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
 			monstre.die(myMonster,this);
 			this.nbrClic ++;
-			this.applyArtefacts();
 		}
+		
+		setChanged();
+        notifyObservers();
 	}
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeValue()) {
-			heroGame.constDamage ++;
-			heroGame.setDamage(heroGame.constDamage);
+			heroGame.setConstDamage(heroGame.getConstDamage() + constUpgradeDamage);
+			heroGame.setDamage(heroGame.getConstDamage());
 			gold = gold - getUpgradeValue();
 			setUpgradeValue(getUpgradeValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
-			this.applyArtefacts();
+			nbrUpgrade ++;
 		}
+		setChanged();
+        notifyObservers();
 	}
 	
-	public void reborn(Monster monstre,Hero heroGame) {
+	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
 		heroGame.setDamage(1);
 		game.gold = 0;
-		heroGame.setCheckClassArcher(0);;
-		heroGame.setCheckClassBerzerker(0);
-		heroGame.setCheckClassMage(0);
+		myArcher.setCheckClassArcher(0);;
+		myBerzerker.setCheckClassBerzerker(0);
+		myMage.setCheckClassMage(0);
 		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
@@ -105,7 +123,13 @@ public class game {
 		monstre.setGoldIncrease(6);
 		monstre.setNumber(1);
 		monstre.setWaveNumber(1);
-		this.applyArtefacts();
+		myPet.petNumber = 0;
+		myPet.petCostBuy= 100;
+		myPet.petCostUpgrade = 150;
+		setUpgradeValue(10);
+		applyArtefacts(myArtf, myPet, heroGame, monstre);
+		setChanged();
+        notifyObservers();
 	}
 	
 	void heroChoice() {
@@ -129,65 +153,32 @@ public class game {
 		System.out.println("Vous avez choisi la classe berzerker. Vous avez désormais 20% de chance d'effectuez un coup critique.");
 	}
 
-	public void applyArtefacts() {
-		for (int i = 0; i<this.myArtf.currentArtefacts.length ; i++) {
-			if (this.myArtf.currentArtefacts[i].contentEquals("doublePet")) {
-				Pets.petNumber = (Pets.petNumber * 2);
-				Pets.petBuyIncrease = 2;
-				this.myHero.setDamage(this.myHero.constDamage);
+	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
+		for (int i = 0; i<artf.getCurrentArtefacts().length ; i++) {
+			if (artf.getCurrentArtefacts()[i].contentEquals("doublePet")) {
+				pet.petNumber = (pet.petNumber * 2);
+				pet.petBuyIncrease = 2;	
 			}
-			if (this.myArtf.currentArtefacts[i].contentEquals("doubleDMG") ) {
-				this.myHero.setDamage(this.myHero.constDamage * 2);
+			if (artf.getCurrentArtefacts()[i].contentEquals("doubleDMG") ) {
+				hero.setConstDamage(hero.getConstDamage() + 1);
+				this.constUpgradeDamage ++;
 			}
-			if (this.myArtf.currentArtefacts[i].contentEquals("+5DMG")) {
-				this.myHero.setDamage(this.myHero.constDamage + 5);
+			if (artf.getCurrentArtefacts()[i].contentEquals("+5DMG")) {
+				hero.setConstDamage(hero.getConstDamage() + 5);
 			}
-			if (this.myArtf.currentArtefacts[i].contentEquals("-1Boss")) {
-				this.myMonster.setbossNumber(9);
-				this.myHero.setDamage(this.myHero.constDamage);
+			if (artf.getCurrentArtefacts()[i].contentEquals("-1Boss")) {
+				monster.setbossNumber(9);
 			}
-			if (this.myArtf.currentArtefacts[i].contentEquals("every10Hit")) {
-				if(this.nbrClic % 10 == 0) {
-					this.myHero.setDamage(this.myHero.constDamage + this.myHero.constDamage * 5);
-				}
-				 if(this.nbrClic % 10 == 1) {
-					 this.myHero.setDamage(this.myHero.constDamage - this.myHero.constDamage / 5);
-				}
+			if (artf.getCurrentArtefacts()[i].contentEquals("every10Hit")) {
+				artf.activate10hit = true;
 			}
+			hero.setDamage(hero.getConstDamage());
 		}
 	}
-	
-	public void ajouterClasses() {
-		ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
-		ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
-		ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));	
 		
-		buttonArcher.setBackground(Color.white);
-		buttonArcher.setFocusPainted(false);
-		buttonArcher.setBorder(null);
-		buttonArcher.setIcon(ArcherIcon);
-		buttonArcher.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		buttonMage.setBackground(Color.white);
-		buttonMage.setFocusPainted(false);
-		buttonMage.setBorder(null);
-		buttonMage.setIcon(MageIcon);
-		buttonMage.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		buttonBerzerker.setBackground(Color.white);
-		buttonBerzerker.setFocusPainted(false);
-		buttonBerzerker.setBorder(null);
-		buttonBerzerker.setIcon(BerzerkerIcon);
-		buttonBerzerker.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		
-		choiceClass.add(buttonArcher);
-		choiceClass.add(buttonMage);
-		choiceClass.add(buttonBerzerker);
-	}
-	
 	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
-		
+		 
+		JFrame window = new JFrame();
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -214,13 +205,9 @@ public class game {
 		ensembleBoutton.setBackground(Color.white);
 		window.add(ensembleBoutton);
 		
-		choiceClass.setLayout(new GridLayout(1,3));
-		choiceClass.setBounds(600,510,540,250);
-		choiceClass.setBackground(Color.black);
-		window.add(choiceClass);
-		
 		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 		
+		JButton buttonUP = new JButton();
 		buttonUP.setBackground(Color.white);
 		buttonUP.setFocusPainted(false);
 		buttonUP.setBorder(null);
@@ -261,32 +248,21 @@ public class game {
 	}
 	
 	public int getUpgradeValue() {
-		return upgradeValue;
+		return upgradeMonyeValue;
 	}
 	
 	public int getGold() {
 		return gold;
 	}
 	public void setUpgradeValue(int upgradeValue) {
-		this.upgradeValue = upgradeValue;
+		this.upgradeMonyeValue = upgradeValue;
+		setChanged();
+		notifyObservers();
 	}
-
-
-	public class clic implements ActionListener{
-		 public void actionPerformed(ActionEvent event) {
-				attack(myMonster,myHero,myArtf);
-				PVLabel.setText("monstre PV : " + myMonster.getPV());
-				argentLabel.setText("argent : " + gold );
-			}
-	 }
-	
-	public class upgrade implements ActionListener{
-       public void actionPerformed(ActionEvent event) {
-              upgrade(myHero);
-              argentLabel.setText("argent : " + gold );
-              degatLabel.setText("d�g�ts actuels :" + myHero.getDamage());
-              coutUPLabel.setText("co�t : " + getUpgradeValue());
-          }
+	public void setGold(int gold) {
+		this.gold = gold;
+		setChanged();
+		notifyObservers();
 	}
 	
 	public class choixArcher implements ActionListener{
@@ -294,7 +270,7 @@ public class game {
 	              upgrade(myHero);
 	              argentLabel.setText("argent : " + gold );
 	              degatLabel.setText("degats actuels :" + myHero.getDamage());
-	              coutUPLabel.setText("cout : " + upgradeValue);
+	              coutUPLabel.setText("cout : " + upgradeMonyeValue);
 	       }
 	}
 	
@@ -318,7 +294,7 @@ public class game {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
 				System.out.println("Vous avez perdu.");
-				reborn(myMonster, myHero);
+				reborn(myMonster, myHero, myPets);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
@@ -334,6 +310,8 @@ public class game {
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
+		GUI myGUI = new GUI(myGame, null);
+		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
 		
 		// Timer pour les degats des pets
 		Timer timerPets = new Timer();
@@ -351,8 +329,8 @@ public class game {
 		timerBoss.schedule(chrono, 0, 1000);
 		
 		myGame.myHero.buyArtefact(myGame.myArtf);
-		myGame.applyArtefacts();
-		myGame.genererUI();
+		myGame.applyArtefacts(myGame.myArtf, myGame.myPets, myGame.myHero, myGame.myMonster);
 		myGame.myConsole.Scan(myGame);
 	}
 }
+
