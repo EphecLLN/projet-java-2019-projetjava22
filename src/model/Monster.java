@@ -2,6 +2,8 @@ package model;
 
 import java.util.Observable;
 
+import Vue.GUI;
+
 /**
  * @author Lucas Pastori
  * classe cr�ant les monstres 
@@ -13,6 +15,7 @@ public class Monster extends Observable {
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
+	private String attribute = "aqua";
 	int tempsBoss = 20;
 	
 	/**
@@ -33,6 +36,7 @@ public class Monster extends Observable {
 			monstre.PV = monstre.pvIncrease;
 			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
 			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
+			randomMonster();
 			if(game.myMage.getCheckClassMage() == 1) {
 				monstre.tempsBoss = 25;
 			}
@@ -48,15 +52,29 @@ public class Monster extends Observable {
 			monstre.PV = monstre.pvIncrease*3;
 			game.setGold(game.getGold() + monstre.goldIncrease);
 			System.out.println("Vous etes au boss. Force à vous !");
+			randomMonster();
 		}
 		
 		if (monstre.PV <= 0) {
 			monstre.PV = monstre.pvIncrease;
 			monstre.Number ++;
 			game.setGold(game.getGold() + monstre.goldIncrease);	//donne de l'argent a la mort du monstre(ancien goldDrop())
+			randomMonster();
 		}
 	}
-
+	public void randomMonster() {
+		int x = ((int) ((Math.random() * 100) % 3));
+		if (x == 0) {
+			attribute = "aqua";
+		}
+		if (x == 1) {
+			attribute = "tera";
+		}
+		if (x == 2) {
+			attribute = "pyro";
+		}
+	}
+	
 	public int getPV() {
 		return PV;
 	}
@@ -128,6 +146,14 @@ public class Monster extends Observable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
 	}
 
 }

@@ -11,9 +11,9 @@ import java.util.Observable;
 public class Hero extends Observable {
 	private int damage = 1;
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
-	private int artefactMoney = 10;	//artefactMoney : l'argent que le héros possède 
+	private int artefactMoney = 0;	//artefactMoney : l'argent que le héros possède 
 	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
-	
+	private int attribute;
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
@@ -36,6 +36,9 @@ public class Hero extends Observable {
 		else {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
 		}
+	}
+	public void setAttribute(int x) {
+		this.attribute = x;
 	}
 	
 	public int getDamage() {

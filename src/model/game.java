@@ -33,10 +33,10 @@ public class game extends Observable {
 
 	int nbrClic = 0;
 	private int gold = 0;
-	private int upgradeMonyeValue = 10;
+	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	int constUpgradeDamage = 1;
-	int nbrUpgrade = 0;
+	private int nbrUpgrade = 0;
 	
 	/*----------------------------------------------
 	 * variables utile à game 
@@ -57,7 +57,7 @@ public class game extends Observable {
 	void attackPets(Monster monstre, Pets monToutou) {
 		monstre.setPV(monstre.getPV() - monToutou.getPetDamage() * monToutou.getPetNumber());
 		if(monToutou.petNumber != 0) {
-			monstre.die(myMonster,this);
+			monstre.die(monstre,this);
 		}
 		setChanged();
         notifyObservers();
@@ -69,12 +69,12 @@ public class game extends Observable {
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
 				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
-				monstre.die(myMonster,this);
+				monstre.die(monstre,this);
 				this.nbrClic ++;
 			}
 			else {
 				monstre.setPV(monstre.getPV() - heroGame.getDamage());
-				monstre.die(myMonster,this);
+				monstre.die(monstre,this);
 				this.nbrClic ++;
 			}
 		}
@@ -93,22 +93,26 @@ public class game extends Observable {
         notifyObservers();
 	}
 	public void upgrade(Hero heroGame) {
-		if (gold >= getUpgradeValue()) {
+		if (gold >= getUpgradeMoneyValue()) {
 			heroGame.setConstDamage(heroGame.getConstDamage() + constUpgradeDamage);
 			heroGame.setDamage(heroGame.getConstDamage());
-			gold = gold - getUpgradeValue();
-			setUpgradeValue(getUpgradeValue() + upgradecroissance) ;
+			gold = gold - getUpgradeMoneyValue();
+			setUpgradeMoneyValue(getUpgradeMoneyValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
-			nbrUpgrade ++;
+			setNbrUpgrade(getNbrUpgrade() + 1);
 		}
 		setChanged();
         notifyObservers();
 	}
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
+		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() ) + (this.getNbrUpgrade() / 10 + this.myPets.getPetNumber() /10 - 1));
 		heroGame.setDamage(1);
 		heroGame.setConstDamage(1);
 		gold = 0;
+		nbrUpgrade = 0;
+		setUpgradeMoneyValue(10);
+		upgradecroissance = 2;
 		myArcher.setCheckClassArcher(0);;
 		myBerzerker.setCheckClassBerzerker(0);
 		myMage.setCheckClassMage(0);
@@ -122,7 +126,6 @@ public class game extends Observable {
 		myPet.petNumber = 0;
 		myPet.petCostBuy= 100;
 		myPet.petCostUpgrade = 150;
-		setUpgradeValue(10);
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
 		setChanged();
         notifyObservers();
@@ -172,12 +175,12 @@ public class game extends Observable {
 		}
 	}
 	
-	public int getUpgradeValue() {
-		return upgradeMonyeValue;
+	public int getUpgradeMoneyValue() {
+		return upgradeMoneyValue;
 	}
 
-	public void setUpgradeValue(int upgradeValue) {
-		this.upgradeMonyeValue = upgradeValue;
+	public void setUpgradeMoneyValue(int upgradeValue) {
+		this.upgradeMoneyValue = upgradeValue;
 		setChanged();
 		notifyObservers();
 	}
@@ -190,12 +193,20 @@ public class game extends Observable {
 		notifyObservers();
 	}
 	
+	public int getNbrUpgrade() {
+		return nbrUpgrade;
+	}
+
+	public void setNbrUpgrade(int nbrUpgrade) {
+		this.nbrUpgrade = nbrUpgrade;
+	}
+
 	public class choixArcher implements ActionListener{
 	       public void actionPerformed(ActionEvent event) {
 	              upgrade(myHero);
 	              argentLabel.setText("argent : " + gold );
 	              degatLabel.setText("degats actuels :" + myHero.getDamage());
-	              coutUPLabel.setText("cout : " + upgradeMonyeValue);
+	              coutUPLabel.setText("cout : " + upgradeMoneyValue);
 	       }
 	}
 	

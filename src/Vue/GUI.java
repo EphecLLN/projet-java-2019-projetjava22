@@ -37,11 +37,17 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel degatLabel = new JLabel();
 	public JLabel petUPLabel = new JLabel(); 
 	public JLabel dmgUPLabel = new JLabel();
+	public JLabel artfMoney = new JLabel();
 	public JLabel artfMoneyToGet = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
+	public ImageIcon slimeBleu = new ImageIcon("/images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
+	public ImageIcon slimeVert = new ImageIcon("/images/slime vert.png");
+	public ImageIcon slimeRouge = new ImageIcon("/images/slime rouge.png");
 	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
-		 
+		
+		screenMonster(this, monstre);
+		
 		JFrame window = new JFrame();
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,17 +57,13 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		JPanel monstrePanel = new JPanel();
 		monstrePanel.setBounds(100, 400, 200, 200);
 		monstrePanel.setBackground(Color.blue);
-		window.add(monstrePanel);
-		
-		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime_bleu.png")); //cr�ation d'une image en tant que ic�ne.
-		
+		window.add(monstrePanel);	
 		
 		buttonMonster.setBackground(Color.white);
 		buttonMonster.setFocusPainted(false);
 		buttonMonster.setBorder(null);
 		buttonMonster.addActionListener(this);
-		buttonMonster.setIcon(slimeBleu); // attribution de l'ic�ne au boutton (faire ressembler a un monstre).
-											// activation de clic() en int.graph.
+		buttonMonster.setIcon(slimeBleu);
 		monstrePanel.add(buttonMonster);
 		
 		JPanel ensembleBoutton1 = new JPanel();
@@ -115,9 +117,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		degatLabel.setText("degats actuels :" + hero.getDamage());
 		compteur.add(degatLabel);
 		
+		artfMoney.setForeground(Color.black);
+		artfMoney.setFont(stats);
+		artfMoney.setText("monnaie artefacts actuels :" + hero.getArtefactMoney());
+		compteur.add(artfMoney);
+		
 		dmgUPLabel.setForeground(Color.black);
 		dmgUPLabel.setFont(stats);
-		dmgUPLabel.setText("cout : " + myGame.getUpgradeValue());
+		dmgUPLabel.setText("cout : " + myGame.getUpgradeMoneyValue());
 		ensembleBoutton1.add(dmgUPLabel);
 		
 		ImageIcon UPPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
@@ -145,7 +152,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		artfMoneyToGet.setForeground(Color.black);
 		artfMoneyToGet.setFont(stats);
-		artfMoneyToGet.setText("gain : " + monstre.getWaveNumber());
+		artfMoneyToGet.setText("gain : " + (monstre.getWaveNumber() + myGame.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
 		ensembleBoutton1.add(artfMoneyToGet);
 		
 		buttonArtf.setBackground(Color.gray);
@@ -161,16 +168,30 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		window.setVisible(true);
 	}
 	
+	public void screenMonster(GUI myGUI, Monster myMonster) {
+		if (myMonster.getAttribute() == "aqua") {
+			myGUI.buttonMonster.setIcon(myGUI.slimeBleu);
+		}
+		if (myMonster.getAttribute() == "tera") {
+			myGUI.buttonMonster.setIcon(myGUI.slimeVert);
+		}
+		if (myMonster.getAttribute() == "pyro") {
+			myGUI.buttonMonster.setIcon(myGUI.slimeRouge);
+		}
+	}
+	
 	public static void main(String[] args) {
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
 		degatLabel.setText("degats actuels :" + model.myHero.getDamage());
-		dmgUPLabel.setText("cout : " + model.getUpgradeValue());
+		dmgUPLabel.setText("cout : " + model.getUpgradeMoneyValue());
 		PVLabel.setText("PV : " + model.myMonster.getPV());
+		artfMoney.setText("monnaie artefacts actuels :" + model.myHero.getArtefactMoney());
 		argentLabel.setText("argent : " + model.getGold() );
 		petUPLabel.setText("cout : " + model.myPets.getPetCostBuy());
+		artfMoneyToGet.setText("gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
 	}
 
 	@Override
