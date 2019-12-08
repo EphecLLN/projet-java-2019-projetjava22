@@ -175,14 +175,14 @@ public class game extends Observable {
 	public int getUpgradeValue() {
 		return upgradeMonyeValue;
 	}
-	
-	public int getGold() {
-		return gold;
-	}
+
 	public void setUpgradeValue(int upgradeValue) {
 		this.upgradeMonyeValue = upgradeValue;
 		setChanged();
 		notifyObservers();
+	}
+	public int getGold() {
+		return gold;
 	}
 	public void setGold(int gold) {
 		this.gold = gold;
@@ -253,8 +253,7 @@ public class game extends Observable {
 		ChronoMonstre chrono = myGame.new ChronoMonstre();
 		timerBoss.schedule(chrono, 0, 1000);
 		
-		myGame.myHero.buyArtefact(myGame.myArtf);
-		myGame.applyArtefacts(myGame.myArtf, myGame.myPets, myGame.myHero, myGame.myMonster);
+		myGame.myHero.buyArtefact(myGame.myArtf, myGame);
 		myGame.myConsole.Scan(myGame);
 	}
 }

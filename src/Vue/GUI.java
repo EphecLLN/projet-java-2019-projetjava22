@@ -20,22 +20,25 @@ import model.Monster;
 import model.Pets;
 import model.game;
 
-public class GUI extends gameVue implements Observer{
+public class GUI extends gameVue implements Observer, ActionListener{
 	public GUI(game model, gameController controller) {
 		super(model, controller);
 		// TODO Auto-generated constructor stub
 	}
 
-	public static JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	public static JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
-	public static JButton buttonUP = new JButton();		
-	public static JButton buttonMonster = new JButton();
-	public static JButton buttonReborn = new JButton();
-	public static JButton buttonUPPets = new JButton();
-	public static JButton archerChoice = new JButton();
-	public static JLabel degatLabel = new JLabel();
-	public static JLabel petUPLabel = new JLabel(); 
-	public static JLabel dmgUPLabel = new JLabel();
+	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
+	public JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
+	public JButton buttonUP = new JButton();		
+	public JButton buttonMonster = new JButton();
+	public JButton buttonReborn = new JButton();
+	public JButton buttonUPPets = new JButton();
+	public JButton buttonArtf = new JButton();
+	public JButton archerChoice = new JButton();
+	public JLabel degatLabel = new JLabel();
+	public JLabel petUPLabel = new JLabel(); 
+	public JLabel dmgUPLabel = new JLabel();
+	public JLabel artfMoneyToGet = new JLabel();
+	public JLabel artfMoneyCost = new JLabel();
 	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
 		 
@@ -56,30 +59,38 @@ public class GUI extends gameVue implements Observer{
 		buttonMonster.setBackground(Color.white);
 		buttonMonster.setFocusPainted(false);
 		buttonMonster.setBorder(null);
+		buttonMonster.addActionListener(this);
 		buttonMonster.setIcon(slimeBleu); // attribution de l'ic�ne au boutton (faire ressembler a un monstre).
 											// activation de clic() en int.graph.
 		monstrePanel.add(buttonMonster);
 		
-		JPanel ensembleBoutton = new JPanel();
-		ensembleBoutton.setLayout(new GridLayout(5,1));
-		ensembleBoutton.setBounds(600,100,150,400);
-		ensembleBoutton.setBackground(Color.white);
-		window.add(ensembleBoutton);
+		JPanel ensembleBoutton1 = new JPanel();
+		ensembleBoutton1.setLayout(new GridLayout(6,1));
+		ensembleBoutton1.setBounds(600,100,150,400);
+		ensembleBoutton1.setBackground(Color.white);
+		window.add(ensembleBoutton1);
 		
+		JPanel ensembleBoutton2 = new JPanel();
+		ensembleBoutton2.setLayout(new GridLayout(6,1));
+		ensembleBoutton2.setBounds(800,100,150,400);
+		ensembleBoutton2.setBackground(Color.white);
+		window.add(ensembleBoutton2);
+		
+
 		JPanel choiceClass = new JPanel();
         choiceClass.setLayout(new GridLayout(2,3));
         choiceClass.setBounds(600,550,300,200);
-        choiceClass.setBackground(Color.black);
+        choiceClass.setBackground(Color.gray);
         window.add(choiceClass);
-		
+        
 		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
-		
 		
 		buttonUP.setBackground(Color.white);
 		buttonUP.setFocusPainted(false);
 		buttonUP.setBorder(null);
 		buttonUP.setIcon(UPIcon);
-		ensembleBoutton.add(buttonUP);
+		buttonUP.addActionListener(this);
+		ensembleBoutton1.add(buttonUP);
 		
 		JPanel compteur = new JPanel();
 		compteur.setBounds(100,100,400,200);
@@ -107,7 +118,7 @@ public class GUI extends gameVue implements Observer{
 		dmgUPLabel.setForeground(Color.black);
 		dmgUPLabel.setFont(stats);
 		dmgUPLabel.setText("cout : " + myGame.getUpgradeValue());
-		ensembleBoutton.add(dmgUPLabel);
+		ensembleBoutton1.add(dmgUPLabel);
 		
 		ImageIcon UPPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
 		
@@ -115,12 +126,13 @@ public class GUI extends gameVue implements Observer{
 		buttonUPPets.setFocusPainted(false);
 		buttonUPPets.setBorder(null);
 		buttonUPPets.setIcon(UPPixie);
-		ensembleBoutton.add(buttonUPPets);
+		buttonUPPets.addActionListener(this);
+		ensembleBoutton1.add(buttonUPPets);
 				
 		petUPLabel.setForeground(Color.black);
 		petUPLabel.setFont(stats);
 		petUPLabel.setText("co�t : " + pet.getPetCostBuy());
-		ensembleBoutton.add(petUPLabel);
+		ensembleBoutton1.add(petUPLabel);
 		
 		ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
 		
@@ -128,7 +140,23 @@ public class GUI extends gameVue implements Observer{
 		buttonReborn.setFocusPainted(false);
 		buttonReborn.setBorder(null);
 		buttonReborn.setIcon(reset);
-		ensembleBoutton.add(buttonReborn);
+		buttonReborn.addActionListener(this);
+		ensembleBoutton1.add(buttonReborn);
+		
+		artfMoneyToGet.setForeground(Color.black);
+		artfMoneyToGet.setFont(stats);
+		artfMoneyToGet.setText("gain : " + monstre.getWaveNumber());
+		ensembleBoutton1.add(artfMoneyToGet);
+		
+		buttonArtf.setBackground(Color.gray);
+		buttonArtf.setFocusPainted(false);
+		buttonArtf.addActionListener(this);
+		ensembleBoutton2.add(buttonArtf);
+		
+		artfMoneyCost.setForeground(Color.black);
+		artfMoneyCost.setFont(stats);
+		artfMoneyCost.setText("cout : " + hero.getArtefactCost());
+		ensembleBoutton2.add(artfMoneyCost);
 		
 		window.setVisible(true);
 	}
@@ -147,14 +175,36 @@ public class GUI extends gameVue implements Observer{
 
 	@Override
 	public void enableWarning() {
-		System.out.println("Alerte");
-		
+		System.out.println("Vous ne pouvez plus acheter d'artefacts.");	
 	}
 
 	@Override
 	public void disableWarning() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object x = e.getSource();
+		if (x == buttonMonster) {
+			controller.attack();
+		}
+		if (x == buttonUP) {
+			controller.upgrade();
+		}
+		if (x == buttonUPPets) {
+			controller.oneMorePet();
+		}
+		if (x == buttonReborn) {
+			controller.reset();
+		}
+		if (x == archerChoice) {
+			controller.classChoice(1);
+		}
+		if (x == buttonArtf) {
+			controller.oneMoreArtf();
+		}
 	}
 
 }

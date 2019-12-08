@@ -11,8 +11,8 @@ import java.util.Observable;
 public class Hero extends Observable {
 	private int damage = 1;
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
-	static int artefactMoney = 10;	//artefactMoney : l'argent que le héros possède 
-	static int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
+	private int artefactMoney = 10;	//artefactMoney : l'argent que le héros possède 
+	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
 	
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
@@ -25,12 +25,13 @@ public class Hero extends Observable {
 	 * Cette méthode sert à acheter un nouvel artefact
 	 */
 	
-	public void buyArtefact(Artefact artf) {
-		if(artefactMoney >= artefactCost) {
-			artefactMoney -= artefactCost;
-			artefactCost += artefactCost;
+	public void buyArtefact(Artefact artf,game game) {
+		if(getArtefactMoney() >= getArtefactCost()) {
+			setArtefactMoney(getArtefactMoney() - getArtefactCost());
+			setArtefactCost(getArtefactCost() + artefactCost);
 			double nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
 			artf.getCurrentArtefacts()[(int) nbrNoArtf] += artf.noArtefacts[(int) nbrNoArtf];
+			game.applyArtefacts(game.myArtf, game.myPets, game.myHero, game.myMonster);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
@@ -59,5 +60,21 @@ public class Hero extends Observable {
 
 	public static void main(String[] args) {
 		
+	}
+
+	public int getArtefactMoney() {
+		return artefactMoney;
+	}
+
+	public void setArtefactMoney(int artefactMoney) {
+		this.artefactMoney = artefactMoney;
+	}
+
+	public int getArtefactCost() {
+		return artefactCost;
+	}
+
+	public void setArtefactCost(int artefactCost) {
+		this.artefactCost = artefactCost;
 	}
 }

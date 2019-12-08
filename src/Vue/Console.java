@@ -33,6 +33,7 @@ public class Console extends gameVue implements Observer{
 			
 			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au même niveau 
 			System.out.println("solde : " + model.getGold());
+			System.out.println("solde artefact : " + model.myHero.getArtefactMoney());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
 			System.out.println("-------------------------------------------------------------------------------------");
@@ -42,7 +43,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
 			System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
-			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ")");
+			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (" + model.myHero.getArtefactMoney() + ")");
 			
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("")) {
