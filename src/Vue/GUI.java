@@ -40,15 +40,13 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel artfMoney = new JLabel();
 	public JLabel artfMoneyToGet = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
-	public ImageIcon slimeBleu = new ImageIcon("/images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
-	public ImageIcon slimeVert = new ImageIcon("/images/slime vert.png");
-	public ImageIcon slimeRouge = new ImageIcon("/images/slime rouge.png");
+	public ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
+	public ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
+	public ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
 	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
-		
-		screenMonster(this, monstre);
-		
-		JFrame window = new JFrame();
+			
+		JFrame window = new JFrame("Clicker");
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -58,12 +56,13 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		monstrePanel.setBounds(100, 400, 200, 200);
 		monstrePanel.setBackground(Color.blue);
 		window.add(monstrePanel);	
-		
+			
 		buttonMonster.setBackground(Color.white);
 		buttonMonster.setFocusPainted(false);
 		buttonMonster.setBorder(null);
 		buttonMonster.addActionListener(this);
 		buttonMonster.setIcon(slimeBleu);
+		
 		monstrePanel.add(buttonMonster);
 		
 		JPanel ensembleBoutton1 = new JPanel();
@@ -164,6 +163,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		artfMoneyCost.setFont(stats);
 		artfMoneyCost.setText("cout : " + hero.getArtefactCost());
 		ensembleBoutton2.add(artfMoneyCost);
+		
+		screenMonster(this, monstre);
+
 		
 		window.setVisible(true);
 	}

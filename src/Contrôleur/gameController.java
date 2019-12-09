@@ -1,4 +1,4 @@
-package Contrôleur;
+package ContrÃ´leur;
 
 import Vue.gameVue;
 import model.game;
@@ -31,7 +31,7 @@ public class gameController {
     }
     public void classChoice(int x) {
     	if (x == 1) {
-    		model.archerChoice(model.myPets, model.myArcher);
+    		model.archerChoice(model.myHero);
     	}
     	if (x == 2) {
     		

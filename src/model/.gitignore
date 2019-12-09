@@ -29,3 +29,6 @@
 /dataBase.class
 /Connect.class
 /database.class
+/game$archerChoice.class
+/game$berzerkerChoice.class
+/game$mageChoice.class

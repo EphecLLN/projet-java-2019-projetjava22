@@ -37,6 +37,7 @@ public class Monster extends Observable {
 			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
 			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
 			randomMonster();
+			
 			if(game.myMage.getCheckClassMage() == 1) {
 				monstre.tempsBoss = 25;
 			}

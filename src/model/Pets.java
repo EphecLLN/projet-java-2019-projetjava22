@@ -59,9 +59,9 @@ public class Pets extends Observable {
 	public void buyPet(game game) {
 		if(game.getGold() >= petCostBuy) {
 			game.setGold( game.getGold() - petCostBuy);
-			game.myPets.petNumber += game.myPets.petBuyIncrease;
+			game.myPets.petNumber++;
 			petCostBuy += petCostBuy * petBuyIncrease;
-			System.out.println("Vous avez desormais " + game.myPets.petNumber + " familiers.");		}
+		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}

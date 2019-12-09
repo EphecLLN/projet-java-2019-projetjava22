@@ -32,7 +32,7 @@ public class game extends Observable {
 	 * ---------------------------------------------*/
 
 	int nbrClic = 0;
-	private int gold = 0;
+	private int gold = 1000;
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	int constUpgradeDamage = 1;
@@ -51,6 +51,9 @@ public class game extends Observable {
 	Console myConsole = new Console(this, null);
 	clic actionClic = new clic();
 	upgrade UP = new upgrade();
+	archerChoice Archer = new archerChoice();
+	mageChoice Mage = new mageChoice();
+	berzerkerChoice Berzerker = new berzerkerChoice();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
 	JLabel degatLabel = new JLabel();
@@ -62,9 +65,9 @@ public class game extends Observable {
 	JButton buttonMage = new JButton();
 	JButton buttonBerzerker = new JButton();
 	
-	void attackPets(Monster monstre, Pets monToutou) {
-		monstre.setPV(monstre.getPV() - monToutou.getPetDamage() * monToutou.getPetNumber());
-		if(monToutou.petNumber != 0) {
+	void attackPets(Monster monstre, Pets myPet) {
+		monstre.setPV(monstre.getPV() - myPet.getPetDamage() * myPet.getPetNumber());
+		if(myPet.petNumber != 0) {
 			monstre.die(monstre,this);
 		}
 		setChanged();
@@ -203,19 +206,19 @@ public class game extends Observable {
 		buttonArcher.setFocusPainted(false);
 		buttonArcher.setBorder(null);
 		buttonArcher.setIcon(ArcherIcon);
-		buttonArcher.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		buttonArcher.addActionListener(Archer);
 		
 		buttonMage.setBackground(Color.white);
 		buttonMage.setFocusPainted(false);
 		buttonMage.setBorder(null);
 		buttonMage.setIcon(MageIcon);
-		buttonMage.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		buttonMage.addActionListener(Mage);
 		
 		buttonBerzerker.setBackground(Color.white);
 		buttonBerzerker.setFocusPainted(false);
 		buttonBerzerker.setBorder(null);
 		buttonBerzerker.setIcon(BerzerkerIcon);
-		buttonBerzerker.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		buttonBerzerker.addActionListener(Berzerker);
 		
 		
 		choiceClass.add(buttonArcher);
@@ -236,7 +239,7 @@ public class game extends Observable {
 		monstrePanel.setBackground(Color.blue);
 		window.add(monstrePanel);
 		
-		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime_bleu.png")); //creation d'une image en tant que ic�ne.
+		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime bleu.png")); //creation d'une image en tant que ic�ne.
 		
 		JButton bouttonMonstre = new JButton();
 		bouttonMonstre.setBackground(Color.white);
@@ -295,7 +298,8 @@ public class game extends Observable {
 	}
 	
 	public int getUpgradeValue() {
-		return upgradeMonyeValue;
+		return upgradeMoneyValue;
+	}
 	public int getUpgradeMoneyValue() {
 		return upgradeMoneyValue;
 	}
@@ -341,7 +345,7 @@ public class game extends Observable {
 	
 	public class ArcherPetsDamages extends TimerTask {
 	    public void run() {
-	    	if(myArcher.checkClassArcher == 1) {
+	    	if(myHero.checkClassArcher == 1) {
 	    		attackPets(myMonster, myPets);
 	    	}
 	    }
@@ -377,6 +381,25 @@ public class game extends Observable {
          }
 	}
 
+	public class archerChoice implements ActionListener{
+	      public void actionPerformed(ActionEvent event) {
+	             mageChoice(myHero);
+	      }
+	}
+
+	public class mageChoice implements ActionListener{
+	      public void actionPerformed(ActionEvent event) {
+	             mageChoice(myHero);
+	      }
+	}
+	
+	public class berzerkerChoice implements ActionListener{
+	      public void actionPerformed(ActionEvent event) {
+	             berzerkerChoice(myHero);
+	      }
+	}
+
+
 	/**
 	 * @param args
 	 */
@@ -384,20 +407,7 @@ public class game extends Observable {
 		game myGame = new game();
 		myGame.genererUI();
 		
-		// Timer pour les degats des pets
-		Timer timerPets = new Timer();
-		PetsDamages aille = myGame.new PetsDamages();
-		timerPets.schedule(aille, 0, 2000);
-		
-		// Timer pour les dégats supplémentaires de la classe Archer
-		Timer timerArcher = new Timer();
-		ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
-		timerArcher.schedule(ouille, 1000, 2000);
-		
-		// Timer pour le décompte de 20/25 secondes au moment des boss
-		Timer timerBoss = new Timer();
-		ChronoMonstre chrono = myGame.new ChronoMonstre();
-		timerBoss.schedule(chrono, 0, 1000);
+		System.out.println("essaaaaaaaaaaaaaaaaaaaaai");
 		
 		myGame.myHero.buyArtefact(myGame.myArtf, myGame);
 		myGame.myConsole.Scan(myGame);
