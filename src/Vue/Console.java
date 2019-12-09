@@ -5,8 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-
-import Contr�leur.gameController;
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
@@ -20,7 +19,6 @@ public class Console extends gameVue implements Observer{
 	
 	public Console(game model, gameController controller) {
 		super(model, controller);
-		
 	}
 	/**
 	 * donne une premi�re fois le texte a l'utilisateur et permet d'activer une m�thode 
@@ -35,6 +33,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("solde : " + model.getGold());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+			System.out.println("Choix des heros : " + model.getHeroChoice());
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
 			System.out.println("Vous etes � la vague : " + model.myMonster.getWaveNumber());
@@ -84,6 +83,7 @@ public class Console extends gameVue implements Observer{
 		System.out.println("solde : " + model.getGold());
 		System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 		System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+		System.out.println("Choix des heros : " + model.getHeroChoice());
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
 		System.out.println("Vous etes � la vague : " + model.myMonster.getWaveNumber());

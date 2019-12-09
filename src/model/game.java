@@ -48,6 +48,8 @@ public class game extends Observable {
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
 	Console myConsole = new Console(this, null);
+	clic actionClic = new clic();
+	upgrade UP = new upgrade();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
 	JLabel degatLabel = new JLabel();
@@ -112,7 +114,8 @@ public class game extends Observable {
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
 		heroGame.setDamage(1);
-		game.gold = 0;
+		heroGame.setConstDamage(1);
+		gold = 0;
 		myArcher.setCheckClassArcher(0);;
 		myBerzerker.setCheckClassBerzerker(0);
 		myMage.setCheckClassMage(0);
@@ -135,6 +138,17 @@ public class game extends Observable {
 	void heroChoice() {
 		System.out.println("Vous avez débloqué 3 nouveau héros, choisissez-en un :");
 		System.out.println("archer / mage / berzerker");
+	}
+	
+	public String getHeroChoice() {
+		if(myMonster.getWaveNumber() >= 2 && myHero.getCheckClassArcher() == 0 && myHero.getCheckClassMage() == 0 && myHero.getCheckClassBerzerker() == 0) {
+			String choixHerosOk = "archer / mage / berzerker";
+			return choixHerosOk;
+		}
+		else {
+			String choixHerosDenied = "bloqué";
+			return choixHerosDenied;
+		}
 	}
 	
 	public void archerChoice(Hero heroGame) {
@@ -175,6 +189,35 @@ public class game extends Observable {
 			hero.setDamage(hero.getConstDamage());
 		}
 	}
+	
+	public void ajouterClasses() {
+		ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
+		ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
+		ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));	
+		
+		buttonArcher.setBackground(Color.white);
+		buttonArcher.setFocusPainted(false);
+		buttonArcher.setBorder(null);
+		buttonArcher.setIcon(ArcherIcon);
+		buttonArcher.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		buttonMage.setBackground(Color.white);
+		buttonMage.setFocusPainted(false);
+		buttonMage.setBorder(null);
+		buttonMage.setIcon(MageIcon);
+		buttonMage.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		buttonBerzerker.setBackground(Color.white);
+		buttonBerzerker.setFocusPainted(false);
+		buttonBerzerker.setBorder(null);
+		buttonBerzerker.setIcon(BerzerkerIcon);
+		buttonBerzerker.addActionListener(UP); //ENCORE A CHANGER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		choiceClass.add(buttonArcher);
+		choiceClass.add(buttonMage);
+		choiceClass.add(buttonBerzerker);
+	}	
 		
 	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
 		 
@@ -303,15 +346,29 @@ public class game extends Observable {
 		}
 	}
 	
-
+	public class clic implements ActionListener{
+		 public void actionPerformed(ActionEvent event) {
+				attack(myMonster,myHero,myArtf);
+				PVLabel.setText("monstre PV : " + myMonster.getPV());
+				argentLabel.setText("argent : " + gold );
+			}
+	 }
+	
+	public class upgrade implements ActionListener{
+      public void actionPerformed(ActionEvent event) {
+             upgrade(myHero);
+             argentLabel.setText("argent : " + gold );
+             degatLabel.setText("d�g�ts actuels :" + myHero.getDamage());
+             coutUPLabel.setText("co�t : " + getUpgradeValue());
+         }
+	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		game myGame = new game();
-		GUI myGUI = new GUI(myGame, null);
-		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
+		myGame.genererUI();
 		
 		// Timer pour les degats des pets
 		Timer timerPets = new Timer();
@@ -333,4 +390,5 @@ public class game extends Observable {
 		myGame.myConsole.Scan(myGame);
 	}
 }
+
 
