@@ -29,7 +29,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	public JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
 	public JButton buttonUP = new JButton();		
-	public JButton buttonMonster = new JButton();
+	public static JButton buttonMonster = new JButton();
 	public JButton buttonReborn = new JButton();
 	public JButton buttonUPPets = new JButton();
 	public JButton buttonArtf = new JButton();
@@ -40,9 +40,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel artfMoney = new JLabel();
 	public JLabel artfMoneyToGet = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
-	public ImageIcon slimeBleu = new ImageIcon("/images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
-	public ImageIcon slimeVert = new ImageIcon("/images/slime vert.png");
-	public ImageIcon slimeRouge = new ImageIcon("/images/slime rouge.png");
+	public static ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
+	public static ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
+	public static ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
+	public JButton aqua = new JButton();
+	public JButton tera = new JButton();
+	public JButton pyro = new JButton();
 	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
 		
@@ -67,17 +70,16 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		monstrePanel.add(buttonMonster);
 		
 		JPanel ensembleBoutton1 = new JPanel();
-		ensembleBoutton1.setLayout(new GridLayout(6,1));
-		ensembleBoutton1.setBounds(600,100,150,400);
+		ensembleBoutton1.setLayout(new GridLayout(6,2));
+		ensembleBoutton1.setBounds(600,100,400,400);
 		ensembleBoutton1.setBackground(Color.white);
 		window.add(ensembleBoutton1);
 		
-		JPanel ensembleBoutton2 = new JPanel();
-		ensembleBoutton2.setLayout(new GridLayout(6,1));
-		ensembleBoutton2.setBounds(800,100,150,400);
-		ensembleBoutton2.setBackground(Color.white);
-		window.add(ensembleBoutton2);
-		
+		JPanel attributePanel = new JPanel();
+		attributePanel.setLayout(new GridLayout(1,3));
+		attributePanel.setBounds(100,620,400,150);
+		attributePanel.setBackground(Color.gray);
+		window.add(attributePanel);	
 
 		JPanel choiceClass = new JPanel();
         choiceClass.setLayout(new GridLayout(2,3));
@@ -158,12 +160,32 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		buttonArtf.setBackground(Color.gray);
 		buttonArtf.setFocusPainted(false);
 		buttonArtf.addActionListener(this);
-		ensembleBoutton2.add(buttonArtf);
+		ensembleBoutton1.add(buttonArtf);
 		
 		artfMoneyCost.setForeground(Color.black);
 		artfMoneyCost.setFont(stats);
 		artfMoneyCost.setText("cout : " + hero.getArtefactCost());
-		ensembleBoutton2.add(artfMoneyCost);
+		ensembleBoutton1.add(artfMoneyCost);
+		
+		ImageIcon aquaIcon = new ImageIcon(game.class.getResource("/images/aqua.png"));
+		ImageIcon pyroIcon = new ImageIcon(game.class.getResource("/images/fire.png"));
+		ImageIcon teraIcon = new ImageIcon(game.class.getResource("/images/plant.png"));
+		
+		aqua.setBackground(Color.white);
+		pyro.setBackground(Color.white);
+		tera.setBackground(Color.white);
+		aqua.setFocusPainted(false);
+		pyro.setFocusPainted(false);
+		tera.setFocusPainted(false);
+		aqua.addActionListener(this);
+		pyro.addActionListener(this);
+		tera.addActionListener(this);
+		aqua.setIcon(aquaIcon);
+		pyro.setIcon(pyroIcon);
+		tera.setIcon(teraIcon);
+		attributePanel.add(aqua);
+		attributePanel.add(pyro);
+		attributePanel.add(tera);
 		
 		window.setVisible(true);
 	}
@@ -225,6 +247,15 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();
+		}
+		if (x == aqua) {
+			controller.attributeChoice(1);
+		}
+		if (x == pyro) {
+			controller.attributeChoice(2);
+		}
+		if (x == tera) {
+			controller.attributeChoice(3);
 		}
 	}
 

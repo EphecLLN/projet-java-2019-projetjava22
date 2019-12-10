@@ -83,6 +83,15 @@ public class game extends Observable {
 			monstre.die(monstre,this);
 			this.nbrClic ++;
 		}
+        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "tera")) {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        }
+        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "aqua") {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        }
+        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "pyro") {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        }
 		else {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
 			monstre.die(myMonster,this);

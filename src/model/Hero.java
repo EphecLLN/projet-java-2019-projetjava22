@@ -13,14 +13,13 @@ public class Hero extends Observable {
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
 	private int artefactMoney = 0;	//artefactMoney : l'argent que le héros possède 
 	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
-	private int attribute;
+	private String attribute = "neutral";
+	
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
 	}*/
-	
-	
-	
+		
 	/**
 	 * Cette méthode sert à acheter un nouvel artefact
 	 */
@@ -37,7 +36,10 @@ public class Hero extends Observable {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
 		}
 	}
-	public void setAttribute(int x) {
+	public String getAttribute() {
+		return attribute;
+	}
+	public void setAttribute(String x) {
 		this.attribute = x;
 	}
 	
