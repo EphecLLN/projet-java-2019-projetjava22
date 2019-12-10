@@ -34,6 +34,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton buttonUPPets = new JButton();
 	public JButton buttonArtf = new JButton();
 	public JButton archerChoice = new JButton();
+	public JButton buttonArcher = new JButton();
+	public JButton buttonMage = new JButton();
+	public JButton buttonBerzerker = new JButton();
 	public JLabel degatLabel = new JLabel();
 	public JLabel petUPLabel = new JLabel(); 
 	public JLabel dmgUPLabel = new JLabel();
@@ -43,10 +46,11 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
 	public ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
 	public ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
-	
+	public JFrame window = new JFrame("Clicker");
+	public JPanel choiceClass = new JPanel();
+
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
 			
-		JFrame window = new JFrame("Clicker");
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -77,8 +81,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		ensembleBoutton2.setBackground(Color.white);
 		window.add(ensembleBoutton2);
 		
-
-		JPanel choiceClass = new JPanel();
+		
         choiceClass.setLayout(new GridLayout(2,3));
         choiceClass.setBounds(600,550,300,200);
         choiceClass.setBackground(Color.gray);
@@ -165,7 +168,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		ensembleBoutton2.add(artfMoneyCost);
 		
 		screenMonster(this, monstre);
-
+		ajouterClasses(this, monstre);
 		
 		window.setVisible(true);
 	}
@@ -181,6 +184,38 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			myGUI.buttonMonster.setIcon(myGUI.slimeRouge);
 		}
 	}
+	
+	public void ajouterClasses(GUI myGUI, Monster monstre) {
+		if(monstre.getWaveNumber() == 2) {
+		
+			ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
+			ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
+			ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));
+		
+			myGUI.buttonArcher.setBackground(Color.white);
+			myGUI.buttonArcher.setFocusPainted(false);
+			myGUI.buttonArcher.setBorder(null);
+			myGUI.buttonArcher.setIcon(ArcherIcon);
+			myGUI.buttonArcher.addActionListener(this);
+		
+			myGUI.buttonMage.setBackground(Color.white);
+			myGUI.buttonMage.setFocusPainted(false);
+			myGUI.buttonMage.setBorder(null);
+			myGUI.buttonMage.setIcon(MageIcon);
+			myGUI.buttonMage.addActionListener(this);
+		
+			myGUI.buttonBerzerker.setBackground(Color.white);
+			myGUI.buttonBerzerker.setFocusPainted(false);
+			myGUI.buttonBerzerker.setBorder(null);
+			myGUI.buttonBerzerker.setIcon(BerzerkerIcon);
+			myGUI.buttonBerzerker.addActionListener(this);
+		
+		
+			myGUI.choiceClass.add(buttonArcher);
+			myGUI.choiceClass.add(buttonMage);
+			myGUI.choiceClass.add(buttonBerzerker);
+		}
+	}	
 	
 	public static void main(String[] args) {
 	}
@@ -212,6 +247,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		Object x = e.getSource();
 		if (x == buttonMonster) {
 			controller.attack();
+			ajouterClasses(this, model.myMonster);
 		}
 		if (x == buttonUP) {
 			controller.upgrade();
@@ -222,8 +258,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		if (x == buttonReborn) {
 			controller.reset();
 		}
-		if (x == archerChoice) {
+		if (x == buttonArcher) {
 			controller.classChoice(1);
+		}
+		if (x == buttonMage) {
+			controller.classChoice(2);
+		}
+		if (x == buttonBerzerker) {
+			controller.classChoice(3);
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();

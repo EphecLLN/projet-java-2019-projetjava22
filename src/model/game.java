@@ -41,9 +41,6 @@ public class game extends Observable {
 	/*----------------------------------------------
 	 * variables utile à game 
 	 * ---------------------------------------------*/
-	public Archer myArcher = new Archer();
-	public Mage myMage = new Mage();
-	public Berzerker myBerzerker = new Berzerker();
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
@@ -75,7 +72,7 @@ public class game extends Observable {
 	}
 
 	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		if(heroGame.getCheckClassBerzerker() == 1) {
+		if(heroGame.getCheckClass() == 3) {
 			double randomBerzerker = (Math.random() *100) % 5;
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
@@ -94,9 +91,9 @@ public class game extends Observable {
 			monstre.die(monstre,this);
 			this.nbrClic ++;
 		}
-		else {
+		else if(heroGame.getCheckClass() != 3){
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
-			monstre.die(myMonster,this);
+			monstre.die(monstre,this);
 			this.nbrClic ++;
 		}
 		
@@ -124,9 +121,7 @@ public class game extends Observable {
 		nbrUpgrade = 0;
 		setUpgradeMoneyValue(10);
 		upgradecroissance = 2;
-		myArcher.setCheckClassArcher(0);;
-		myBerzerker.setCheckClassBerzerker(0);
-		myMage.setCheckClassMage(0);
+		myHero.setCheckClass(0);
 		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
@@ -148,9 +143,23 @@ public class game extends Observable {
 	}
 	
 	public String getHeroChoice() {
-		if(myMonster.getWaveNumber() >= 2 && myHero.getCheckClassArcher() == 0 && myHero.getCheckClassMage() == 0 && myHero.getCheckClassBerzerker() == 0) {
+		if(myMonster.getWaveNumber() >= 2 && myHero.getCheckClass() == 0) {
 			String choixHerosOk = "archer / mage / berzerker";
 			return choixHerosOk;
+		}
+		else if(myHero.getCheckClass() == 1) {
+			String choixHeroArcher = "Archer (Double la vitesse d'attaque des familiers)";
+			return choixHeroArcher;
+		}
+		else if(myHero.getCheckClass() == 2) {
+			String choixHeroMage = "Mage (Confère 5 secondes supplémentaires pour vaincre les boss)";
+			return choixHeroMage;
+
+		}
+		else if(myHero.getCheckClass() == 3) {
+			String choixHeroBerzerker = "Berzerker (Vous avez 20% de chance de coup critique)";
+			return choixHeroBerzerker;
+
 		}
 		else {
 			String choixHerosDenied = "bloqué";
@@ -159,19 +168,16 @@ public class game extends Observable {
 	}
 	
 	public void archerChoice(Hero heroGame) {
-		heroGame.setCheckClassArcher(1);
-		System.out.println("Vous avez choisi la classe archer. Vos familiers doublent leur vitesse d'attaque.");
+		heroGame.setCheckClass(1);
 	}
 	
 	public void mageChoice(Hero heroGame) {
-		heroGame.setCheckClassMage(1);
+		heroGame.setCheckClass(2);
 		myMonster.setTempsBoss(25);
-		System.out.println("Vous avez choisi la classe mage. Vous gagnez 5 secondes suppémentaire pour vaincre chaque boss.");
 	}
 	
 	public void berzerkerChoice(Hero heroGame) {
-		heroGame.setCheckClassBerzerker(1);
-		System.out.println("Vous avez choisi la classe berzerker. Vous avez désormais 20% de chance d'effectuez un coup critique.");
+		heroGame.setCheckClass(3);
 	}
 
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
@@ -197,34 +203,7 @@ public class game extends Observable {
 		}
 	}
 	
-	public void ajouterClasses() {
-		ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
-		ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
-		ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));	
 		
-		buttonArcher.setBackground(Color.white);
-		buttonArcher.setFocusPainted(false);
-		buttonArcher.setBorder(null);
-		buttonArcher.setIcon(ArcherIcon);
-		buttonArcher.addActionListener(Archer);
-		
-		buttonMage.setBackground(Color.white);
-		buttonMage.setFocusPainted(false);
-		buttonMage.setBorder(null);
-		buttonMage.setIcon(MageIcon);
-		buttonMage.addActionListener(Mage);
-		
-		buttonBerzerker.setBackground(Color.white);
-		buttonBerzerker.setFocusPainted(false);
-		buttonBerzerker.setBorder(null);
-		buttonBerzerker.setIcon(BerzerkerIcon);
-		buttonBerzerker.addActionListener(Berzerker);
-		
-		
-		choiceClass.add(buttonArcher);
-		choiceClass.add(buttonMage);
-		choiceClass.add(buttonBerzerker);
-	}	
 		
 	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
 		 
@@ -325,15 +304,6 @@ public class game extends Observable {
 	public void setNbrUpgrade(int nbrUpgrade) {
 		this.nbrUpgrade = nbrUpgrade;
 	}
-
-	public class choixArcher implements ActionListener{
-	       public void actionPerformed(ActionEvent event) {
-	              upgrade(myHero);
-	              argentLabel.setText("argent : " + gold );
-	              degatLabel.setText("degats actuels :" + myHero.getDamage());
-	              coutUPLabel.setText("cout : " + upgradeMoneyValue);
-	       }
-	}
 	
 	public class PetsDamages extends TimerTask {
 	    public void run() {
@@ -345,7 +315,7 @@ public class game extends Observable {
 	
 	public class ArcherPetsDamages extends TimerTask {
 	    public void run() {
-	    	if(myHero.checkClassArcher == 1) {
+	    	if(myHero.checkClass == 1) {
 	    		attackPets(myMonster, myPets);
 	    	}
 	    }

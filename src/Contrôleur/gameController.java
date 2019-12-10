@@ -34,10 +34,10 @@ public class gameController {
     		model.archerChoice(model.myHero);
     	}
     	if (x == 2) {
-    		
+    		model.mageChoice(model.myHero);
     	}
     	if (x == 3) {
-    		
+    		model.berzerkerChoice(model.myHero);
     	}
     	control();
     }

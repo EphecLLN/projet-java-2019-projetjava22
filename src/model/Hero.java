@@ -10,10 +10,7 @@ import java.util.Observable;
  */
 public class Hero extends Observable {
 	private int damage = 1;
-	protected int checkClassArcher = 0;
-	protected int checkClassMage = 0;
-	protected int checkClassBerzerker = 0;
-	
+	protected int checkClass = 0;
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
 	private int artefactMoney = 0;	//artefactMoney : l'argent que le héros possède 
 	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
@@ -49,16 +46,8 @@ public class Hero extends Observable {
 		return damage;
 	}
 
-	public int getCheckClassArcher() {
-		return checkClassArcher;
-	}
-	
-	public int getCheckClassMage() {
-		return checkClassMage;
-	}
-	
-	public int getCheckClassBerzerker() {
-		return checkClassBerzerker;
+	public int getCheckClass() {
+		return checkClass;
 	}
 	
 	public void setDamage(int damage) {
@@ -67,17 +56,10 @@ public class Hero extends Observable {
         notifyObservers();
 	}
 	
-	public void setCheckClassArcher(int binary) {
-		this.checkClassArcher = binary;
+	public void setCheckClass(int number) {
+		this.checkClass = number;
 	}
 
-	public void setCheckClassMage(int binary) {
-		this.checkClassMage = binary;
-	}
-
-	public void setCheckClassBerzerker(int binary) {
-		this.checkClassBerzerker = binary;
-	}
 
 	public int getConstDamage() {
 		return constDamage;

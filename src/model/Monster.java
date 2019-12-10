@@ -29,25 +29,22 @@ public class Monster extends Observable {
 			game.setGold(game.getGold() + game.getGold() / 5) ;					//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
 			monstre.goldIncrease += monstre.goldIncrease;				//augmente le nombre de pi�ce que les prochain monstre donnerons
 			monstre.pvIncrease += monstre.pvIncrease;					//augmente les pvs des prochains monstres
-			
-			System.out.println("Vous avez battu la vague " + monstre.waveNumber + ". Bravo !");
 			monstre.waveNumber ++;										//augmente la vague
 			monstre.Number = 1;											
 			monstre.PV = monstre.pvIncrease;
-			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
-			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
+			if(monstre.waveNumber == 2) {
+				game.heroChoice();
+				activerChoixClasses();	
+			}
 			randomMonster();
 			
-			if(game.myMage.getCheckClassMage() == 1) {
+			if(game.myHero.getCheckClass() == 2) {
 				monstre.tempsBoss = 25;
 			}
 			else {
 				monstre.tempsBoss = 20;
 			}
-			if(monstre.waveNumber == 2) {
-				game.heroChoice();
-				game.ajouterClasses();
-			}
+			
 		}
 		if (monstre.PV <= 0 && monstre.Number == (monstre.bossNumber -1)) { //prepare le boss
 			monstre.Number++;
@@ -75,6 +72,10 @@ public class Monster extends Observable {
 		if (x == 2) {
 			attribute = "pyro";
 		}
+	}
+	
+	public void activerChoixClasses() {
+		
 	}
 	
 	public int getPV() {
