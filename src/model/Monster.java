@@ -20,7 +20,13 @@ public class Monster extends Observable {
 	
 	/**
 	 * @author Lucas Pastori
-	 * m�thode v�rifiant q'un monstre est mort pour le remplacer par un autre
+	 * Methode verifiant a chaque clic si le monstre est mort et les actions que celui-ci devra effectuer
+	 * en fonction de certaines conditions
+	 * @param monstre	renvoie la classe Monstre dans le but de verifier les differents parametres pour choisir
+	 * l'action a effectuer
+	 * @param game		renvoie la classe game qui permettra d'incrementer l'argent du joueur a chaque foi qu'un
+	 * monster meurt
+	 * @see Monster
 	 * 
 	 */
 	public void die(Monster monstre, game game) {
@@ -61,6 +67,9 @@ public class Monster extends Observable {
 			randomMonster();
 		}
 	}
+	
+	
+	
 	public void randomMonster() {
 		int x = ((int) ((Math.random() * 100) % 3));
 		if (x == 0) {
