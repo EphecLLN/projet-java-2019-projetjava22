@@ -29,6 +29,10 @@
 /dataBase.class
 /Connect.class
 /database.class
+<<<<<<< Updated upstream
 /game$archerChoice.class
 /game$berzerkerChoice.class
 /game$mageChoice.class
+=======
+/text.class
+>>>>>>> Stashed changes
