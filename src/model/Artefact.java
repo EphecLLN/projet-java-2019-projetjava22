@@ -10,7 +10,7 @@ package model;
  */
 public class Artefact {
 	private String[] currentArtefacts = {"","","","",""};
-	String[] noArtefacts = {"doublePet","doubleDMG","+5DMG","-1Boss","every10Hit"};
+	public String[] noArtefacts = {"doublePet","doubleDMG","+5DMG","-1Boss","every10Hit"};
 	boolean activate10hit = false;
 	
 	/**

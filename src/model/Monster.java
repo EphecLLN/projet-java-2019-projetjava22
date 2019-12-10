@@ -2,6 +2,8 @@ package model;
 
 import java.util.Observable;
 
+import Vue.GUI;
+
 /**
  * @author Lucas Pastori
  * classe cr�ant les monstres 
@@ -13,11 +15,18 @@ public class Monster extends Observable {
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
+	private String attribute = "aqua";
 	int tempsBoss = 20;
 	
 	/**
 	 * @author Lucas Pastori
-	 * m�thode v�rifiant q'un monstre est mort pour le remplacer par un autre
+	 * Methode verifiant a chaque clic si le monstre est mort et les actions que celui-ci devra effectuer
+	 * en fonction de certaines conditions
+	 * @param monstre	renvoie la classe Monstre dans le but de verifier les differents parametres pour choisir
+	 * l'action a effectuer
+	 * @param game		renvoie la classe game qui permettra d'incrementer l'argent du joueur a chaque foi qu'un
+	 * monster meurt
+	 * @see Monster
 	 * 
 	 */
 	public void die(Monster monstre, game game) {
@@ -26,37 +35,58 @@ public class Monster extends Observable {
 			game.setGold(game.getGold() + game.getGold() / 5) ;					//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
 			monstre.goldIncrease += monstre.goldIncrease;				//augmente le nombre de pi�ce que les prochain monstre donnerons
 			monstre.pvIncrease += monstre.pvIncrease;					//augmente les pvs des prochains monstres
-			
-			System.out.println("Vous avez battu la vague " + monstre.waveNumber + ". Bravo !");
 			monstre.waveNumber ++;										//augmente la vague
 			monstre.Number = 1;											
 			monstre.PV = monstre.pvIncrease;
-			System.out.println("Vague " + monstre.waveNumber + ". Ils sont plus corriaces !");
-			System.out.println("Vous etes au monstre  " + monstre.Number + " de la vague n°" + monstre.waveNumber + ".");
-			if(game.myMage.getCheckClassMage() == 1) {
+			if(monstre.waveNumber == 2) {
+				game.heroChoice();
+				activerChoixClasses();	
+			}
+			randomMonster();
+			
+			if(game.myHero.getCheckClass() == 2) {
 				monstre.tempsBoss = 25;
 			}
 			else {
 				monstre.tempsBoss = 20;
 			}
-			if(monstre.waveNumber == 10) {
-				game.heroChoice();
-			}
+			
 		}
 		if (monstre.PV <= 0 && monstre.Number == (monstre.bossNumber -1)) { //prepare le boss
 			monstre.Number++;
 			monstre.PV = monstre.pvIncrease*3;
 			game.setGold(game.getGold() + monstre.goldIncrease);
 			System.out.println("Vous etes au boss. Force à vous !");
+			randomMonster();
 		}
 		
 		if (monstre.PV <= 0) {
 			monstre.PV = monstre.pvIncrease;
 			monstre.Number ++;
 			game.setGold(game.getGold() + monstre.goldIncrease);	//donne de l'argent a la mort du monstre(ancien goldDrop())
+			randomMonster();
 		}
 	}
-
+	
+	
+	
+	public void randomMonster() {
+		int x = ((int) ((Math.random() * 100) % 3));
+		if (x == 0) {
+			attribute = "aqua";
+		}
+		if (x == 1) {
+			attribute = "tera";
+		}
+		if (x == 2) {
+			attribute = "pyro";
+		}
+	}
+	
+	public void activerChoixClasses() {
+		
+	}
+	
 	public int getPV() {
 		return PV;
 	}
@@ -128,6 +158,14 @@ public class Monster extends Observable {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
 	}
 
 }
