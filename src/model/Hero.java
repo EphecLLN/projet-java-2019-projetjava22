@@ -20,9 +20,6 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
-	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
-	private int artefactMoney = 0;	//artefactMoney : l'argent que le héros possède 
-	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
 	private String attribute = "aqua";
 	
 	
@@ -94,6 +91,8 @@ public class Hero extends Observable {
 		return attribute;
 	}
 	public void setAttribute(String x) {
+		this.attribute = x;
+	}
 	
 	/**
 	 * @param x attribut à set (aqua, terra ou pyro)

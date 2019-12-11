@@ -114,18 +114,18 @@ public class game extends Observable {
         	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
         }
         if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage());
+        }
 		else if(heroGame.getCheckClass() != 3){
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
         }
 		monstre.die(myMonster,this);
 		this.nbrClic ++;
-			monstre.die(monstre,this);
-			this.nbrClic ++;
-			imageHero++;
-		}
-		
+		monstre.die(monstre,this);
+		this.nbrClic ++;
+		imageHero++;
 		setChanged();
-        notifyObservers();
+	    notifyObservers();
 	}
 	
 	public void upgrade(Hero heroGame) {

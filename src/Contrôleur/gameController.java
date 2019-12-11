@@ -26,6 +26,9 @@ public class gameController {
     	model.myPets.buyPet(model);
     	control();
     }
+    public void upgradePets() {
+    	model.myPets.upgradePet(model, model.myPets);
+    }
     public void oneMoreArtf() {
     	model.myHero.buyArtefact(model.myArtf, model);
     }
