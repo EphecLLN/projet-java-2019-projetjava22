@@ -46,6 +46,5 @@ public class principal {
 		//genere le scanner pour rentrer les commandes dans la console
 		myConsole.Scan(myGame);
 		
-		
 	}
 }

@@ -41,6 +41,18 @@ public class gameController {
     	}
     	control();
     }
+    public void attributeChoice(int x) {
+    	if (x == 1) {
+    		model.myHero.setAttribute("aqua");
+    	}
+    	if (x == 2) {
+    		model.myHero.setAttribute("pyro");
+    	}
+    	if (x == 3) {
+    		model.myHero.setAttribute("tera");
+    	}
+    	control();
+    }
     public void control() {
         if (view != null) {
             if (model.myArtf.noArtefacts.length == 0) {
