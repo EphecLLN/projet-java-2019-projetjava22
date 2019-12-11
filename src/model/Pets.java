@@ -3,13 +3,14 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	int petDamages = 1;
-	int petDmgIncrease = 1;
-	int petNumber = 0;
-	int petCostUpgrade = 150;
-	double petBuyIncrease = 0.1;
-	int petsAttackSpeed = 2000;
-	int petCostBuy = 100;
+	private int petDamages = 1;
+	private int petDmgIncrease = 1;
+	private int petNumber = 0;
+	private int petNumberUP= 1;
+	private int petCostUpgrade = 150;
+	private double petBuyIncrease = 0.1;
+	private int petsAttackSpeed = 2000;
+	private int petCostBuy = 100;
 	
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
@@ -57,48 +58,90 @@ public class Pets extends Observable {
 	 */
 	
 	public void buyPet(game game) {
-		if(game.getGold() >= petCostBuy) {
-			game.setGold( game.getGold() - petCostBuy);
-			game.myPets.petNumber++;
-			petCostBuy += petCostBuy * petBuyIncrease;
+		if(game.getGold() >= getPetCostBuy()) {
+			game.setGold( game.getGold() - getPetCostBuy());
+			game.myPets.setPetNumber(game.myPets.getPetNumber() + getPetNumberUP());
+			setPetCostBuy(getPetCostBuy() + getPetCostBuy() * petBuyIncrease);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}
 	}
 	
-	public int getPetDamage() {
-		return petDamages;
-	}
-	
-	public int getPetDmgIncrease() {
-		return petDmgIncrease;
-	}
-	
+
+	/**
+	 * @return the petNumber
+	 */
 	public int getPetNumber() {
 		return petNumber;
 	}
-	
-	public int getPetCostUpgrade() {
-		return petCostUpgrade;
+
+	/**
+	 * @param petNumber the petNumber to set
+	 */
+	public void setPetNumber(int petNumber) {
+		this.petNumber = petNumber;
 	}
-	
-	public double getPetBuyIncrease() {
-		return petBuyIncrease;
-	}
-	
+
+	/**
+	 * @return the petCostBuy
+	 */
 	public int getPetCostBuy() {
 		return petCostBuy;
 	}
+
+	/**
+	 * @param d the petCostBuy to set
+	 */
+	public void setPetCostBuy(double d) {
+		this.petCostBuy = (int) d;
+	}
+
+	/**
+	 * @return the petCostUpgrade
+	 */
+	public int getPetCostUpgrade() {
+		return petCostUpgrade;
+	}
+
+	/**
+	 * @param petCostUpgrade the petCostUpgrade to set
+	 */
+	public void setPetCostUpgrade(int petCostUpgrade) {
+		this.petCostUpgrade = petCostUpgrade;
+	}
+
+	/**
+	 * @return the petDamages
+	 */
+	public int getPetDamages() {
+		return petDamages;
+	}
+
+	/**
+	 * @param petDamages the petDamages to set
+	 */
+	public void setPetDamages(int petDamages) {
+		this.petDamages = petDamages;
+	}
+
+	/**
+	 * @return the petNumberUP
+	 */
+	public int getPetNumberUP() {
+		return petNumberUP;
+	}
+
+	/**
+	 * @param petNumberUP the petNumberUP to set
+	 */
+	public void setPetNumberUP(int petNumberUP) {
+		this.petNumberUP = petNumberUP;
+	}
+
 	
 	public void setAddPetNumber(int addPetNumber) {
-		this.petNumber += addPetNumber;
-		setChanged();
-        notifyObservers();
-	}
-	
-	public void setPetBuyIncrease(int petincrease) {
-		this.petBuyIncrease = petincrease;
+		this.setPetNumber(this.getPetNumber() + addPetNumber);
 		setChanged();
         notifyObservers();
 	}

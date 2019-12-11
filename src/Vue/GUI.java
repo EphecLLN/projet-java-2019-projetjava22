@@ -50,7 +50,10 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton pyro = new JButton();
 	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
-			
+		
+		screenMonster(this, monstre);
+		
+		JFrame window = new JFrame();
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -227,32 +230,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public void ajouterClasses(GUI myGUI, Monster monstre) {
 		if(monstre.getWaveNumber() == 2) {
 		
-			ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
-			ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
-			ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));
-		
-			myGUI.buttonArcher.setBackground(Color.white);
-			myGUI.buttonArcher.setFocusPainted(false);
-			myGUI.buttonArcher.setBorder(null);
-			myGUI.buttonArcher.setIcon(ArcherIcon);
-			myGUI.buttonArcher.addActionListener(this);
-		
-			myGUI.buttonMage.setBackground(Color.white);
-			myGUI.buttonMage.setFocusPainted(false);
-			myGUI.buttonMage.setBorder(null);
-			myGUI.buttonMage.setIcon(MageIcon);
-			myGUI.buttonMage.addActionListener(this);
-		
-			myGUI.buttonBerzerker.setBackground(Color.white);
-			myGUI.buttonBerzerker.setFocusPainted(false);
-			myGUI.buttonBerzerker.setBorder(null);
-			myGUI.buttonBerzerker.setIcon(BerzerkerIcon);
-			myGUI.buttonBerzerker.addActionListener(this);
-		
-		
-			myGUI.choiceClass.add(buttonArcher);
-			myGUI.choiceClass.add(buttonMage);
-			myGUI.choiceClass.add(buttonBerzerker);
+			
 		}
 	}	
 	
@@ -298,14 +276,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		if (x == buttonReborn) {
 			controller.reset();
 		}
-		if (x == buttonArcher) {
+		if (x == archerChoice) {
 			controller.classChoice(1);
 		}
 		if (x == berserkChoice) {
-			controller.classChoice(2);
+			controller.classChoice(3);
 		}
 		if (x == mageChoice) {
-			controller.classChoice(3);
+			controller.classChoice(2);
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();
