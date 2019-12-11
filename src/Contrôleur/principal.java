@@ -1,23 +1,44 @@
-package Contrôleur;
+package ContrÃ´leur;
+
+import java.util.Timer;
 
 import Vue.Console;
 import Vue.GUI;
 import model.game;
+import model.game.ArcherPetsDamages;
+import model.game.ChronoMonstre;
+import model.game.PetsDamages;
 
 public class principal {
 
 	public static void main(String[] args) {
-		//Création du modèle
+		//Crï¿½ation du modï¿½le
 		game myGame = new game();
-		//Création des contrôleurs : Un pour chaque vue
-		//Chaque contrôleur doit avoir une référence vers le modèle pour pouvoir le commander
+		//Crï¿½ation des contrï¿½leurs : Un pour chaque vue
+		//Chaque contrï¿½leur doit avoir une rï¿½fï¿½rence vers le modï¿½le pour pouvoir le commander
 		gameController controlCons = new gameController(myGame);
 		gameController controlGUI = new gameController(myGame);
-		//Création des vues.
-		//Chaque vue doit connaître son contrôleur et avoir une référence vers le modèle pour pouvoir l'observer
+		//Crï¿½ation des vues.
+		
+		// Timer pour les degats des pets
+				Timer timerPets = new Timer();
+				PetsDamages aille = myGame.new PetsDamages();
+				timerPets.schedule(aille, 0, 2000);
+				
+				// Timer pour les dÃ©gats supplÃ©mentaires de la classe Archer
+				Timer timerArcher = new Timer();
+				ArcherPetsDamages ouille = myGame.new ArcherPetsDamages();
+				timerArcher.schedule(ouille, 1000, 2000);
+						
+				// Timer pour le dÃ©compte de 20/25 secondes au moment des boss
+				Timer timerBoss = new Timer();
+				ChronoMonstre chrono = myGame.new ChronoMonstre();
+				timerBoss.schedule(chrono, 0, 1000);
+				
+		//Chaque vue doit connaï¿½tre son contrï¿½leur et avoir une rï¿½fï¿½rence vers le modï¿½le pour pouvoir l'observer
 		Console myConsole = new Console(myGame, controlCons);
 		GUI myGUI = new GUI(myGame, controlGUI);
-		//On donne la référence à la vue pour chaque contrôleur
+		//On donne la rï¿½fï¿½rence ï¿½ la vue pour chaque contrï¿½leur
 		controlCons.addView(myConsole);
 		controlGUI.addView(myGUI);
 		//genere l'interface graphique 

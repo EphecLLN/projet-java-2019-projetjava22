@@ -5,37 +5,36 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-
-import Contrôleur.gameController;
+import ContrÃ´leur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
  * 
  * @author Lucas Pastori
- *	interface console se mettant a jour régulièrement
- *	liée avec l'interface graphique
+ *	interface console se mettant a jour rï¿½guliï¿½rement
+ *	liï¿½e avec l'interface graphique
  */
 public class Console extends gameVue implements Observer{
 
 	
 	public Console(game model, gameController controller) {
 		super(model, controller);
-		
 	}
 	/**
-	 * donne une première fois le texte a l'utilisateur et permet d'activer une méthode 
+	 * donne une premiï¿½re fois le texte a l'utilisateur et permet d'activer une mï¿½thode 
 	 * en encodant la bonne input dans la console 
-	 * @param game classe du modèle affectée
+	 * @param game classe du modï¿½le affectï¿½e
 	 */
 	public void Scan(game game) {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au même niveau 
+			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au mï¿½me niveau 
 			System.out.println("solde : " + model.getGold());
 			System.out.println("solde artefact : " + model.myHero.getArtefactMoney());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+			System.out.println("Choix des heros : " + model.getHeroChoice());
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
 			System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
@@ -44,7 +43,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
 			System.out.println("type du monstre : " + model.myMonster.getAttribute());
 			System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
-			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redémarrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1) + ")");
+			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redï¿½marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1) + ")");
 			System.out.println();
 					
 			String userAction = myScan.nextLine();  
@@ -65,14 +64,13 @@ public class Console extends gameVue implements Observer{
 				game.myPets.buyPet(game);
 			}
 			if (userAction.contentEquals("archer")) {
-				game.archerChoice(game.myPets, game.myArcher);
-				System.out.println("AttackSpeed fixee a 0.7/sec");
+				game.archerChoice(game.myHero);
 			}
 			if (userAction.contentEquals("mage")) {
-				game.mageChoice();
+				game.mageChoice(game.myHero);
 			}
 			if (userAction.contentEquals("berzerker")) {
-				game.berzerkerChoice();
+				game.berzerkerChoice(game.myHero);
 			}
 			if (userAction.contentEquals("x")) {
 				game.myHero.buyArtefact(game.myArtf, game);
@@ -85,12 +83,13 @@ public class Console extends gameVue implements Observer{
    	}
 
 	@Override
-	public void update(Observable o, Object arg) { // remet à régulièrement l'interface console 
+	public void update(Observable o, Object arg) { // remet ï¿½ rï¿½guliï¿½rement l'interface console 
 		
 		System.out.println("\n\n\n\n");
 		System.out.println("solde : " + model.getGold());
 		System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 		System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
+		System.out.println("Choix des heros : " + model.getHeroChoice());
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
 		System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
@@ -99,13 +98,13 @@ public class Console extends gameVue implements Observer{
 		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
 		System.out.println("type du monstre : " + model.myMonster.getAttribute());
 		System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
-		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redémarrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
+		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redï¿½marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
 		
 	}
 
 	@Override
 	public void enableWarning() {
-		System.out.println("Alerte"); // prévient en cas de problème
+		System.out.println("Alerte"); // prï¿½vient en cas de problï¿½me
 		
 	}
 
