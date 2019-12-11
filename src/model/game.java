@@ -92,12 +92,20 @@ public class game extends Observable {
         if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "pyro") {
         	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
         }
-		else {
+        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "aqua")) {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        }
+        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "pyro") {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        }
+        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "tera") {
+        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        }
+        if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
-			monstre.die(myMonster,this);
-			this.nbrClic ++;
-		}
-		
+        }
+		monstre.die(myMonster,this);
+		this.nbrClic ++;
 		setChanged();
         notifyObservers();
 	}

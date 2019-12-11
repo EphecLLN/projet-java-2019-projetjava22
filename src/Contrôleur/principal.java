@@ -24,5 +24,6 @@ public class principal {
 		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
 		//genere le scanner pour rentrer les commandes dans la console
 		myConsole.Scan(myGame);
+		
 	}
 }

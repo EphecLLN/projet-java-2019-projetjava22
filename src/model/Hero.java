@@ -13,7 +13,7 @@ public class Hero extends Observable {
 	private int constDamage = 1; 			//variable pr�servant damage d'�tre constament modifi�
 	private int artefactMoney = 0;	//artefactMoney : l'argent que le héros possède 
 	private int artefactCost = 10; 	//prix d'un artefact DOIT être > 0
-	private String attribute = "neutral";
+	private String attribute = "aqua";
 	
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;

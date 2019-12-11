@@ -34,6 +34,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton buttonUPPets = new JButton();
 	public JButton buttonArtf = new JButton();
 	public JButton archerChoice = new JButton();
+	public JButton berserkChoice = new JButton();
+	public JButton mageChoice = new JButton();
 	public JLabel degatLabel = new JLabel();
 	public JLabel petUPLabel = new JLabel(); 
 	public JLabel dmgUPLabel = new JLabel();
@@ -187,6 +189,28 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		attributePanel.add(pyro);
 		attributePanel.add(tera);
 		
+		ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
+		ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berserk.gif"));
+		ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
+		
+		archerChoice.setBackground(Color.gray);
+		archerChoice.setFocusPainted(false);
+		archerChoice.addActionListener(this);
+		archerChoice.setIcon(archerIcon);
+		choiceClass.add(archerChoice);
+		
+		berserkChoice.setBackground(Color.gray);
+		berserkChoice.setFocusPainted(false);
+		berserkChoice.addActionListener(this);
+		berserkChoice.setIcon(berserkIcon);
+		choiceClass.add(berserkChoice);
+		
+		mageChoice.setBackground(Color.gray);
+		mageChoice.setFocusPainted(false);
+		mageChoice.addActionListener(this);
+		mageChoice.setIcon(mageIcon);
+		choiceClass.add(mageChoice);
+		
 		window.setVisible(true);
 	}
 	
@@ -214,6 +238,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		argentLabel.setText("argent : " + model.getGold() );
 		petUPLabel.setText("cout : " + model.myPets.getPetCostBuy());
 		artfMoneyToGet.setText("gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+		artfMoneyCost.setText("cout : " + model.myHero.getArtefactCost());
 	}
 
 	@Override
@@ -244,6 +269,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 		if (x == archerChoice) {
 			controller.classChoice(1);
+		}
+		if (x == berserkChoice) {
+			controller.classChoice(2);
+		}
+		if (x == mageChoice) {
+			controller.classChoice(3);
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();
