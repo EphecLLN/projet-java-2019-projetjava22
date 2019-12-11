@@ -15,7 +15,7 @@ public class Monster extends Observable {
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
-	private String attribute = "aqua";
+	private String attribute = "";
 	int tempsBoss = 20;
 	
 	/**
@@ -40,7 +40,6 @@ public class Monster extends Observable {
 			monstre.PV = monstre.pvIncrease;
 			if(monstre.waveNumber == 2) {
 				game.heroChoice();
-				activerChoixClasses();	
 			}
 			randomMonster();
 			
@@ -68,7 +67,8 @@ public class Monster extends Observable {
 		}
 	}
 	
-	
+	/**
+	 */
 	
 	public void randomMonster() {
 		int x = ((int) ((Math.random() * 100) % 3));
@@ -81,10 +81,6 @@ public class Monster extends Observable {
 		if (x == 2) {
 			attribute = "pyro";
 		}
-	}
-	
-	public void activerChoixClasses() {
-		
 	}
 	
 	public int getPV() {
@@ -157,8 +153,6 @@ public class Monster extends Observable {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-	}
 
 	public String getAttribute() {
 		return attribute;
@@ -167,5 +161,8 @@ public class Monster extends Observable {
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-
+	
+	public static void main(String[] args) {
+		
+	}
 }

@@ -3,11 +3,13 @@ package Vue;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -43,24 +45,44 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel artfMoney = new JLabel();
 	public JLabel artfMoneyToGet = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
+	public JButton buttonHero = new JButton();
 	public ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
 	public ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
 	public ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
+	public ImageIcon imageHero0 = new ImageIcon("./images/héro-1.png.png");
+	public ImageIcon imageHero1 = new ImageIcon("./images/héro-2.png.png");
+	public ImageIcon imageHero2 = new ImageIcon("./images/héro-3.png.png");
+	public ImageIcon imageHero3 = new ImageIcon("./images/héro-4.png.png");
+
 	public JFrame window = new JFrame("Clicker");
 	public JPanel choiceClass = new JPanel();
 
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
 			
-		window.setSize(1200, 900);
+		window.setSize(1200, 700);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
 		window.setLayout(null);
-		
+		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
+
 		JPanel monstrePanel = new JPanel();
-		monstrePanel.setBounds(100, 400, 200, 200);
-		monstrePanel.setBackground(Color.blue);
+		monstrePanel.setBounds(500, 140, 200, 230);
+		monstrePanel.setBackground(Color.white);
 		window.add(monstrePanel);	
-			
+		
+		JPanel heroPanel = new JPanel();
+		heroPanel.setLayout(new GridLayout(1,1));
+		heroPanel.setBounds(500, 390, 200, 230);
+		heroPanel.setBackground(Color.gray);
+		window.add(heroPanel);
+		
+		buttonHero.setBackground(Color.white);
+		buttonHero.setFocusPainted(false);
+		buttonHero.setBorder(null);
+		buttonHero.setIcon(imageHero1);
+		
+		heroPanel.add(buttonHero);
+		
 		buttonMonster.setBackground(Color.white);
 		buttonMonster.setFocusPainted(false);
 		buttonMonster.setBorder(null);
@@ -69,21 +91,24 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		monstrePanel.add(buttonMonster);
 		
+		
+		//  BOUTONS D'AMELIORATION
+		
 		JPanel ensembleBoutton1 = new JPanel();
-		ensembleBoutton1.setLayout(new GridLayout(6,1));
-		ensembleBoutton1.setBounds(600,100,150,400);
+		ensembleBoutton1.setLayout(new GridLayout(2,3));
+		ensembleBoutton1.setBounds(75,500,350,130);
 		ensembleBoutton1.setBackground(Color.white);
 		window.add(ensembleBoutton1);
 		
 		JPanel ensembleBoutton2 = new JPanel();
-		ensembleBoutton2.setLayout(new GridLayout(6,1));
-		ensembleBoutton2.setBounds(800,100,150,400);
+		ensembleBoutton2.setLayout(new GridLayout(1,6));
+		ensembleBoutton2.setBounds(100,900,150,400);
 		ensembleBoutton2.setBackground(Color.white);
 		window.add(ensembleBoutton2);
 		
 		
-        choiceClass.setLayout(new GridLayout(2,3));
-        choiceClass.setBounds(600,550,300,200);
+        choiceClass.setLayout(new GridLayout(3,1));
+        choiceClass.setBounds(900,100,200,450);
         choiceClass.setBackground(Color.gray);
         window.add(choiceClass);
         
@@ -95,6 +120,42 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		buttonUP.setIcon(UPIcon);
 		buttonUP.addActionListener(this);
 		ensembleBoutton1.add(buttonUP);
+		
+		ImageIcon UPPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
+		
+		buttonUPPets.setBackground(Color.white);
+		buttonUPPets.setFocusPainted(false);
+		buttonUPPets.setBorder(null);
+		buttonUPPets.setIcon(UPPixie);
+		buttonUPPets.addActionListener(this);
+		ensembleBoutton1.add(buttonUPPets);
+		
+		ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
+
+		buttonReborn.setBackground(Color.white);
+		buttonReborn.setFocusPainted(false);
+		buttonReborn.setBorder(null);
+		buttonReborn.setIcon(reset);
+		buttonReborn.addActionListener(this);
+		ensembleBoutton1.add(buttonReborn);
+		
+		dmgUPLabel.setForeground(Color.black);
+		dmgUPLabel.setFont(stats);
+		dmgUPLabel.setText("   Cout : " + myGame.getUpgradeMoneyValue());
+		ensembleBoutton1.add(dmgUPLabel);
+		
+		petUPLabel.setForeground(Color.black);
+		petUPLabel.setFont(stats);
+		petUPLabel.setText("   Cout : " + pet.getPetCostBuy());
+		ensembleBoutton1.add(petUPLabel);
+		
+		artfMoneyToGet.setForeground(Color.black);
+		artfMoneyToGet.setFont(stats);
+		artfMoneyToGet.setText("    gain : " + (monstre.getWaveNumber() + myGame.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+		ensembleBoutton1.add(artfMoneyToGet);
+	
+		
+		// COMPTEUR
 		
 		JPanel compteur = new JPanel();
 		compteur.setBounds(100,100,400,200);
@@ -109,7 +170,6 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		compteur.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
-		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
 		argentLabel.setFont(stats);
 		argentLabel.setText("argent : " + myGame.getGold() );
 		compteur.add(argentLabel);
@@ -124,38 +184,6 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		artfMoney.setText("monnaie artefacts actuels :" + hero.getArtefactMoney());
 		compteur.add(artfMoney);
 		
-		dmgUPLabel.setForeground(Color.black);
-		dmgUPLabel.setFont(stats);
-		dmgUPLabel.setText("cout : " + myGame.getUpgradeMoneyValue());
-		ensembleBoutton1.add(dmgUPLabel);
-		
-		ImageIcon UPPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
-		
-		buttonUPPets.setBackground(Color.white);
-		buttonUPPets.setFocusPainted(false);
-		buttonUPPets.setBorder(null);
-		buttonUPPets.setIcon(UPPixie);
-		buttonUPPets.addActionListener(this);
-		ensembleBoutton1.add(buttonUPPets);
-				
-		petUPLabel.setForeground(Color.black);
-		petUPLabel.setFont(stats);
-		petUPLabel.setText("co�t : " + pet.getPetCostBuy());
-		ensembleBoutton1.add(petUPLabel);
-		
-		ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
-		
-		buttonReborn.setBackground(Color.white);
-		buttonReborn.setFocusPainted(false);
-		buttonReborn.setBorder(null);
-		buttonReborn.setIcon(reset);
-		buttonReborn.addActionListener(this);
-		ensembleBoutton1.add(buttonReborn);
-		
-		artfMoneyToGet.setForeground(Color.black);
-		artfMoneyToGet.setFont(stats);
-		artfMoneyToGet.setText("gain : " + (monstre.getWaveNumber() + myGame.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
-		ensembleBoutton1.add(artfMoneyToGet);
 		
 		buttonArtf.setBackground(Color.gray);
 		buttonArtf.setFocusPainted(false);
@@ -169,9 +197,26 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		screenMonster(this, monstre);
 		ajouterClasses(this, monstre);
+		changerAttaqueHero(myGame, this);
 		
 		window.setVisible(true);
 	}
+	
+	public void changerAttaqueHero(game game, GUI myGUI) {
+		if(game.getImageHero()%4 == 0) {
+			myGUI.buttonHero.setIcon(myGUI.imageHero0);
+		}
+		if(game.getImageHero()%4 == 1) {
+			myGUI.buttonHero.setIcon(myGUI.imageHero1);
+		}
+		if(game.getImageHero()%4 == 2) {
+			myGUI.buttonHero.setIcon(myGUI.imageHero2);
+		}
+		if(game.getImageHero()%4 == 3) {
+			myGUI.buttonHero.setIcon(myGUI.imageHero3);
+		}
+	}
+	
 	
 	public void screenMonster(GUI myGUI, Monster myMonster) {
 		if (myMonster.getAttribute() == "aqua") {
@@ -223,12 +268,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	@Override
 	public void update(Observable o, Object arg) {
 		degatLabel.setText("degats actuels :" + model.myHero.getDamage());
-		dmgUPLabel.setText("cout : " + model.getUpgradeMoneyValue());
+		dmgUPLabel.setText("   Cout : " + model.getUpgradeMoneyValue());
 		PVLabel.setText("PV : " + model.myMonster.getPV());
 		artfMoney.setText("monnaie artefacts actuels :" + model.myHero.getArtefactMoney());
 		argentLabel.setText("argent : " + model.getGold() );
-		petUPLabel.setText("cout : " + model.myPets.getPetCostBuy());
-		artfMoneyToGet.setText("gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+		petUPLabel.setText("   Cout : " + model.myPets.getPetCostBuy());
+		artfMoneyToGet.setText("    gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
 	}
 
 	@Override
@@ -247,7 +292,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		Object x = e.getSource();
 		if (x == buttonMonster) {
 			controller.attack();
+			screenMonster(this, model.myMonster);
 			ajouterClasses(this, model.myMonster);
+			changerAttaqueHero(model, this);
 		}
 		if (x == buttonUP) {
 			controller.upgrade();

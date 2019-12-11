@@ -37,6 +37,7 @@ public class game extends Observable {
 	int upgradecroissance = 2;
 	int constUpgradeDamage = 1;
 	private int nbrUpgrade = 0;
+	int imageHero = 2;
 	
 	/*----------------------------------------------
 	 * variables utile à game 
@@ -79,27 +80,32 @@ public class game extends Observable {
 				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
 				monstre.die(monstre,this);
 				this.nbrClic ++;
+				imageHero++;
 			}
 			else {
 				monstre.setPV(monstre.getPV() - heroGame.getDamage());
 				monstre.die(monstre,this);
 				this.nbrClic ++;
+				imageHero++;
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
 			monstre.die(monstre,this);
 			this.nbrClic ++;
+			imageHero++;
 		}
 		else if(heroGame.getCheckClass() != 3){
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
 			monstre.die(monstre,this);
 			this.nbrClic ++;
+			imageHero++;
 		}
 		
 		setChanged();
         notifyObservers();
 	}
+	
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeMoneyValue()) {
 			heroGame.setConstDamage(heroGame.getConstDamage() + constUpgradeDamage);
@@ -178,6 +184,14 @@ public class game extends Observable {
 	
 	public void berzerkerChoice(Hero heroGame) {
 		heroGame.setCheckClass(3);
+	}
+	
+	public int getImageHero() {
+		return imageHero;
+	}
+	
+	public void setImageHero(int number) {
+		this.imageHero = number;
 	}
 
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
