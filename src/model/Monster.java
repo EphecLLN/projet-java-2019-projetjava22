@@ -74,12 +74,15 @@ public class Monster extends Observable {
 		int x = ((int) ((Math.random() * 100) % 3));
 		if (x == 0) {
 			attribute = "aqua";
+			GUI.buttonMonster.setIcon(GUI.slimeBleu);
 		}
 		if (x == 1) {
 			attribute = "tera";
+			GUI.buttonMonster.setIcon(GUI.slimeVert);
 		}
 		if (x == 2) {
 			attribute = "pyro";
+			GUI.buttonMonster.setIcon(GUI.slimeRouge);
 		}
 	}
 	

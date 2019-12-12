@@ -1,4 +1,4 @@
-package ContrÃ´leur;
+package Contrôleur;
 
 import Vue.gameVue;
 import model.game;
@@ -38,6 +38,18 @@ public class gameController {
     	}
     	if (x == 3) {
     		model.berzerkerChoice(model.myHero);
+    	}
+    	control();
+    }
+    public void attributeChoice(int x) {
+    	if (x == 1) {
+    		model.myHero.setAttribute("aqua");
+    	}
+    	if (x == 2) {
+    		model.myHero.setAttribute("pyro");
+    	}
+    	if (x == 3) {
+    		model.myHero.setAttribute("tera");
     	}
     	control();
     }

@@ -29,28 +29,31 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	public JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
 	public JButton buttonUP = new JButton();		
-	public JButton buttonMonster = new JButton();
+	public static JButton buttonMonster = new JButton();
 	public JButton buttonReborn = new JButton();
 	public JButton buttonUPPets = new JButton();
 	public JButton buttonArtf = new JButton();
 	public JButton archerChoice = new JButton();
-	public JButton buttonArcher = new JButton();
-	public JButton buttonMage = new JButton();
-	public JButton buttonBerzerker = new JButton();
+	public JButton berserkChoice = new JButton();
+	public JButton mageChoice = new JButton();
 	public JLabel degatLabel = new JLabel();
 	public JLabel petUPLabel = new JLabel(); 
 	public JLabel dmgUPLabel = new JLabel();
 	public JLabel artfMoney = new JLabel();
 	public JLabel artfMoneyToGet = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
-	public ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
-	public ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
-	public ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
-	public JFrame window = new JFrame("Clicker");
-	public JPanel choiceClass = new JPanel();
-
+	public static ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
+	public static ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
+	public static ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
+	public JButton aqua = new JButton();
+	public JButton tera = new JButton();
+	public JButton pyro = new JButton();
+	
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
-			
+		
+		screenMonster(this, monstre);
+		
+		JFrame window = new JFrame();
 		window.setSize(1200, 900);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white );;
@@ -70,18 +73,18 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		monstrePanel.add(buttonMonster);
 		
 		JPanel ensembleBoutton1 = new JPanel();
-		ensembleBoutton1.setLayout(new GridLayout(6,1));
-		ensembleBoutton1.setBounds(600,100,150,400);
+		ensembleBoutton1.setLayout(new GridLayout(6,2));
+		ensembleBoutton1.setBounds(600,100,400,400);
 		ensembleBoutton1.setBackground(Color.white);
 		window.add(ensembleBoutton1);
 		
-		JPanel ensembleBoutton2 = new JPanel();
-		ensembleBoutton2.setLayout(new GridLayout(6,1));
-		ensembleBoutton2.setBounds(800,100,150,400);
-		ensembleBoutton2.setBackground(Color.white);
-		window.add(ensembleBoutton2);
-		
-		
+		JPanel attributePanel = new JPanel();
+		attributePanel.setLayout(new GridLayout(1,3));
+		attributePanel.setBounds(100,620,400,150);
+		attributePanel.setBackground(Color.gray);
+		window.add(attributePanel);	
+
+		JPanel choiceClass = new JPanel();
         choiceClass.setLayout(new GridLayout(2,3));
         choiceClass.setBounds(600,550,300,200);
         choiceClass.setBackground(Color.gray);
@@ -160,15 +163,54 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		buttonArtf.setBackground(Color.gray);
 		buttonArtf.setFocusPainted(false);
 		buttonArtf.addActionListener(this);
-		ensembleBoutton2.add(buttonArtf);
+		ensembleBoutton1.add(buttonArtf);
 		
 		artfMoneyCost.setForeground(Color.black);
 		artfMoneyCost.setFont(stats);
 		artfMoneyCost.setText("cout : " + hero.getArtefactCost());
-		ensembleBoutton2.add(artfMoneyCost);
+		ensembleBoutton1.add(artfMoneyCost);
 		
-		screenMonster(this, monstre);
-		ajouterClasses(this, monstre);
+		ImageIcon aquaIcon = new ImageIcon(game.class.getResource("/images/aqua.png"));
+		ImageIcon pyroIcon = new ImageIcon(game.class.getResource("/images/fire.png"));
+		ImageIcon teraIcon = new ImageIcon(game.class.getResource("/images/plant.png"));
+		
+		aqua.setBackground(Color.white);
+		pyro.setBackground(Color.white);
+		tera.setBackground(Color.white);
+		aqua.setFocusPainted(false);
+		pyro.setFocusPainted(false);
+		tera.setFocusPainted(false);
+		aqua.addActionListener(this);
+		pyro.addActionListener(this);
+		tera.addActionListener(this);
+		aqua.setIcon(aquaIcon);
+		pyro.setIcon(pyroIcon);
+		tera.setIcon(teraIcon);
+		attributePanel.add(aqua);
+		attributePanel.add(pyro);
+		attributePanel.add(tera);
+		
+		ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
+		ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berserk.gif"));
+		ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
+		
+		archerChoice.setBackground(Color.gray);
+		archerChoice.setFocusPainted(false);
+		archerChoice.addActionListener(this);
+		archerChoice.setIcon(archerIcon);
+		choiceClass.add(archerChoice);
+		
+		berserkChoice.setBackground(Color.gray);
+		berserkChoice.setFocusPainted(false);
+		berserkChoice.addActionListener(this);
+		berserkChoice.setIcon(berserkIcon);
+		choiceClass.add(berserkChoice);
+		
+		mageChoice.setBackground(Color.gray);
+		mageChoice.setFocusPainted(false);
+		mageChoice.addActionListener(this);
+		mageChoice.setIcon(mageIcon);
+		choiceClass.add(mageChoice);
 		
 		window.setVisible(true);
 	}
@@ -188,32 +230,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public void ajouterClasses(GUI myGUI, Monster monstre) {
 		if(monstre.getWaveNumber() == 2) {
 		
-			ImageIcon ArcherIcon = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));	
-			ImageIcon MageIcon = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));	
-			ImageIcon BerzerkerIcon = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));
-		
-			myGUI.buttonArcher.setBackground(Color.white);
-			myGUI.buttonArcher.setFocusPainted(false);
-			myGUI.buttonArcher.setBorder(null);
-			myGUI.buttonArcher.setIcon(ArcherIcon);
-			myGUI.buttonArcher.addActionListener(this);
-		
-			myGUI.buttonMage.setBackground(Color.white);
-			myGUI.buttonMage.setFocusPainted(false);
-			myGUI.buttonMage.setBorder(null);
-			myGUI.buttonMage.setIcon(MageIcon);
-			myGUI.buttonMage.addActionListener(this);
-		
-			myGUI.buttonBerzerker.setBackground(Color.white);
-			myGUI.buttonBerzerker.setFocusPainted(false);
-			myGUI.buttonBerzerker.setBorder(null);
-			myGUI.buttonBerzerker.setIcon(BerzerkerIcon);
-			myGUI.buttonBerzerker.addActionListener(this);
-		
-		
-			myGUI.choiceClass.add(buttonArcher);
-			myGUI.choiceClass.add(buttonMage);
-			myGUI.choiceClass.add(buttonBerzerker);
+			
 		}
 	}	
 	
@@ -229,6 +246,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		argentLabel.setText("argent : " + model.getGold() );
 		petUPLabel.setText("cout : " + model.myPets.getPetCostBuy());
 		artfMoneyToGet.setText("gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+		artfMoneyCost.setText("cout : " + model.myHero.getArtefactCost());
 	}
 
 	@Override
@@ -258,17 +276,26 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		if (x == buttonReborn) {
 			controller.reset();
 		}
-		if (x == buttonArcher) {
+		if (x == archerChoice) {
 			controller.classChoice(1);
 		}
-		if (x == buttonMage) {
-			controller.classChoice(2);
-		}
-		if (x == buttonBerzerker) {
+		if (x == berserkChoice) {
 			controller.classChoice(3);
+		}
+		if (x == mageChoice) {
+			controller.classChoice(2);
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();
+		}
+		if (x == aqua) {
+			controller.attributeChoice(1);
+		}
+		if (x == pyro) {
+			controller.attributeChoice(2);
+		}
+		if (x == tera) {
+			controller.attributeChoice(3);
 		}
 	}
 
