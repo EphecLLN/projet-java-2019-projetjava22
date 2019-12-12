@@ -39,7 +39,7 @@ public class game extends Observable {
 	private int nbrUpgrade = 0;
 	
 	/*----------------------------------------------
-	 * variables utile à game 
+	 * variables utiles à game 
 	 * ---------------------------------------------*/
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();

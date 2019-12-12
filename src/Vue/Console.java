@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import ContrÃ´leur.gameController;
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
@@ -20,6 +20,9 @@ public class Console extends gameVue implements Observer{
 	public Console(game model, gameController controller) {
 		super(model, controller);
 	}
+	
+	
+	
 	/**
 	 * donne une premiï¿½re fois le texte a l'utilisateur et permet d'activer une mï¿½thode 
 	 * en encodant la bonne input dans la console 

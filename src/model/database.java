@@ -1,11 +1,11 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+
+import model.*;
 
 public class database {
-
-	Statement state;
-	Connection connect;
 	int affectedRows;
 		
 	//valeures temporaires d'un nouveau joueur (nécessite implémentation de la connexion via les vues)
@@ -14,14 +14,13 @@ public class database {
 		
 	int gold, damage;
 	
-	
-	public ResultSet data (String column,String table) {
+	public ResultSet data (String column,String table, String where) {
 		ResultSet result = null;
 		try {
-			connect = connexion();
-			state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			Connection connect = connexion();
+			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			//L'objet result contient le résultat de la requête SQL
-			result = state.executeQuery("SELECT "+ column +" FROM "+ table);
+			result = state.executeQuery("SELECT "+ column +" FROM "+ table + where);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
@@ -29,20 +28,19 @@ public class database {
 			}
 		return result;
 	};
-
-	public String dataCount (String column, String table) {
+	
+	public int dataCount (Connection connect, String column, String table, String where) {
 		ResultSet resultCount = null;
-		String count = "0";
+		int counter = 0;
 		try {
-			Connection connect = connexion();
-			state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			resultCount = state.executeQuery("SELECT COUNT("+ column +") FROM "+ table);
+			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			resultCount = state.executeQuery("SELECT COUNT("+ column +") FROM "+ table + where);
 			resultCount.next();
-			count = resultCount.getObject(1).toString();
-		}catch (SQLException | ClassNotFoundException e) {
+			counter = Integer.parseInt(resultCount.getObject(1).toString());
+		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return count;
+		return counter;
 	}
 
 	public ResultSetMetaData metaData (ResultSet resultat) {
@@ -55,7 +53,6 @@ public class database {
 		return resultMeta;
 	}
 
-
 	public Connection connexion () throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.postgresql.Driver");
@@ -66,73 +63,100 @@ public class database {
 		conn = DriverManager.getConnection(url,user, passwd);
 		return conn;
 	};
-
 	
-	public void team (String team) {
+	private int team (String team, ArrayList<String> values) {
 		try {
-			connect = connexion();
-			state = connect.createStatement();
-			ResultSet result = data("teamname", "team");
-	        ResultSetMetaData resultMeta = metaData(result);
-	        int teams = Integer.parseInt(dataCount("teamname","team"));
-	        int teamId = teams+1;
-			//System.out.print("Combien d'équipes sont dans la table? "+ teams +"\n");
-			//System.out.println("Test équipes : 0 =? " + teams);
-			if(teams == 0) {
-				affectedRows = state.executeUpdate("INSERT INTO team(teamid, teamname) VALUES (1,'"+ team.toString() + "');", Statement.RETURN_GENERATED_KEYS);
+			Connection connect = connexion();
+			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet result = data("teamname", "team", "");
+			//ResultSetMetaData resultMeta = metaData(result);
+			while(result.next()) {
+				values.add(result.getObject(1).toString());
 			}
-			else {
-		        while(result.next()) {
-		        	for(int i = 1; i <= resultMeta.getColumnCount(); i++) {
-			        	System.out.println("\n Test egalite : "+result.getObject(i).toString() + " " + team);
-						if (team.compareTo(result.getObject(i).toString()) == 0) {
-							System.out.println("Equipe existe déjà \n");
-							break;
-						}
-					}
-		        }
-		        affectedRows = state.executeUpdate("INSERT INTO team(teamid, teamname) VALUES ("+ teamId +", '"+ team.toString()+ "')");
+			System.out.print("Combien d'équipes sont dans la table? "+ values.size() + "\n");
+			result.beforeFirst();
+			System.out.println("next "+ result.next());
+			for(String i : values) {
+		       	System.out.println("\n Test egalite : "+ i + " =? " + team);
+				if (team.equals(i.toString())) {
+					System.out.println("Equipe "+ i +" existe déjà \n");
+					result.close();
+					state.close();
+					return affectedRows;
+				}
 			}
+			values.add(team);
+			affectedRows = state.executeUpdate("INSERT INTO team(teamid, teamname) VALUES ("+ values.size() +", '"+ team.toString()+ "')");
 			result.close();
 			state.close();
 		} catch (SQLException | ClassNotFoundException ex){
 			ex.printStackTrace();
 		}
+		return affectedRows;
 	};
 
-	public void player (String name, String password, String team) {
-		
-	}
-	
-	/**
-	 * méthode permettant de retrouver l'artefact du joueur dans la DB
-	 * @param id : numéro de l'artefact
-	 * @return 
-	 */
-	public ResultSetMetaData getArtefact (int id){
-		ResultSetMetaData resultMeta = null;
+	private Object player (String name, String password, String team, ArrayList<String> values) {
 		try {
 			Connection connect = connexion();
-			state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		
-			//L'objet ResultSet contient le résultat de la requête SQL
-			ResultSet result = state.executeQuery("SELECT artefactname FROM artefact WHERE artefactid = "+ id);
-
-			//On récupère les MetaData
-			resultMeta = result.getMetaData();
-    		result.close();
-    		state.close();	
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
+			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			ResultSet result = data("playername, playerid", "player", "");
+			//ResultSet teamResult = data("teamid, teamname", "team", "");
+			//ResultSetMetaData resultMeta = result.getMetaData();
+			while(result.next()) {
+				values.add(result.getObject(1).toString());
 			}
-		return resultMeta;
-		};
-
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-	     database db = new database(); 
-        db.team("Var Motiv = 4");   
+			System.out.println(values);
+			//inscription ou connexion
+			for (String i : values) {
+				if(name.equals(i.toString())) {
+					System.out.println("Joueur existe déjà");
+					playerConnection(name, password);
+					result.close();
+					state.close();
+					return null;
+				}
+			}
+			//inscription
+			values.add(name);
+			System.out.println(values);
+			playerInscription(state, values, name, password, team);
+			//puis connexion a ce compte
+			playerConnection(name, password);
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	};
+	
+	private void playerConnection(String name, String password) {
+		ResultSet result = data("playerid", "player", " WHERE playername = "+ name.toString());
+		
+	}
 
+	private void playerInscription (Statement state, ArrayList<String> player, String name, String password, String team) {
+		try {
+			affectedRows = state.executeUpdate("INSERT INTO player(playerid, playername, playerpassword, teamid) "
+					+" VALUES ("+ player.size() +", '"+ name.toString() +"', '"+ password.toString() +"', (SELECT teamid FROM team WHERE teamname = '"+ team.toString() +"'))");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	private void updateHero() {
+		int damage = model.myHero.getDamage();
+	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		ArrayList<String> values = new ArrayList<>();
+		database db = new database(); 
+	    //db.metaData(db.data("*", "team"));
+	    //db.data("teamname, teamid", "team");
+	    //db.data("playername, playerid", "player");
+        db.player("MatthFlash","pswd","Var Motiv = 1", values);
+	    //db.team("Var Motiv = 0", values);   
+	    //System.out.println(values);
+	}
 }
+
+//Changer artefact dans la db : supprimer la table artefact , remplacer artefactid dans hero par un string : "artefact1, artefact2" ==> séparer la chaine après 

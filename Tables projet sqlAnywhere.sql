@@ -86,4 +86,4 @@ DROP TABLE DBA.artefact;
 DROP TABLE DBA.hero;
 DROP TABLE DBA.monster;
 
-
+SELECT * FROM artefact
