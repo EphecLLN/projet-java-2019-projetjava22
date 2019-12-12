@@ -73,19 +73,25 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			
 		window.setSize(1200, 700);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.getContentPane().setBackground(Color.white );;
+		window.getContentPane().setBackground(Color.white);
 		window.setLayout(null);
 		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
 
 		JPanel monstrePanel = new JPanel();
 		monstrePanel.setBounds(500, 140, 200, 230);
 		monstrePanel.setBackground(Color.white);
-		window.add(monstrePanel);	
+		window.add(monstrePanel);
+		
+		JPanel attributePanel = new JPanel();
+		attributePanel.setLayout(new GridLayout(1,3));
+		attributePanel.setBounds(490,560,220,61);
+		attributePanel.setBackground(Color.white);
+		window.add(attributePanel);	
 		
 		JPanel heroPanel = new JPanel();
 		heroPanel.setLayout(new GridLayout(1,1));
-		heroPanel.setBounds(500, 390, 200, 230);
-		heroPanel.setBackground(Color.gray);
+		heroPanel.setBounds(525, 390, 150, 150);
+		heroPanel.setBackground(Color.white);
 		window.add(heroPanel);
 		
 		buttonHero.setBackground(Color.white);
@@ -109,66 +115,66 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		JPanel imagesUpDegatsNewPixie = new JPanel();
 		imagesUpDegatsNewPixie.setBounds(900,100,230,67);
 		imagesUpDegatsNewPixie.setLayout(new GridLayout(1,2));
-		imagesUpDegatsNewPixie.setBackground(Color.white);
+		imagesUpDegatsNewPixie.setBackground(Color.cyan);
 		window.add(imagesUpDegatsNewPixie);
 		
 		JPanel textesUpDegatsNewPixie = new JPanel();
 		textesUpDegatsNewPixie.setBounds(900,150,230,67);
 		textesUpDegatsNewPixie.setLayout(new GridLayout(1,2));
-		textesUpDegatsNewPixie.setBackground(Color.white);
+		textesUpDegatsNewPixie.setBackground(Color.cyan);
 		window.add(textesUpDegatsNewPixie);
 		
 		JPanel imagesResetUpPet = new JPanel();
-		imagesResetUpPet.setBounds(900,250,230,67);
+		imagesResetUpPet.setBounds(900,210,230,67);
 		imagesResetUpPet.setLayout(new GridLayout(1,2));
-		imagesResetUpPet.setBackground(Color.white);
+		imagesResetUpPet.setBackground(Color.cyan);
 		window.add(imagesResetUpPet);
 		
 		JPanel textesResetUpPet = new JPanel();
-		textesResetUpPet.setBounds(900,300,230,67);
+		textesResetUpPet.setBounds(900,260,230,67);
 		textesResetUpPet.setLayout(new GridLayout(1,2));
-		textesResetUpPet.setBackground(Color.white);
+		textesResetUpPet.setBackground(Color.cyan);
 		window.add(textesResetUpPet);
 		
-		JPanel ensembleBoutton1 = new JPanel();
-		ensembleBoutton1.setBounds(500,100,450,137);
-		ensembleBoutton1.setLayout(new GridLayout(4,2));
-		ensembleBoutton1.setBackground(Color.white);
-		window.add(ensembleBoutton1);
+		JPanel imageBuyArtefact = new JPanel();
+		imageBuyArtefact.setBounds(900,320,230,67);
+		imageBuyArtefact.setLayout(new GridLayout(1,2));
+		imageBuyArtefact.setBackground(Color.cyan);
+		window.add(imageBuyArtefact);
 		
-		JPanel attributePanel = new JPanel();
-		attributePanel.setLayout(new GridLayout(1,3));
-		attributePanel.setBounds(100,420,400,150);
-		attributePanel.setBackground(Color.gray);
-		window.add(attributePanel);	
+		JPanel textesBuyArtefact = new JPanel();
+		textesBuyArtefact.setBounds(900,370,230,67);
+		textesBuyArtefact.setLayout(new GridLayout(1,2));
+		textesBuyArtefact.setBackground(Color.cyan);
+		window.add(textesBuyArtefact);
 
 		JPanel choiceClass = new JPanel();
-        choiceClass.setLayout(new GridLayout(2,3));
-        choiceClass.setBounds(600,550,300,200);
-        choiceClass.setBackground(Color.gray);
+        choiceClass.setLayout(new GridLayout(1,3));
+        choiceClass.setBounds(400,10,400,70);
+        choiceClass.setBackground(Color.white);
         window.add(choiceClass);
         
 		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 		
-		buttonUP.setBackground(Color.white);
+		buttonUP.setBackground(Color.cyan);
 		buttonUP.setFocusPainted(false);
-		buttonUP.setBorder(null);
+		buttonUP.setBorderPainted(false);
 		buttonUP.setIcon(UPIcon);
 		buttonUP.addActionListener(this);
 		imagesUpDegatsNewPixie.add(buttonUP);
 		
 		ImageIcon UPPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
 		
-		buttonNewPet.setBackground(Color.white);
+		buttonNewPet.setBackground(Color.cyan);
 		buttonNewPet.setFocusPainted(false);
 		buttonNewPet.setBorder(null);
 		buttonNewPet.setIcon(UPPixie);
 		buttonNewPet.addActionListener(this);
 		imagesUpDegatsNewPixie.add(buttonNewPet);
 		
-		dmgUPLabel.setForeground(Color.black);
+		dmgUPLabel.setForeground(Color.yellow);
 		dmgUPLabel.setFont(stats);
-		dmgUPLabel.setText("       " + myGame.getUpgradeMoneyValue() + "$");
+		dmgUPLabel.setText("        " + myGame.getUpgradeMoneyValue() + "$");
 		textesUpDegatsNewPixie.add(dmgUPLabel);
 		
 		newPetLabel.setForeground(Color.black);
@@ -178,7 +184,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
 
-		buttonReborn.setBackground(Color.white);
+		buttonReborn.setBackground(Color.cyan);
 		buttonReborn.setFocusPainted(false);
 		buttonReborn.setBorder(null);
 		buttonReborn.setIcon(reset);
@@ -187,7 +193,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		ImageIcon upPetIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 		
-		buttonUpPets.setBackground(Color.white);
+		buttonUpPets.setBackground(Color.cyan);
 		buttonUpPets.setFocusPainted(false);
 		buttonUpPets.setBorder(null);
 		buttonUpPets.setIcon(upPetIcon);
@@ -207,38 +213,51 @@ public class GUI extends gameVue implements Observer, ActionListener{
 
 		ImageIcon artfIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
 
-		buttonArtf.setBackground(Color.white);
+		buttonArtf.setBackground(Color.cyan);
 		buttonArtf.setFocusPainted(false);
 		buttonArtf.setBorder(null);
 		buttonArtf.setIcon(artfIcon);
 		buttonArtf.addActionListener(this);
-		ensembleBoutton1.add(buttonArtf);
+		imageBuyArtefact.add(buttonArtf);
+		
+		artfMoneyCost.setForeground(Color.black);
+		artfMoneyCost.setFont(stats);
+		artfMoneyCost.setText("                     " + hero.getArtefactCost() + "€");
+		textesBuyArtefact.add(artfMoneyCost);
+		
+
+		
 
 
 		
 
 		
 
-		
+	/*	
 		artfMoneyCost.setForeground(Color.black);
 		artfMoneyCost.setFont(stats);
 		artfMoneyCost.setText(hero.getArtefactCost() + "$");
 		ensembleBoutton1.add(artfMoneyCost);
 	
-		
+	*/	
 		// COMPTEUR
 		
 		JPanel compteur = new JPanel();
 		compteur.setBounds(100,100,400,200);
-		compteur.setBackground(Color.white);
+		compteur.setBackground(Color.cyan);
 		compteur.setLayout(new GridLayout(4,1));
 		window.add(compteur);
+		
+		JPanel pointDeVie = new JPanel();
+		pointDeVie.setBounds(500,100,100,50);
+		pointDeVie.setBackground(Color.red);
+		window.add(pointDeVie);
 		
 		PVLabel.setForeground(Color.black );
 		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
 		PVLabel.setFont(PVEcriture);
 		PVLabel.setText("PV : " + monstre.getPV());
-		compteur.add(PVLabel);
+		pointDeVie.add(PVLabel);
 		
 		argentLabel.setForeground(Color.black );
 		argentLabel.setFont(stats);
@@ -265,6 +284,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		aqua.setBackground(Color.white);
 		pyro.setBackground(Color.white);
 		tera.setBackground(Color.white);
+		aqua.setBorderPainted(false);
+		pyro.setBorderPainted(false);
+		tera.setBorderPainted(false);
 		aqua.setFocusPainted(false);
 		pyro.setFocusPainted(false);
 		tera.setFocusPainted(false);
@@ -274,6 +296,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		aqua.setIcon(aquaIcon);
 		pyro.setIcon(pyroIcon);
 		tera.setIcon(teraIcon);
+		aqua.setEnabled(false);
 		attributePanel.add(aqua);
 		attributePanel.add(pyro);
 		attributePanel.add(tera);
@@ -282,20 +305,23 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berserk.gif"));
 		ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
 		
-		archerChoice.setBackground(Color.gray);
+		archerChoice.setBackground(Color.white);
 		archerChoice.setFocusPainted(false);
+		archerChoice.setBorderPainted(false);
 		archerChoice.addActionListener(this);
 		archerChoice.setIcon(archerIcon);
 		archerChoice.setEnabled(false);
 		
-		berserkChoice.setBackground(Color.gray);
+		berserkChoice.setBackground(Color.white);
 		berserkChoice.setFocusPainted(false);
+		berserkChoice.setBorderPainted(false);
 		berserkChoice.addActionListener(this);
 		berserkChoice.setIcon(berserkIcon);
 		berserkChoice.setEnabled(false);
 		
-		mageChoice.setBackground(Color.gray);
+		mageChoice.setBackground(Color.white);
 		mageChoice.setFocusPainted(false);
+		mageChoice.setBorderPainted(false);
 		mageChoice.addActionListener(this);
 		mageChoice.setIcon(mageIcon);
 		mageChoice.setEnabled(false);
@@ -350,13 +376,13 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	@Override
 	public void update(Observable o, Object arg) {
 		degatLabel.setText("degats actuels :" + model.myHero.getDamage());
-		dmgUPLabel.setText("       " + model.getUpgradeMoneyValue() + "$");
+		dmgUPLabel.setText("        " + model.getUpgradeMoneyValue() + "$");
 		PVLabel.setText("PV : " + model.myMonster.getPV());
 		artfMoney.setText("monnaie artefacts actuels :" + model.myHero.getArtefactMoney());
 		argentLabel.setText("argent : " + model.getGold() );
 		newPetLabel.setText("       " + model.myPets.getPetCostBuy() + "$");
 		artfMoneyToGet.setText("    Gain : " + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1) + "€");
-		artfMoneyCost.setText(model.myHero.getArtefactCost() + "€");
+		artfMoneyCost.setText("                     " + model.myHero.getArtefactCost() + "€");
 		upPetsLabel.setText("       " + model.myPets.getPetCostUpgrade() + "$");
 
 	}
@@ -407,12 +433,21 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 		if (x == aqua) {
 			controller.attributeChoice(1);
+			aqua.setEnabled(false);
+			pyro.setEnabled(true);
+			tera.setEnabled(true);		
 		}
 		if (x == pyro) {
 			controller.attributeChoice(2);
+			aqua.setEnabled(true);
+			pyro.setEnabled(false);
+			tera.setEnabled(true);
 		}
 		if (x == tera) {
 			controller.attributeChoice(3);
+			aqua.setEnabled(true);
+			pyro.setEnabled(true);
+			tera.setEnabled(false);
 		}
 	}
 
