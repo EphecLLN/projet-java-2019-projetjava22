@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import Contrôleur.gameController;
+import ContrÃ´leur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**

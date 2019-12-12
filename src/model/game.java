@@ -26,7 +26,6 @@ import java.util.Observable;
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
 public class game extends Observable {
-	
 	/*----------------------------------------------
 	 * variables de game
 	 * ---------------------------------------------*/
@@ -72,7 +71,6 @@ public class game extends Observable {
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
 				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
-<<<<<<< HEAD
 				monstre.die(monstre,this);
 				this.nbrClic ++;
 				imageHero++;
@@ -82,11 +80,6 @@ public class game extends Observable {
 				monstre.die(monstre,this);
 				this.nbrClic ++;
 				imageHero++;
-=======
-			}
-			else {
-				monstre.setPV(monstre.getPV() - heroGame.getDamage());
->>>>>>> master
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
@@ -114,7 +107,6 @@ public class game extends Observable {
         }
         if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
         	monstre.setPV(monstre.getPV() - heroGame.getDamage());
-<<<<<<< HEAD
         }
 		else if(heroGame.getCheckClass() != 3){
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
@@ -124,11 +116,6 @@ public class game extends Observable {
 		monstre.die(monstre,this);
 		this.nbrClic ++;
 		imageHero++;
-=======
-        }
-        this.nbrClic ++;
-        monstre.die(myMonster,this);
->>>>>>> master
 		setChanged();
 	    notifyObservers();
 	}

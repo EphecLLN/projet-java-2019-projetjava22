@@ -3,16 +3,7 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-<<<<<<< HEAD
-	int petDamages = 1;
-	int petDmgIncrease = 1;
-	int petNumber = 0;
-	int petCostUpgrade = 150;
-	double petBuyIncrease = 0.1;
 	int petUpgradeIncrease = 100;
-	int petsAttackSpeed = 2000;
-	int petCostBuy = 100;
-=======
 	private int petDamages = 1;
 	private int petDmgIncrease = 1;
 	private int petNumber = 0;
@@ -21,7 +12,6 @@ public class Pets extends Observable {
 	private double petBuyIncrease = 0.1;
 	private int petsAttackSpeed = 2000;
 	private int petCostBuy = 100;
->>>>>>> master
 	
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
@@ -113,11 +103,6 @@ public class Pets extends Observable {
 	public int getPetCostUpgrade() {
 		return petCostUpgrade;
 	}
-<<<<<<< HEAD
-	
-	public void setPetCostUpgrade(int valeur) {
-		this.petCostUpgrade = valeur;
-	}
 	
 	public int getPetUpgradeIncrease() {
 		return petUpgradeIncrease;
@@ -128,14 +113,13 @@ public class Pets extends Observable {
 	
 	public double getPetBuyIncrease() {
 		return petBuyIncrease;
-=======
+	}
 
 	/**
 	 * @param petCostUpgrade the petCostUpgrade to set
 	 */
 	public void setPetCostUpgrade(int petCostUpgrade) {
 		this.petCostUpgrade = petCostUpgrade;
->>>>>>> master
 	}
 
 	/**

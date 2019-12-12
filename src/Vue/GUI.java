@@ -94,17 +94,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton tera = new JButton();
 	public JButton pyro = new JButton();
 	
-	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons
-<<<<<<< HEAD
-			
+	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons		
 		window.setSize(1200, 700);
-=======
-		
 		screenMonster(this, monstre);
 		
 		JFrame window = new JFrame();
 		window.setSize(1200, 900);
->>>>>>> master
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.getContentPane().setBackground(Color.white);
 		window.setLayout(null);
@@ -598,14 +593,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	
 	public void ajouterClasses(GUI myGUI, Monster monstre) {
 		if(monstre.getWaveNumber() == 2) {
-<<<<<<< HEAD
 			GUI.archerChoice.setEnabled(true);
 			GUI.berserkChoice.setEnabled(true);
 			GUI.mageChoice.setEnabled(true);
-=======
-		
-			
->>>>>>> master
 		}
 	}	
 	
