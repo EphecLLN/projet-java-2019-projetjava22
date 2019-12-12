@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import ContrÃ´leur.gameController;
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
@@ -20,6 +20,9 @@ public class Console extends gameVue implements Observer{
 	public Console(game model, gameController controller) {
 		super(model, controller);
 	}
+	
+	
+	
 	/**
 	 * donne une premiï¿½re fois le texte a l'utilisateur et permet d'activer une mï¿½thode 
 	 * en encodant la bonne input dans la console 
@@ -40,7 +43,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
 			System.out.println("monstre : " + model.myMonster.getPV() + " pv");
 			System.out.println("-------------------------------------------------------------------------------------");
-			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
+			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts() );
 			System.out.println("type du monstre : " + model.myMonster.getAttribute());
 			System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
 			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redï¿½marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1) + ")");
@@ -95,7 +98,7 @@ public class Console extends gameVue implements Observer{
 		System.out.println("Vous etes ï¿½ la vague : " + model.myMonster.getWaveNumber());
 		System.out.println("monstre : " + model.myMonster.getPV() + " pv");
 		System.out.println("-------------------------------------------------------------------------------------");
-		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts()[0] + " / "+ model.myArtf.getCurrentArtefacts()[1] + " / "+ model.myArtf.getCurrentArtefacts()[2] + " / "+ model.myArtf.getCurrentArtefacts()[3] + " / "+ model.myArtf.getCurrentArtefacts()[4] + " / " );
+		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts() );
 		System.out.println("type du monstre : " + model.myMonster.getAttribute());
 		System.out.println("-------------------------------------------------------------------------------------"); // crï¿½e une sï¿½paration pour plus de propretï¿½
 		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redï¿½marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));

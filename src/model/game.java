@@ -35,23 +35,17 @@ public class game extends Observable {
 	private int gold = 1000;
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
-	int constUpgradeDamage = 1;
 	private int nbrUpgrade = 0;
 	int imageHero = 2;
 	
 	/*----------------------------------------------
-	 * variables utile à game 
+	 * variables utiles à game 
 	 * ---------------------------------------------*/
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
 	Console myConsole = new Console(this, null);
-	clic actionClic = new clic();
-	upgrade UP = new upgrade();
-	archerChoice Archer = new archerChoice();
-	mageChoice Mage = new mageChoice();
-	berzerkerChoice Berzerker = new berzerkerChoice();
 	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
 	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
 	JLabel degatLabel = new JLabel();
@@ -64,8 +58,8 @@ public class game extends Observable {
 	JButton buttonBerzerker = new JButton();
 	
 	void attackPets(Monster monstre, Pets myPet) {
-		monstre.setPV(monstre.getPV() - myPet.getPetDamage() * myPet.getPetNumber());
-		if(myPet.petNumber != 0) {
+		monstre.setPV(monstre.getPV() - myPet.getPetDamages() * myPet.getPetNumber());
+		if(myPet.getPetNumber() != 0) {
 			monstre.die(monstre,this);
 		}
 		setChanged();
@@ -78,6 +72,7 @@ public class game extends Observable {
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
 				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
+<<<<<<< HEAD
 				monstre.die(monstre,this);
 				this.nbrClic ++;
 				imageHero++;
@@ -87,11 +82,15 @@ public class game extends Observable {
 				monstre.die(monstre,this);
 				this.nbrClic ++;
 				imageHero++;
+=======
+			}
+			else {
+				monstre.setPV(monstre.getPV() - heroGame.getDamage());
+>>>>>>> master
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
-			monstre.die(monstre,this);
 			this.nbrClic ++;
 			imageHero++;
 		}
@@ -115,6 +114,7 @@ public class game extends Observable {
         }
         if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
         	monstre.setPV(monstre.getPV() - heroGame.getDamage());
+<<<<<<< HEAD
         }
 		else if(heroGame.getCheckClass() != 3){
 			monstre.setPV(monstre.getPV() - heroGame.getDamage());
@@ -124,15 +124,20 @@ public class game extends Observable {
 		monstre.die(monstre,this);
 		this.nbrClic ++;
 		imageHero++;
+=======
+        }
+        this.nbrClic ++;
+        monstre.die(myMonster,this);
+>>>>>>> master
 		setChanged();
 	    notifyObservers();
 	}
 	
 	public void upgrade(Hero heroGame) {
 		if (gold >= getUpgradeMoneyValue()) {
-			heroGame.setConstDamage(heroGame.getConstDamage() + constUpgradeDamage);
+			heroGame.setConstDamage(heroGame.getConstDamage() + heroGame.getConstUpgradeDamage());
 			heroGame.setDamage(heroGame.getConstDamage());
-			gold = gold - getUpgradeMoneyValue();
+			setGold(getGold() - getUpgradeMoneyValue());
 			setUpgradeMoneyValue(getUpgradeMoneyValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
 			setNbrUpgrade(getNbrUpgrade() + 1);
@@ -142,7 +147,7 @@ public class game extends Observable {
 	}
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
-		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() ) + (this.getNbrUpgrade() / 10 + this.myPets.getPetNumber() /10 - 1));
+		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() + this.getNbrUpgrade() / 10 + myPets.getPetNumber() /10 -1));
 		heroGame.setDamage(1);
 		heroGame.setConstDamage(1);
 		gold = 0;
@@ -157,9 +162,11 @@ public class game extends Observable {
 		monstre.setGoldIncrease(6);
 		monstre.setNumber(1);
 		monstre.setWaveNumber(1);
-		myPet.petNumber = 0;
-		myPet.petCostBuy= 100;
-		myPet.petCostUpgrade = 150;
+		myPet.setPetNumber(0);
+		myPet.setPetCostBuy(100);
+		myPet.setPetCostUpgrade(150);
+		save5 = 0;
+		save2x = 0;
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
 		setChanged();
         notifyObservers();
@@ -216,101 +223,38 @@ public class game extends Observable {
 		this.imageHero = number;
 	}
 
+	int save5 = 0;
+	int save2x = 0;
+	int savePet = 0;
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
-		for (int i = 0; i<artf.getCurrentArtefacts().length ; i++) {
-			if (artf.getCurrentArtefacts()[i].contentEquals("doublePet")) {
-				pet.petNumber = (pet.petNumber * 2);
-				pet.petBuyIncrease = 2;	
+		
+		for (int i = 0; i<artf.getCurrentArtefacts().size() ; i++) {
+			if (artf.getCurrentArtefacts().contains("doublePet") && savePet != 1) {
+				pet.setPetNumber(pet.getPetNumber() * 2);
+				pet.setPetNumberUP(2);	
+				savePet = 1;
 			}
-			if (artf.getCurrentArtefacts()[i].contentEquals("doubleDMG") ) {
-				hero.setConstDamage(hero.getConstDamage() + 1);
-				this.constUpgradeDamage ++;
-			}
-			if (artf.getCurrentArtefacts()[i].contentEquals("+5DMG")) {
+			if (artf.getCurrentArtefacts().contains("+5DMG") && save5 != 1) {
 				hero.setConstDamage(hero.getConstDamage() + 5);
+				save5 = 1;
 			}
-			if (artf.getCurrentArtefacts()[i].contentEquals("-1Boss")) {
+			if (artf.getCurrentArtefacts().contains("doubleDMG") && save2x != 1) {
+				hero.setConstDamage(hero.getConstDamage() *2);
+				hero.setConstUpgradeDamage(2);
+				save2x = 1;
+			}
+			if (artf.getCurrentArtefacts().contains("-1Boss")) {
 				monster.setbossNumber(9);
 			}
-			if (artf.getCurrentArtefacts()[i].contentEquals("every10Hit")) {
+			if (artf.getCurrentArtefacts().contains("every10Hit")) {
 				artf.activate10hit = true;
 			}
 			hero.setDamage(hero.getConstDamage());
+			
 		}
 	}
 	
-		
-		
-	public void genererUI() { //commande g�n�rant l'inteface ainsi que les bouttons
-		 
-		JFrame window = new JFrame();
-		window.setSize(1200, 900);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.getContentPane().setBackground(Color.white );;
-		window.setLayout(null);
-		
-		JPanel monstrePanel = new JPanel();
-		monstrePanel.setBounds(100, 400, 200, 200);
-		monstrePanel.setBackground(Color.blue);
-		window.add(monstrePanel);
-		
-		ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime bleu.png")); //creation d'une image en tant que ic�ne.
-		
-		JButton bouttonMonstre = new JButton();
-		bouttonMonstre.setBackground(Color.white);
-		bouttonMonstre.setFocusPainted(false);
-		bouttonMonstre.setBorder(null);
-		bouttonMonstre.setIcon(slimeBleu); // attribution de l'ic�ne au boutton (faire ressembler a un monstre).
-		bouttonMonstre.addActionListener(actionClic); // activation de clic() en int.graph.
-		monstrePanel.add(bouttonMonstre);
-		
-		JPanel ensembleBoutton = new JPanel();
-		ensembleBoutton.setLayout(new GridLayout(6,1));
-		ensembleBoutton.setBounds(600,100,150,400);
-		ensembleBoutton.setBackground(Color.white);
-		window.add(ensembleBoutton);
-		
-		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
-		
-		JButton buttonUP = new JButton();
-		buttonUP.setBackground(Color.white);
-		buttonUP.setFocusPainted(false);
-		buttonUP.setBorder(null);
-		buttonUP.setIcon(UPIcon);
-		buttonUP.addActionListener(UP);
-		ensembleBoutton.add(buttonUP);	
-		
-		JPanel compteur = new JPanel();
-		compteur.setBounds(100,100,400,200);
-		compteur.setBackground(Color.GRAY);
-		compteur.setLayout(new GridLayout(4,1));
-		window.add(compteur);
-		
-		PVLabel.setForeground(Color.black );
-		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 24 );
-		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("monstre PV : " + myMonster.getPV());
-		PVLabel.setText("PV : " + myMonster.getPV());
-		compteur.add(PVLabel);
-		
-		argentLabel.setForeground(Color.black );
-		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
-		argentLabel.setFont(stats);
-		argentLabel.setText("argent : " + gold );
-		compteur.add(argentLabel);
-		
-		degatLabel.setForeground(Color.black);
-		degatLabel.setFont(stats);
-		degatLabel.setText("degats actuels :" + myHero.getDamage());
-		compteur.add(degatLabel);
-		
-		coutUPLabel.setForeground(Color.black);
-		coutUPLabel.setFont(stats);
-		coutUPLabel.setText("co�t : " + getUpgradeValue());
-		ensembleBoutton.add(coutUPLabel);
-		
-		window.setVisible(true);
-	}
+
 	
 	public int getUpgradeValue() {
 		return upgradeMoneyValue;
@@ -370,53 +314,12 @@ public class game extends Observable {
 		}
 	}
 	
-	public class clic implements ActionListener{
-		 public void actionPerformed(ActionEvent event) {
-				attack(myMonster,myHero,myArtf);
-				PVLabel.setText("monstre PV : " + myMonster.getPV());
-				argentLabel.setText("argent : " + gold );
-			}
-	 }
-	
-	public class upgrade implements ActionListener{
-      public void actionPerformed(ActionEvent event) {
-             upgrade(myHero);
-             argentLabel.setText("argent : " + gold );
-             degatLabel.setText("d�g�ts actuels :" + myHero.getDamage());
-             coutUPLabel.setText("co�t : " + getUpgradeValue());
-         }
-	}
-
-	public class archerChoice implements ActionListener{
-	      public void actionPerformed(ActionEvent event) {
-	             mageChoice(myHero);
-	      }
-	}
-
-	public class mageChoice implements ActionListener{
-	      public void actionPerformed(ActionEvent event) {
-	             mageChoice(myHero);
-	      }
-	}
-	
-	public class berzerkerChoice implements ActionListener{
-	      public void actionPerformed(ActionEvent event) {
-	             berzerkerChoice(myHero);
-	      }
-	}
 
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		game myGame = new game();
-		myGame.genererUI();
-		
-		System.out.println("essaaaaaaaaaaaaaaaaaaaaai");
-		
-		myGame.myHero.buyArtefact(myGame.myArtf, myGame);
-		myGame.myConsole.Scan(myGame);
 	}
 }
 

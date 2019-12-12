@@ -11,6 +11,8 @@ import java.util.Observable;
  */
 public class Hero extends Observable {
 	
+	private int constUpgradeDamage = 1;
+	
 	/**
 	 * L'integer damage sert a enregistrer les degats infligés par le héros.
 	 * Cet attribut sera recalculé à chaque attaque, pour que la valeur finale de cette variable soit infligée
@@ -20,7 +22,10 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
+<<<<<<< HEAD
 	private String attribute = "aqua";
+=======
+>>>>>>> master
 	
 	
 	/**
@@ -49,7 +54,7 @@ public class Hero extends Observable {
 	 * Cet attribut permet de stocker l'argent spécial pour les artefact récolté durant la résurection (reborn)
 	 */
 	
-	private int artefactMoney = 0;
+	private int artefactMoney = 310;
 	
 	/**
 	 * Cet attribut stocke le prix d'achat d'un nouvel artefact. Cette valeur doit être strictement positive,
@@ -58,6 +63,18 @@ public class Hero extends Observable {
 	
 	private int artefactCost = 10;
 	
+<<<<<<< HEAD
+=======
+	/**
+	 * Cet attribut permet de stocker le type de monstre (Eau, terre ou feu). Cette valeur change de manière aléatoire
+	 * via a fonction screenMonster() de la classe GUI
+	 */
+	
+	
+	private String
+	
+	attribute = "aqua";
+>>>>>>> master
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
@@ -76,11 +93,14 @@ public class Hero extends Observable {
 	 */
 	
 	public void buyArtefact(Artefact artf,game game) {
-		if(getArtefactMoney() >= getArtefactCost()) {
+		if(getArtefactMoney() >= getArtefactCost() && artf.getCurrentArtefacts().size() !=5) {
 			setArtefactMoney(getArtefactMoney() - getArtefactCost());
 			setArtefactCost(getArtefactCost() + artefactCost);
 			double nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
-			artf.getCurrentArtefacts()[(int) nbrNoArtf] += artf.noArtefacts[(int) nbrNoArtf];
+			while(artf.getCurrentArtefacts().contains(artf.noArtefacts[(int) nbrNoArtf])) {
+				nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
+			}
+			artf.getCurrentArtefacts().add(artf.noArtefacts[(int) nbrNoArtf]);
 			game.applyArtefacts(game.myArtf, game.myPets, game.myHero, game.myMonster);
 		}
 		else {
@@ -90,6 +110,7 @@ public class Hero extends Observable {
 	public String getAttribute() {
 		return attribute;
 	}
+<<<<<<< HEAD
 	public void setAttribute(String x) {
 		this.attribute = x;
 	}
@@ -98,6 +119,12 @@ public class Hero extends Observable {
 	 * @param x attribut à set (aqua, terra ou pyro)
 	 */
 	
+=======
+	
+	public void setAttribute(String x) {
+		this.attribute = x;
+	}
+>>>>>>> master
 	
 	/**
 	 * @return les dégâts actuels du heros
@@ -107,6 +134,18 @@ public class Hero extends Observable {
 		return damage;
 	}
 	
+	/**
+	 * @return the constUpgradeDamage
+	 */
+	public int getConstUpgradeDamage() {
+		return constUpgradeDamage;
+	}
+	/**
+	 * @param constUpgradeDamage the constUpgradeDamage to set
+	 */
+	public void setConstUpgradeDamage(int constUpgradeDamage) {
+		this.constUpgradeDamage = constUpgradeDamage;
+	}
 	/**
 	 * @return chiffre actuel représentant la classe active
 	 * 		0 pour aucune classe choisie
