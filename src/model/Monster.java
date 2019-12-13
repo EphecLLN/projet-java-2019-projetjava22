@@ -40,7 +40,6 @@ public class Monster extends Observable {
 			monstre.setPV(monstre.getPvIncrease());
 			if(monstre.waveNumber == 2) {
 				game.heroChoice();
-				activerChoixClasses();	
 			}
 			randomMonster(monstre);
 			
@@ -68,7 +67,8 @@ public class Monster extends Observable {
 		}
 	}
 	
-	
+	/**
+	 */
 	
 	public void randomMonster(Monster monster) {
 		int x = ((int) ((Math.random() * 100) % 3));
@@ -84,10 +84,6 @@ public class Monster extends Observable {
 			monster.setAttribute("pyro");
 			GUI.buttonMonster.setIcon(GUI.slimeRouge);
 		}
-	}
-	
-	public void activerChoixClasses() {
-		
 	}
 	
 	public int getPV() {
@@ -160,8 +156,6 @@ public class Monster extends Observable {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-	}
 
 	public String getAttribute() {
 		return attribute;
@@ -170,5 +164,8 @@ public class Monster extends Observable {
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-
+	
+	public static void main(String[] args) {
+		
+	}
 }

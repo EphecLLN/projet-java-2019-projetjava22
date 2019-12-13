@@ -20,6 +20,9 @@ public class Console extends gameVue implements Observer{
 	public Console(game model, gameController controller) {
 		super(model, controller);
 	}
+	
+	
+	
 	/**
 	 * donne une premi�re fois le texte a l'utilisateur et permet d'activer une m�thode 
 	 * en encodant la bonne input dans la console 

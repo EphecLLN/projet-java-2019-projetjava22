@@ -3,6 +3,7 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
+	int petUpgradeIncrease = 100;
 	private int petDamages = 1;
 	private int petDmgIncrease = 1;
 	private int petNumber = 0;
@@ -23,20 +24,19 @@ public class Pets extends Observable {
 	 * 		pour pouvoir effectuer celle-ci (valeur positive)
 	 * @param costUpgrade
 	 * 		coût de l'amélioration, il faut avoir un montant supérieur ou égal de golds pour pouvoir
-	 * 		effectuer l'amélioration (valeur positive)
-	 * @return petDamage
-	 * 		retourne les dégâts des pets après avoir été améliorés	
+	 * 		effectuer l'amélioration (valeur positive)	
 	 */
 	
-	int upgradePet(int petDamage, int petIncrease, int gold, int petCostUpgrade) {
-		if(gold >= petCostUpgrade) {
-			petDamage = petDamage + petIncrease;
-			gold -= petCostUpgrade;
+	public void upgradePet(game game,Pets myPets) {
+		if(game.getGold() >= myPets.petCostUpgrade) {
+			myPets.petDamages =myPets.petDamages + myPets.petDmgIncrease;
+			game.setGold(game.getGold() - myPets.petCostUpgrade);
+			myPets.setPetCostUpgrade(getPetCostUpgrade() + myPets.petUpgradeIncrease);
+			myPets.setPetUpgradeIncrease(getPetUpgradeIncrease()*2);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}
-		return petDamage;
 	}
 	
 	/**
@@ -103,6 +103,17 @@ public class Pets extends Observable {
 	 */
 	public int getPetCostUpgrade() {
 		return petCostUpgrade;
+	}
+	
+	public int getPetUpgradeIncrease() {
+		return petUpgradeIncrease;
+	}
+	public void setPetUpgradeIncrease(int prix) {
+		this.petUpgradeIncrease = prix;
+	}
+	
+	public double getPetBuyIncrease() {
+		return petBuyIncrease;
 	}
 
 	/**

@@ -26,7 +26,6 @@ import java.util.Observable;
  * classe permettant d'utiliser les autres classes / de faire fonctionner le jeu
  */
 public class game extends Observable {
-	
 	/*----------------------------------------------
 	 * variables de game
 	 * ---------------------------------------------*/
@@ -36,12 +35,13 @@ public class game extends Observable {
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
+	int imageHero = 2;
 	int save5 = 0;
 	int save2x = 0;
 	int savePet = 0;
 	
 	/*----------------------------------------------
-	 * variables utile à game 
+	 * variables utiles à game 
 	 * ---------------------------------------------*/
 	public Artefact myArtf = new Artefact();
 	public Monster myMonster = new Monster();
@@ -65,16 +65,17 @@ public class game extends Observable {
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
 				monstre.setPV(monstre.getPV() - (dmg * 2));
-			}
-			else {
-				monstre.setPV(monstre.getPV() - dmg);
+				monstre.die(monstre,this, monstre.getPV(), monstre.getNumber(), monstre.getbossNumber());
+				this.nbrClic ++;
+				imageHero++;
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - dmg * 5);
 			this.nbrClic ++;
+			imageHero++;
 		}
-        if ((dmgAtribute == "pyro" && monsterAttribute == "tera")) {
+        if (dmgAtribute == "pyro" && monsterAttribute == "tera") {
         	monstre.setPV(monstre.getPV() - dmg * 2);
         }
         if (dmgAtribute == "tera" && monsterAttribute == "aqua") {
@@ -95,16 +96,17 @@ public class game extends Observable {
         if (dmgAtribute ==  monsterAttribute ) {
         	monstre.setPV(monstre.getPV() - dmg);
         }
-        this.nbrClic ++;
-        monstre.die(myMonster,this, myMonster.getPV(), myMonster.getNumber(), myMonster.getbossNumber());
+        monstre.die(monstre,this, monstre.getPV(), monstre.getNumber(), monstre.getbossNumber());
+		this.nbrClic ++;
+		imageHero++;
 		setChanged();
-        notifyObservers();
+	    notifyObservers();
 	}
 	public void upgrade(Hero heroGame, int constUP) {
 		if (gold >= getUpgradeMoneyValue()) {
 			heroGame.setConstDamage(heroGame.getConstDamage() + constUP);
 			heroGame.setDamage(heroGame.getConstDamage());
-			gold = gold - getUpgradeMoneyValue();
+			setGold(getGold() - getUpgradeMoneyValue());
 			setUpgradeMoneyValue(getUpgradeMoneyValue() + upgradecroissance) ;
 			upgradecroissance  += 2 ;
 			setNbrUpgrade(getNbrUpgrade() + 1);
@@ -114,7 +116,7 @@ public class game extends Observable {
 	}
 	
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
-		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() ) + (this.getNbrUpgrade() / 10 + this.myPets.getPetNumber() /10 - 1));
+		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() + this.getNbrUpgrade() / 10 + myPets.getPetNumber() /10 -1));
 		heroGame.setDamage(1);
 		heroGame.setConstDamage(1);
 		gold = 0;
@@ -132,6 +134,7 @@ public class game extends Observable {
 		myPet.setPetNumber(0);
 		myPet.setPetCostBuy(100);
 		myPet.setPetCostUpgrade(150);
+		myPet.setPetDamages(1);
 		save5 = 0;
 		save2x = 0;
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
@@ -180,6 +183,14 @@ public class game extends Observable {
 	
 	public void berzerkerChoice(Hero heroGame) {
 		heroGame.setCheckClass(3);
+	}
+	
+	public int getImageHero() {
+		return imageHero;
+	}
+	
+	public void setImageHero(int number) {
+		this.imageHero = number;
 	}
 
 	

@@ -27,6 +27,8 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
+	private String attribute = "aqua";
+
 	
 	
 	/**
@@ -63,16 +65,11 @@ public class Hero extends Observable {
 	 */
 	
 	private int artefactCost = 10;
-	
 	/**
 	 * Cet attribut permet de stocker le type de monstre (Eau, terre ou feu). Cette valeur change de manière aléatoire
 	 * via a fonction screenMonster() de la classe GUI
 	 */
 	
-	
-	private String
-	
-	attribute = "aqua";
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
@@ -110,9 +107,15 @@ public class Hero extends Observable {
 		return attribute;
 	}
 	
+	/**
+	 * @param x attribut à set (aqua, terra ou pyro)
+	 */
+	
 	public void setAttribute(String x) {
 		this.attribute = x;
 	}
+	
+
 	
 	/**
 	 * @return les dégâts actuels du heros
@@ -193,6 +196,7 @@ public class Hero extends Observable {
 	public int getArtefactMoney() {
 		return artefactMoney;
 	}
+
 
 	/**
 	 * @param artefactMoney : met à jour la somme d'argant pour les artefacts
