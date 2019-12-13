@@ -5,69 +5,55 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class MonsterTest {
-
-	/*@Test
+	game test = new game();
+	@Test
 	void testDie() {
+		Monster tester = new Monster();
+		int testPV;
+		int testNB;
+		int testBNB;
 		
-		int goldAttendu;
-		int pvAttendu;
-		int PV;
-		int Number;
-		int bossNumber; 
-		int gold; 
-		int goldIncrease;
-		int Increase;
-
-		
-		pvAttendu = 10;
-		goldAttendu = 6;
-		PV = 0;
-		Number = 1;
-		bossNumber = 10;
-		gold = 0;
-		goldIncrease = 6;
-		Increase = 10;
-		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
-		if (pvAttendu != PV && goldAttendu != gold) {
-			fail("pv basic and gold basic");
+		testPV = 0;
+		testNB = 1;
+		testBNB = 10;
+		tester.die(tester, test, testPV, testNB, testBNB);
+		if (tester.getPV() != 10 ) {
+			fail("test normal");
 		}
-		pvAttendu = 10;
-		goldAttendu = 12;
-		PV = 0;
-		Number = 1;
-		bossNumber = 10;
-		gold = 0;
-		goldIncrease = 12;
-		Increase = 10;
-		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
-		if (pvAttendu != PV && goldAttendu != gold) {
-			fail("pv basic and gold 2x");
+		tester = new Monster();
+		testPV = 0;
+		testNB = 9;
+		testBNB = 10;
+		tester.die(tester, test, testPV, testNB, testBNB);
+		if ( tester.getPV() != 30) {
+			fail("boss");
 		}
-		pvAttendu = 30;
-		goldAttendu = 6;
-		PV = 0;
-		Number = 9;
-		bossNumber = 10;
-		gold = 0;
-		goldIncrease = 6;
-		Increase = 10;
-		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
-		if (pvAttendu != PV && goldAttendu != gold) {
-			fail("pv 3x and gold basic");
+		tester = new Monster();
+		testPV = 0;
+		testNB = 10;
+		testBNB = 10;
+		tester.die(tester, test, testPV, testNB, testBNB);
+		if ( tester.getPV() != 20 && tester.getWaveNumber() != 2 && tester.getNumber() !=1 && tester.getGoldIncrease()!= 12) {
+			fail("après boss");
 		}
-		pvAttendu = 10;
-		goldAttendu = 6;
-		PV = 0;
-		Number = 1;
-		bossNumber = 10;
-		gold = 6;
-		goldIncrease = 0;
-		Increase = 10;
-		Monster.die(PV, Number, bossNumber, gold, goldIncrease, Increase);
-		if (pvAttendu != PV && goldAttendu != gold) {
-			fail("pv basic and gold non-up");
+		tester = new Monster();
+		testPV = 10;
+		testNB = 1;
+		testBNB = 10;
+		tester.die(tester, test, testPV, testNB, testBNB);
+		if ( tester.getPV() != 10) {
+			fail("meurt pas mdr");
 		}
-		
 	}
-*/
+
+	@Test
+	void testRandomMonster() {
+		Monster tester = new Monster();
+		
+		tester.randomMonster(tester);
+		if (tester.getAttribute() != "aqua" && tester.getAttribute()!="pyro" && tester.getAttribute()!="tera"){
+			fail("distribution d'attribut");
+		}
+	}
+
 }

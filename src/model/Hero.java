@@ -11,6 +11,11 @@ import java.util.Observable;
  */
 public class Hero extends Observable {
 	
+	/**
+	 * Variable gardant la valeur a laquelle les degats vont 
+	 * etre augmentés a chaque amélioriations du hero
+	 */
+	
 	private int constUpgradeDamage = 1;
 	
 	/**
@@ -74,10 +79,11 @@ public class Hero extends Observable {
 	}*/
 		
 	/**
-	 * Cette mÃ©thode sert Ã  acheter un nouvel artefact.
+	 * Cette mÃ©thode sert a acheter un nouvel artefact.
 	 * 
 	 * @author Lucas Pastori
-	 * @param Artefact	appelle la classe Artefact pour ajouter le nouvel artefact dle tableau d'artefacts
+	 * @param Artefact	appelle la classe Artefact pour ajouter le nouvel artefact du
+	 *  tableau d'artefacts
 	 *  "currentArtefact" et pour retirer celui-ci du tableau "noArtefacts"
 	 *  
 	 * @param game		appelle la classe game pour pouvoir y appliquer les nouveaux artefact via la fonction
@@ -85,9 +91,9 @@ public class Hero extends Observable {
 	 * 
 	 */
 	
-	public void buyArtefact(Artefact artf,game game) {
-		if(getArtefactMoney() >= getArtefactCost() && artf.getCurrentArtefacts().size() !=5) {
-			setArtefactMoney(getArtefactMoney() - getArtefactCost());
+	public void buyArtefact(Artefact artf,game game, int nbrArtfMoney) {
+		if(nbrArtfMoney >= getArtefactCost() && artf.getCurrentArtefacts().size() !=5) {
+			setArtefactMoney(nbrArtfMoney - getArtefactCost());
 			setArtefactCost(getArtefactCost() + artefactCost);
 			double nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
 			while(artf.getCurrentArtefacts().contains(artf.noArtefacts[(int) nbrNoArtf])) {

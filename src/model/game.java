@@ -36,6 +36,9 @@ public class game extends Observable {
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
+	int save5 = 0;
+	int save2x = 0;
+	int savePet = 0;
 	
 	/*----------------------------------------------
 	 * variables utile à game 
@@ -45,70 +48,61 @@ public class game extends Observable {
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
 	Console myConsole = new Console(this, null);
-	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
-	JLabel degatLabel = new JLabel();
-	JLabel coutUPLabel = new JLabel();
-	JButton buttonUP = new JButton();
-	JFrame window = new JFrame();
-	JPanel choiceClass = new JPanel();
-	JButton buttonArcher = new JButton();
-	JButton buttonMage = new JButton();
-	JButton buttonBerzerker = new JButton();
 	
-	void attackPets(Monster monstre, Pets myPet) {
-		monstre.setPV(monstre.getPV() - myPet.getPetDamages() * myPet.getPetNumber());
-		if(myPet.getPetNumber() != 0) {
-			monstre.die(monstre,this);
+	
+	void attackPets(Monster monstre, int pDmg, int pNbr) {
+		monstre.setPV(monstre.getPV() - pDmg * pNbr);
+		if(pNbr != 0) {
+			monstre.die(monstre,this, myMonster.getPV(),myMonster.getNumber(), myMonster.getbossNumber());
 		}
 		setChanged();
         notifyObservers();
 	}
 
-	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		if(heroGame.getCheckClass() == 3) {
+	public void attack(Monster monstre, Artefact artf, int dmg, String dmgAtribute, String monsterAttribute) {
+		if(myHero.getCheckClass() == 3) {
 			double randomBerzerker = (Math.random() *100) % 5;
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
-				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
+				monstre.setPV(monstre.getPV() - (dmg * 2));
 			}
 			else {
-				monstre.setPV(monstre.getPV() - heroGame.getDamage());
+				monstre.setPV(monstre.getPV() - dmg);
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
-			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
+			monstre.setPV(monstre.getPV() - dmg * 5);
 			this.nbrClic ++;
 		}
-        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "tera")) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if ((dmgAtribute == "pyro" && monsterAttribute == "tera")) {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "aqua") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if (dmgAtribute == "tera" && monsterAttribute == "aqua") {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "pyro") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if (dmgAtribute == "aqua" && monsterAttribute == "pyro") {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "aqua")) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if ((dmgAtribute == "pyro" && monsterAttribute == "aqua")) {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "pyro") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if (dmgAtribute == "tera" && monsterAttribute == "pyro") {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "tera") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if (dmgAtribute == "aqua" && monsterAttribute == "tera") {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage());
+        if (dmgAtribute ==  monsterAttribute ) {
+        	monstre.setPV(monstre.getPV() - dmg);
         }
         this.nbrClic ++;
-        monstre.die(myMonster,this);
+        monstre.die(myMonster,this, myMonster.getPV(), myMonster.getNumber(), myMonster.getbossNumber());
 		setChanged();
         notifyObservers();
 	}
-	public void upgrade(Hero heroGame) {
+	public void upgrade(Hero heroGame, int constUP) {
 		if (gold >= getUpgradeMoneyValue()) {
-			heroGame.setConstDamage(heroGame.getConstDamage() + heroGame.getConstUpgradeDamage());
+			heroGame.setConstDamage(heroGame.getConstDamage() + constUP);
 			heroGame.setDamage(heroGame.getConstDamage());
 			gold = gold - getUpgradeMoneyValue();
 			setUpgradeMoneyValue(getUpgradeMoneyValue() + upgradecroissance) ;
@@ -188,9 +182,7 @@ public class game extends Observable {
 		heroGame.setCheckClass(3);
 	}
 
-	int save5 = 0;
-	int save2x = 0;
-	int savePet = 0;
+	
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
 		
 		for (int i = 0; i<artf.getCurrentArtefacts().size() ; i++) {
@@ -252,16 +244,14 @@ public class game extends Observable {
 	
 	public class PetsDamages extends TimerTask {
 	    public void run() {
-	    	attackPets(myMonster, myPets);
-			PVLabel.setText("monstre PV : " + myMonster.getPV());
-			argentLabel.setText("argent : " + gold );
+	    	attackPets(myMonster, myPets.getPetDamages(), myPets.getPetNumber());
 	    }
 	}
 	
 	public class ArcherPetsDamages extends TimerTask {
 	    public void run() {
 	    	if(myHero.checkClass == 1) {
-	    		attackPets(myMonster, myPets);
+	    		attackPets(myMonster, myPets.getPetDamages(), myPets.getPetNumber());
 	    	}
 	    }
 	}

@@ -11,11 +11,11 @@ public class gameController {
         model = m;
     }
     public void upgrade() {
-    	model.upgrade(model.myHero);
+    	model.upgrade(model.myHero, model.myHero.getConstUpgradeDamage());
     	control();
     }
     public void attack() {
-    	model.attack(model.myMonster, model.myHero, model.myArtf);
+    	model.attack(model.myMonster, model.myArtf,  model.myHero.getDamage(),  model.myHero.getAttribute(), model.myMonster.getAttribute());
     	control();
     }
     public void reset() {
@@ -23,11 +23,11 @@ public class gameController {
     	control();
     }
     public void oneMorePet() {
-    	model.myPets.buyPet(model);
+    	model.myPets.buyPet(model, model.getGold(), model.myPets.getPetCostBuy(),model.myPets.getPetNumber());
     	control();
     }
     public void oneMoreArtf() {
-    	model.myHero.buyArtefact(model.myArtf, model);
+    	model.myHero.buyArtefact(model.myArtf, model, model.myHero.getArtefactMoney());
     }
     public void classChoice(int x) {
     	if (x == 1) {
