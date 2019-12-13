@@ -3,14 +3,14 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	private int petDamages = 1;
-	private int petDmgIncrease = 1;
-	private int petNumber = 0;
-	private int petNumberUP= 1;
-	private int petCostUpgrade = 150;
-	private double petBuyIncrease = 0.1;
-	private int petsAttackSpeed = 2000;
-	private int petCostBuy = 100;
+	private int petDamages = 1;			//d�gats des pets
+	private int petDmgIncrease = 1;		//augmentation des d�gats apr�s une am�lioration
+	private int petNumber = 0; 			//nombre de pets
+	private int petNumberUP= 1;			//nombre de pets 
+	private int petCostUpgrade = 150;	//prix d'am�lioration d'un familier
+	private double petBuyIncrease = 0.1;//pourcentage d'augmentation du prix de l'achat d'un familier
+	private int petsAttackSpeed = 2000;	//vitesse d'attaque (2000 = 2 secondes)
+	private int petCostBuy = 100;		//prix d'achat d'un familier
 	
 	/**
 	 * Cette méthode sert à améliorer les dégâts des pets
@@ -24,6 +24,7 @@ public class Pets extends Observable {
 	 * @param costUpgrade
 	 * 		coût de l'amélioration, il faut avoir un montant supérieur ou égal de golds pour pouvoir
 	 * 		effectuer l'amélioration (valeur positive)
+	 * 
 	 * @return petDamage
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */

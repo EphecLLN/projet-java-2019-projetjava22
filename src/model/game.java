@@ -32,7 +32,7 @@ public class game extends Observable {
 	 * ---------------------------------------------*/
 
 	int nbrClic = 0;
-	private int gold = 1000;
+	private int gold = 1050;
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
