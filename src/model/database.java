@@ -11,7 +11,13 @@ import java.util.ArrayList;
 public class database {
 	int affectedRows;
 			
-	public ResultSet data (String column,String table, String where) {
+	/**
+	 * @param column
+	 * @param table
+	 * @param where
+	 * @return result : renvoie le resultat de la requete
+	 */
+	private ResultSet data (String column,String table, String where) {
 		ResultSet result = null;
 		try {
 			Connection connect = connexion();
@@ -23,7 +29,6 @@ public class database {
 			}
 		return result;
 	};
-	
 	private ResultSet orderedData(String column, String table, String order) {
 		ResultSet result = null;
 		try {
@@ -35,18 +40,7 @@ public class database {
 		}
 		return result;
 	}
-	
-	public ResultSetMetaData metaData (ResultSet resultat) {
-		ResultSetMetaData resultMeta = null;
-		try {
-			resultMeta = resultat.getMetaData();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return resultMeta;
-	}
-
-	public Connection connexion (){
+	private Connection connexion (){
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -60,62 +54,42 @@ public class database {
 		return conn;
 	};
 	
-	private int playerConnection(String name, String password, String team) {
+	private int getId(String name) {
+		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
+		int playerId = 0;
 		try {
-			ResultSet result = data("playername, playerpasswoed, teamname", "player", "JOIN team ON player.teamid = team.teamid");
-			ResultSet resultPlayer = data("playername, playerpassword", "player", "WHERE playername = '"+ name +"'");
-			ResultSet resultTeam = data("*", "team"," WHERE teamname = '"+team+"'");
-			System.out.println(resultPlayer.getObject(1).toString());
-			
-			//Si l'équipe et le joueur existent
-			if(resultTeam.first() && resultPlayer.first()) {
-				//mot de passe correct
-				if(name.equals(resultPlayer.getObject(1).toString()) && password.equals(resultPlayer.getObject(2).toString())) {	
-					//récupère les données du joueur et lance le jeu avec les données du joueur et update player (last connection)
-					System.out.println("Jeu lancé");
-					updatePlayer(name);
-					return affectedRows;
-				}
-				//mot de passe incorrect
-				else {
-					System.out.println("verifier le mot de passe");
-				}
-			}					
-			//Si l'équipe existe
-			else if(resultTeam.first()) {
-				while(result.next()) {
-					affectedRows = insertTeam(team);
-				System.out.println("Team added");
-				affectedRows += insertPlayer(name, password, team);
-				System.out.println("Player added");
-				
-				}
+			if(result.first()){
+				playerId = Integer.parseInt(result.getObject(1).toString());	
+				playerId += 1;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return affectedRows;
+		return playerId;
 	}
-
+	private int getLastId() {
+		int id = 0;
+		ResultSet result = data("playerid", "player", "");
+		try {
+			if(result.first()){
+				result.last();
+				id = Integer.parseInt(result.getObject(1).toString());
+			}
+		} catch (NumberFormatException | SQLException e) {
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
 	private int insertTeam (String team) {
 		try {
 			ArrayList<String> values = new ArrayList<String>();
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet result = data("teamname", "team", "");
-			//ResultSetMetaData resultMeta = metaData(result);
+			
 			while(result.next()) {
 				values.add(result.getObject(1).toString());
-			}
-			System.out.print("Combien d'équipes sont dans la table? "+ values.size() + "\n");
-			for(String i : values) {
-		       	System.out.println("\n Test egalite : "+ i + " =? " + team);
-				if (team.equals(i.toString())) {
-					System.out.println("Equipe "+ i +" existe déjà \n");
-					result.close();
-					state.close();
-					return affectedRows;
-				}
 			}
 			values.add(team);
 			affectedRows = state.executeUpdate("INSERT INTO team(teamid, teamname) VALUES ("+ values.size() +", '"+ team.toString()+ "')");
@@ -126,20 +100,40 @@ public class database {
 		}
 		return affectedRows;
 	};
+	private int updateTeam (String team) {
+		try {
+			Connection connect = connexion();
+			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			String whereTeam = " WHERE teamname = '"+team+"'";
+			ResultSet resultHero = data("playerid, gold, pets", "hero","");
+			ResultSet resultPlayer = data("playerid", "player JOIN team ON team.teamid = player.teamid", whereTeam);
+			int teammoney = 0;
+			int teampets = 0;
+			while(resultPlayer.next()) {
+				resultHero.next();
+				if(resultPlayer.getObject(1).toString().equals(resultHero.getObject(1).toString())) {
+					teammoney += Integer.parseInt(resultHero.getObject(2).toString());
+					teampets += Integer.parseInt(resultHero.getObject(3).toString());
+				}
+			}
+			affectedRows = state.executeUpdate("UPDATE team SET teammoney = "+teammoney+", teampets ="+teampets);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return affectedRows;
+	}
 
 	private int insertPlayer (String name, String password, String team) {
 		try {
 			Connection connect = connexion();
-			int id = 1;
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet result = data("playerid", "player", "");
-			while(result.next()) {
-				if(result.isLast()) {
-					id = Integer.parseInt(result.getObject(1).toString())+1;
-				}
-			}
+			int id = getLastId()+1;
+			String whereTeam = " WHERE teamname = '"+team+"'";
+			ResultSet result = data("teamid", "team", whereTeam);
+			result.next();
+			int teamid = Integer.parseInt(result.getObject(1).toString());
 				affectedRows = state.executeUpdate("INSERT INTO player(playerid, playername, playerpassword, teamid) "
-					+" VALUES ("+ id +", '"+ name.toString() +"', '"+ password.toString() +"', (SELECT teamid FROM team WHERE teamname = '"+ team.toString() +"'))");
+					+" VALUES ("+ id +", '"+ name.toString() +"', '"+ password.toString() +"', "+ teamid +")");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -155,39 +149,46 @@ public class database {
 		}
 		return affectedRows;
 	}
-	
-	private int insertHero(game game, Hero hero, Pets pets, Artefact artefact, String name) {
+
+	private int insertHero(String name) {
+		
+		game game = new game();
+		Hero hero = new Hero();
+		Pets pets = new Pets();
+		Artefact artefact = new Artefact();
+		int id = getLastId();
 		int gold = game.getGold();
 		int damage = hero.getDamage();
 		int pet = pets.getPetNumber() ; 
 		int artefactMoney = hero.getArtefactMoney(); 
 		ArrayList<String> currentArtefact = artefact.getCurrentArtefacts();
-		String playerArtefacts = "";	
+		String playerArtefacts = "";
 		for(String i : currentArtefact) {
 			playerArtefacts.concat(i);
 			playerArtefacts.concat(" ");
 		}
-		System.out.println(playerArtefacts);
+		
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("INSERT INTO hero VALUES (" + playerId + ", " + gold + ", " + damage + ", " + pet + ", " + artefactMoney + ", '" + playerArtefacts + "')");
-			System.out.println(affectedRows);
-			state.close();
+			affectedRows = state.executeUpdate("INSERT INTO hero VALUES (" + id + ", " + gold + ", " + damage + ", " + pet + ", " + artefactMoney + ", '" + playerArtefacts + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return affectedRows;
 	}
-	private int updateHero(game game, Hero hero, Pets pets, Artefact artefact, String name) {
+	private int updateHero(String name) {
+		game game = new game();
+		Hero hero = new Hero();
+		Pets pets = new Pets();
+		Artefact artefact = new Artefact();
+		
 		int gold = game.getGold();
-		int damage = hero.getDamage();
+		int damage = hero .getDamage();
 		int pet = pets.getPetNumber() ; 
-		int artefactMoney = hero.getArtefactMoney(); 
+		//int artefactMoney = hero.getArtefactMoney(); 
+		
+		//Changer artefact en TEXT[] dans la db ???
 		ArrayList<String> currentArtefact = artefact.getCurrentArtefacts();
 		String playerArtefacts = "";	
 		for(String i : currentArtefact) {
@@ -195,14 +196,10 @@ public class database {
 			playerArtefacts.concat(" ");
 		}
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
+			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			affectedRows = state.executeUpdate("UPDATE hero SET gold ="+gold+", damage ="+damage+", pets = "+pet+" WHERE playerid = "+playerId);
-			System.out.println(affectedRows);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -210,97 +207,92 @@ public class database {
 		return affectedRows;
 	}
 	
-	private int insertMonster(Monster monster, String name) {
+	private int insertMonster(String name) {
+		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
 		int pvIncrease = monster.getPvIncrease(); // = add dans la DB
 		int monsterNumber = monster.getNumber();
 		int goldIncrease = monster.getGoldIncrease();
 		int wave = monster.getWaveNumber();
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
+			int playerId = getLastId();
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			affectedRows = state.executeUpdate("INSERT INTO monster VALUES (" + playerId + ", " + monsterPV + ", " + pvIncrease + ", " + monsterNumber + ", " + goldIncrease + ", " + wave + ")");
-			System.out.println(affectedRows);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return affectedRows;
 	}
-	private int updateMonster(Monster monster, String name) {
+	private int updateMonster(String name) {
+		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
 		int pvIncrease = monster.getPvIncrease(); // = add dans la DB
 		int monsterNumber = monster.getNumber();
 		int goldIncrease = monster.getGoldIncrease();
 		int wave = monster.getWaveNumber();
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
+			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			affectedRows = state.executeUpdate("UPDATE monster SET pv=" + monsterPV + ", add=" + pvIncrease + ", number=" + monsterNumber + ", goldincrease=" + goldIncrease + ", wave="+wave+"WHERE playerid="+playerId);
-			System.out.println(affectedRows);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return affectedRows;
 	}	
-
-	private int insertPets(Pets pets, String name) {
+	
+	private int insertPets(String name) {
+		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
 		int petsIncrease = pets.getPetCostUpgrade(); // = add dans la DB
 		int petsNumber = pets.getPetNumber();
 		int petsBuyCost = pets.getPetCostBuy();
 		int petsUpgradeCost = pets.getPetCostUpgrade();
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
+			int playerId = getLastId();
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("INSERT INTO monster VALUES (" + playerId + ", " + petsDamage + ", " + petsIncrease + ", " + petsNumber + ", " + petsBuyCost + ", " + petsUpgradeCost + ")");
-			System.out.println(affectedRows);
+			affectedRows = state.executeUpdate("INSERT INTO pets VALUES (" + playerId + ", " + petsDamage + ", " + petsIncrease + ", " + petsNumber + ", " + petsBuyCost + ", " + petsUpgradeCost + ")");
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return affectedRows;
 	}
-	private int updatePets(Pets pets, String name) {
+	private int updatePets(String name) {
+		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
 		int petsIncrease = pets.getPetCostUpgrade(); // = add dans la DB
 		int petsNumber = pets.getPetNumber();
 		int petsBuyCost = pets.getPetCostBuy();
 		int petsUpgradeCost = pets.getPetCostUpgrade();
 		try {
-			ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
-			int playerId;
-			result.next();
-			playerId = Integer.parseInt(result.getObject(1).toString());
+			
+			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("UPDATE monster SET damage="+petsDamage + ", add=" + petsIncrease + ", amount=" + petsNumber + ", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
-			System.out.println(affectedRows);
+			affectedRows = state.executeUpdate("UPDATE pets SET damage="+petsDamage + ", add=" + petsIncrease + ", amount=" + petsNumber + ", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return affectedRows;
 	}	
+	
+	private int connectionPlayer(String name, String password, String team) {
+		
+		return affectedRows;
+	}
 	
 	public ArrayList<String> classement(ArrayList<String> classement, boolean table, String ordre){
 		if(table == true) {
 			//classement par équipe
 			if(ordre.equals("pets")) {
 				ResultSet result = orderedData("*", "team", "ORDER BY teampets");
+				
 			}
 		}
 		else {
@@ -310,18 +302,40 @@ public class database {
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		ArrayList<String> values = new ArrayList<>();
 		database db = new database(); 
-		game game = new game();
-		Hero hero = new Hero();
-		Pets pets = new Pets();
-		Monster monster = new Monster();
-		Artefact artefact = new Artefact();
-		//db.data("playername, playerpassword, teamname", "player JOIN team ON player.teamid = team.teamid", " WHERE playername = 'Swithan'");
-        //db.player("InkMonster","pswd","Var Motiv = 2", values);
-	    //db.team("Var Motiv = 0", values);   
-		//db.updateMonster(monster, "InkMonster");
-	    //System.out.println(values);
-		db.playerConnection("Swithan", "pswd", "Var Motiv = 0");
+		int id = db.getId("Swithan");
+		System.out.println(id);
+		
+		//player, team et password sont à insérer dans l'interface graphique
+		
+		//a garder dans l'interface graphique
+		//db.getTeam()
+		
+		//a faire pour créer un joueur dans une nouvelle équipe
+		//db.insertTeam(team);
+		//db.insertPlayer(player, password, team);
+		//db.insertHero(player);
+		//db.insertMonster(player);
+		//db.insertPets(player);
+		//db.updateTeam(team);
+		
+		//a faire pour créer un joueur dans une équipe existante
+		//db.insertPlayer(player, password, team);
+		//db.insertHero(player);
+		//db.insertMonster(player);
+		//db.insertPets(player);
+		//db.updateTeam(team);
+		
+		//a faire lors de la connexion
+		//db.getPlayer()
+		//db.getHero()
+		//db.getMonster()
+		//db.getPets()
+		
+		//a faire lors de la deconnexion
+		//db.updateHero(player);
+		//db.updateMonster(player);
+		//db.updatePets(player);
+		//db.updateTeam(team);
 	}
 }

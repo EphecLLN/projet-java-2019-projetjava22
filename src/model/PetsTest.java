@@ -8,8 +8,8 @@ class PetsTest {
 
 	@Test
 	void test() {
-int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
-		
+		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
+		Pets Pets = new Pets();
 		//Test de la fonction upgradePet
 		
 		gold = 30;
