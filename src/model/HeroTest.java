@@ -1,3 +1,4 @@
+
 package model;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,64 +7,57 @@ import org.junit.jupiter.api.Test;
 
 class HeroTest {
 
-	/*@Test
+	@Test
 	void test() {
+		game test = new game();
+		Artefact artf = new Artefact();
+		Hero heroTest = new Hero();
+		int nbrArtfMoney ;
 		
-		int expectedGold;
-		int expectedPetCount;
-		int expectedArtMoney;
-		
-
-		Hero testPet1 = new Hero(50,0);
-		Hero testPet2 = new Hero(100,0);
-		Hero testPet3 = new Hero(200,0);
-		
-		Hero testArt1 = new Hero(0,5);
-		Hero testArt2 = new Hero(0,10);
-		Hero testArt3 = new Hero(0,20);
-		
-		
-		expectedGold = 50;
-		expectedPetCount = 0;
-		testPet1.buyPet();
-		if(Hero.gold != expectedGold || Hero.petCount != expectedPetCount) {
-			fail("gold not decreased or pet bought");
+		nbrArtfMoney = 10;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (artf.getCurrentArtefacts().contains("doubleDMG") ||artf.getCurrentArtefacts().contains("every10Hit") ||artf.getCurrentArtefacts().contains("-1Boss") ||artf.getCurrentArtefacts().contains("+5DMG") ||artf.getCurrentArtefacts().contains("doublePet") && nbrArtfMoney != 0) {
+			fail("1 achat");
 		}
-		
-		expectedGold = 0;
-		expectedPetCount = 1;
-		testPet2.buyPet();
-		if(Hero.gold != expectedGold || Hero.petCount != expectedPetCount) {
-			fail("gold not decreased or pet not bought");
+		artf = new Artefact();
+		nbrArtfMoney = 30;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (artf.getCurrentArtefacts().contains("doubleDMG") ||artf.getCurrentArtefacts().contains("every10Hit") ||artf.getCurrentArtefacts().contains("-1Boss") ||artf.getCurrentArtefacts().contains("+5DMG") ||artf.getCurrentArtefacts().contains("doublePet") && nbrArtfMoney != 0) {
+			fail("2 achat");
 		}
-		
-		expectedGold = 100;
-		expectedPetCount = 1;
-		testPet3.buyPet();
-		if(Hero.gold != expectedGold || Hero.petCount != expectedPetCount) {
-			fail("gold not correctly decreased or pet not bought");
+		artf = new Artefact();
+		nbrArtfMoney = 70;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (artf.getCurrentArtefacts().contains("doubleDMG") ||artf.getCurrentArtefacts().contains("every10Hit") ||artf.getCurrentArtefacts().contains("-1Boss") ||artf.getCurrentArtefacts().contains("+5DMG") ||artf.getCurrentArtefacts().contains("doublePet") && nbrArtfMoney != 0) {
+			fail("3 achat");
 		}
-		
-		
-		expectedArtMoney = 5;
-		testArt1.buyArtefact();
-		if(Hero.artefactMoney != expectedArtMoney) {
-			fail("Artefact money decreased without reason");
+		artf = new Artefact();
+		nbrArtfMoney = 150;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (artf.getCurrentArtefacts().contains("doubleDMG") ||artf.getCurrentArtefacts().contains("every10Hit") ||artf.getCurrentArtefacts().contains("-1Boss") ||artf.getCurrentArtefacts().contains("+5DMG") ||artf.getCurrentArtefacts().contains("doublePet") && nbrArtfMoney != 0) {
+			fail("4 achat");
 		}
-		
-		expectedArtMoney = 0;
-		testArt2.buyArtefact();
-		if(Hero.artefactMoney != expectedArtMoney) {
-			fail("Artefact money decreased without reason");
+		artf = new Artefact();
+		nbrArtfMoney = 310;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (artf.getCurrentArtefacts().contains("doubleDMG") ||artf.getCurrentArtefacts().contains("every10Hit") ||artf.getCurrentArtefacts().contains("-1Boss") ||artf.getCurrentArtefacts().contains("+5DMG") ||artf.getCurrentArtefacts().contains("doublePet") && nbrArtfMoney != 0) {
+			fail("5 achat");
 		}
-		
-		
-		expectedArtMoney = 10;
-		testArt3.buyArtefact();
-		if(Hero.artefactMoney != expectedArtMoney) {
-			fail("Artefact money decreased without reason");
+		nbrArtfMoney = 5;
+		heroTest.buyArtefact(artf, test, nbrArtfMoney);
+		if (nbrArtfMoney != 5) {
+			fail("pas d'argent");
 		}
-		
-	}*/
+	}
 
 }

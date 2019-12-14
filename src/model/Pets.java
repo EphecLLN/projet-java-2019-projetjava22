@@ -56,14 +56,15 @@ public class Pets extends Observable {
 	 * Cette méthode sert à acheter un nouveau pet
 	 */
 	
-	public void buyPet(game game) {
-		if(game.getGold() >= getPetCostBuy()) {
-			game.setGold( game.getGold() - getPetCostBuy());
-			game.myPets.setPetNumber(game.myPets.getPetNumber() + getPetNumberUP());
-			setPetCostBuy(getPetCostBuy() + getPetCostBuy() * petBuyIncrease);
+	public void buyPet(game game, int gold, int costBuy, int petNbr) {
+		if(gold >= costBuy) {
+			game.setGold(gold - costBuy);
+			setPetNumber(petNbr+ getPetNumberUP());
+			setPetCostBuy(costBuy + costBuy * petBuyIncrease);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
+			setPetNumber(petNbr);
 		}
 	}
 	

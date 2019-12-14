@@ -36,6 +36,9 @@ public class game extends Observable {
 	int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
 	int imageHero = 2;
+	int save5 = 0;
+	int save2x = 0;
+	int savePet = 0;
 	
 	/*----------------------------------------------
 	 * variables utiles à game 
@@ -45,21 +48,12 @@ public class game extends Observable {
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
 	Console myConsole = new Console(this, null);
-	JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	JLabel argentLabel = new JLabel(); 	// pas encore implementer (degats par seconde en int. graph.)
-	JLabel degatLabel = new JLabel();
-	JLabel coutUPLabel = new JLabel();
-	JButton buttonUP = new JButton();
-	JFrame window = new JFrame();
-	JPanel choiceClass = new JPanel();
-	JButton buttonArcher = new JButton();
-	JButton buttonMage = new JButton();
-	JButton buttonBerzerker = new JButton();
 	
-	void attackPets(Monster monstre, Pets myPet) {
-		monstre.setPV(monstre.getPV() - myPet.getPetDamages() * myPet.getPetNumber());
-		if(myPet.getPetNumber() != 0) {
-			monstre.die(monstre,this);
+	
+	void attackPets(Monster monstre, int pDmg, int pNbr) {
+		monstre.setPV(monstre.getPV() - pDmg * pNbr);
+		if(pNbr != 0) {
+			monstre.die(monstre,this, myMonster.getPV(),myMonster.getNumber(), myMonster.getbossNumber());
 		}
 		setChanged();
         notifyObservers();
@@ -108,10 +102,9 @@ public class game extends Observable {
 		setChanged();
 	    notifyObservers();
 	}
-	
-	public void upgrade(Hero heroGame) {
+	public void upgrade(Hero heroGame, int constUP) {
 		if (gold >= getUpgradeMoneyValue()) {
-			heroGame.setConstDamage(heroGame.getConstDamage() + heroGame.getConstUpgradeDamage());
+			heroGame.setConstDamage(heroGame.getConstDamage() + constUP);
 			heroGame.setDamage(heroGame.getConstDamage());
 			setGold(getGold() - getUpgradeMoneyValue());
 			setUpgradeMoneyValue(getUpgradeMoneyValue() + upgradecroissance) ;
@@ -141,6 +134,7 @@ public class game extends Observable {
 		myPet.setPetNumber(0);
 		myPet.setPetCostBuy(100);
 		myPet.setPetCostUpgrade(150);
+		myPet.setPetDamages(1);
 		save5 = 0;
 		save2x = 0;
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
@@ -199,9 +193,7 @@ public class game extends Observable {
 		this.imageHero = number;
 	}
 
-	int save5 = 0;
-	int save2x = 0;
-	int savePet = 0;
+	
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
 		
 		for (int i = 0; i<artf.getCurrentArtefacts().size() ; i++) {
@@ -263,14 +255,14 @@ public class game extends Observable {
 	
 	public class PetsDamages extends TimerTask {
 	    public void run() {
-	    	attackPets(myMonster, myPets);
+	    	attackPets(myMonster, myPets.getPetDamages(), myPets.getPetNumber());
 	    }
 	}
 	
 	public class ArcherPetsDamages extends TimerTask {
 	    public void run() {
 	    	if(myHero.checkClass == 1) {
-	    		attackPets(myMonster, myPets);
+	    		attackPets(myMonster, myPets.getPetDamages(), myPets.getPetNumber());
 	    	}
 	    }
 	}

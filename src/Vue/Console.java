@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.Timer;
 
-import ContrÃ´leur.gameController;
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
@@ -51,32 +51,32 @@ public class Console extends gameVue implements Observer{
 					
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("")) {
-				game.attack(game.myMonster,game.myHero,game.myArtf);
+				model.attack(model.myMonster,model.myArtf, model.myHero.getDamage(), model.myHero.getAttribute(), model.myMonster.getAttribute());
 			}
 			if (userAction.contentEquals("a")) {
-				game.upgrade(game.myHero);
+				model.upgrade(model.myHero,model.myHero.getConstUpgradeDamage());
 				System.out.println("vous avez ameliore vos degats");
 				
 			}	
 			if (userAction.contentEquals("r")) {
-				game.reborn(game.myMonster, game.myHero, game.myPets);
+				model.reborn(model.myMonster, model.myHero, model.myPets);
 			}
 			if (userAction.contentEquals("s")) {
 			}
 			if (userAction.contentEquals("f")) { 
-				game.myPets.buyPet(game);
+				model.myPets.buyPet(model, model.getGold(), model.myPets.getPetCostBuy(), model.myPets.getPetNumber());
 			}
 			if (userAction.contentEquals("archer")) {
-				game.archerChoice(game.myHero);
+				model.archerChoice(model.myHero);
 			}
 			if (userAction.contentEquals("mage")) {
-				game.mageChoice(game.myHero);
+				model.mageChoice(model.myHero);
 			}
 			if (userAction.contentEquals("berzerker")) {
-				game.berzerkerChoice(game.myHero);
+				model.berzerkerChoice(model.myHero);
 			}
 			if (userAction.contentEquals("x")) {
-				game.myHero.buyArtefact(game.myArtf, game);
+				model.myHero.buyArtefact(model.myArtf, model, model.myHero.getArtefactMoney());
 			}
 		}
 }
