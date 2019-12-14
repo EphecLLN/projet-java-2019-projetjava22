@@ -1,4 +1,4 @@
-package Contrï¿½leur;
+package Contrôleur;
 
 import java.util.Timer;
 

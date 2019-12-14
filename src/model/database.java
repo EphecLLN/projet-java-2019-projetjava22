@@ -160,7 +160,6 @@ public class database {
 	}
 
 	private int insertHero(String name) {
-		
 		game game = new game();
 		Hero hero = new Hero();
 		Pets pets = new Pets();
@@ -257,14 +256,13 @@ public class database {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
 		int petsIncrease = pets.getPetCostUpgrade(); // = add dans la DB
-		int petsNumber = pets.getPetNumber();
 		int petsBuyCost = pets.getPetCostBuy();
 		int petsUpgradeCost = pets.getPetCostUpgrade();
 		try {
 			int playerId = getLastId();
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("INSERT INTO pets VALUES (" + playerId + ", " + petsDamage + ", " + petsIncrease + ", " + petsNumber + ", " + petsBuyCost + ", " + petsUpgradeCost + ")");
+			affectedRows = state.executeUpdate("INSERT INTO pets VALUES (" + playerId + ", " + petsDamage + ", " + petsIncrease + ", " + petsBuyCost + ", " + petsUpgradeCost + ")");
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -292,32 +290,20 @@ public class database {
 	}	
 	
 	private int createTeamPlayer(String name, String password, String team) {
-		try {
-			Connection connect = connexion();
-			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = insertTeam(team);
-			affectedRows += insertPlayer(name, password, team);
-			affectedRows += insertHero(name);
-			affectedRows += insertPets(name);
-			affectedRows += insertMonster(name);
-			affectedRows += updateTeam(team);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		affectedRows = insertTeam(team);
+		affectedRows += insertPlayer(name, password, team);
+		affectedRows += insertHero(name);
+		affectedRows += insertPets(name);
+		affectedRows += insertMonster(name);
+		affectedRows += updateTeam(team);
 		return affectedRows;
 	}
 	private int createPlayer(String name, String password, String team) {
-		try {
-			Connection connect = connexion();
-			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = insertPlayer(name, password, team);
-			affectedRows += insertHero(name);
-			affectedRows += insertPets(name);
-			affectedRows += insertMonster(name);
-			affectedRows += updateTeam(team);
-		} catch (SQLException e){
-			e.printStackTrace();
-		}
+		affectedRows = insertPlayer(name, password, team);
+		affectedRows += insertHero(name);
+		affectedRows += insertPets(name);
+		affectedRows += insertMonster(name);
+		affectedRows += updateTeam(team);
 		return affectedRows;
 	}
 	
@@ -398,7 +384,7 @@ public class database {
 		return check;
 	}
 	
-	private boolean gameConnection(String name, String password, String team) {
+	private boolean playerConnection(String name, String password, String team) {
 		boolean connect = false;
 		boolean checkTeam = checkTeam(team);
 		System.out.println(checkTeam);
@@ -409,6 +395,7 @@ public class database {
 			//si le joueur existe
 			if(checkPlayer) {
 				connect = true;
+				gameConnection(name);
 			}
 			//si le joueur existe pas
 			else {
@@ -417,6 +404,7 @@ public class database {
 					createPlayer(name, password, team);
 					if(checkPlayer) {
 						connect = true;
+						gameConnection(name);
 					}
 				}
 			}
@@ -428,66 +416,166 @@ public class database {
 				createTeamPlayer(name, password, team);
 				if(checkPlayer && checkTeam) {
 					connect=true;
+					gameConnection(name);
 				}
 			}
 		}
 		return connect;
 	}
 	
-	public ArrayList<String> classement(ArrayList<String> classement, boolean table, String ordre){
-		if(table == true) {
-			//classement par équipe
-			if(ordre.equals("pets")) {
-				ResultSet result = orderedData("*", "team", "ORDER BY teampets");
-				
-			}
+	private void gameConnection(String name) {
+		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'"); 
+		game game = new game();
+		Hero hero = new Hero();
+		Pets pets = new Pets();
+		Monster monster = new Monster();
+		Artefact artefact = new Artefact();
+		try {
+			result.first();
+			int playerID = Integer.parseInt(result.getObject(1).toString());
+			String where = " WHERE playerid = "+playerID;
+			ResultSet resultHero = data("*","hero", where);
+			ResultSet resultMonster = data("*","monster", where);
+			ResultSet resultPets = data("*","pets", where);
+			
+			resultHero.beforeFirst();
+			resultMonster.beforeFirst();
+			resultPets.beforeFirst();
+			resultHero.next();
+			resultMonster.next();
+			resultPets.next();
+			int gold = resultHero.getInt(2);
+			int damage = resultHero.getInt(3);
+			int petsCount = resultHero.getInt(4);
+			int artefactMoney = resultHero.getInt(5);
+			String artefacts = resultHero.getString(6);
+			ArrayList<String> artefactList = new ArrayList<String>();
+			String[] artefactArray = artefacts.split(" ");
+			for(String e : artefactArray) {
+				artefactList.add(e);
+			};
+			
+			int pv = resultMonster.getInt(2);
+			int pvIncrease = resultMonster.getInt(3);
+			int monsterNumber = resultMonster.getInt(4);
+			int goldincrease = resultMonster.getInt(5);
+			int wave = resultMonster.getInt(6);
+			
+			int petsDamage = resultPets.getInt(1);
+			int petsIncrease = resultPets.getInt(2);
+			int petsBuyCost = resultPets.getInt(3);
+			int petsUpgradeCost = resultPets.getInt(4);
+			
+			game.setGold(gold);
+			hero.setDamage(damage);
+			pets.setPetNumber(petsCount);
+			hero.setArtefactMoney(artefactMoney);
+			artefact.setCurrentArtefacts(artefactList);
+			
+			monster.setPV(pv);
+			monster.setPvIncrease(pvIncrease);
+			monster.setNumber(monsterNumber);
+			monster.setGoldIncrease(goldincrease);
+			monster.setWaveNumber(wave);
+			
+			pets.setPetDamages(petsDamage);
+			pets.setPetNumberUP(petsIncrease);
+			pets.setPetCostBuy(petsBuyCost);
+			pets.setPetCostUpgrade(petsUpgradeCost);
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
-		else {
-			//classement par joueurs
+	}	
+	
+	private void gameDeconnection(String name) {
+		String team = "";
+		ResultSet result = data("playername, teamname", "player JOIN team ON team.teamid = player.teamid", " WHERE playername = '"+name+"'");
+		try {
+			result.first();
+			team = result.getObject(2).toString();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		affectedRows = updateTeam(team);
+		affectedRows += updatePlayer(name);
+		affectedRows += updateHero(name);
+		affectedRows += updateMonster(name);
+		affectedRows += updatePets(name);
+	}
+	
+	private ArrayList<Object> classement(boolean table, String ordre){
+		ArrayList<Object> classement = new ArrayList<Object>();
+		try {
+			if(table) {
+				//classement par équipe
+				if(ordre.equals("pets")) {
+					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
+					result.beforeFirst();
+					while(!result.isLast()) {
+						result.next();
+						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+							classement.add(result.getObject(i));
+						}
+					}
+				}
+				else if(ordre.equals("money")) {
+					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
+					result.beforeFirst();
+					while(!result.isLast()) {
+						result.next();
+						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+							classement.add(result.getObject(i));
+						}
+					}
+				}
+			} else {
+				//classement par joueurs
+				if (ordre.equals("money")) {
+					ResultSet result = orderedData("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
+					result.beforeFirst();
+					while(!result.isLast()) {
+						result.next();
+						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+							classement.add(result.getObject(i));
+						}
+					}
+				}
+				else {
+					if (ordre.equals("pets")) {
+						ResultSet result = orderedData("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
+						result.beforeFirst();
+						while(!result.isLast()) {
+							result.next();
+							for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+								classement.add(result.getObject(i));
+							}
+						}
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		
 		}
 		return classement;
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		database db = new database(); 
-				
-		//player, team et password sont à insérer dans l'interface graphique
 		
-		//a garder dans l'interface graphique ==> classement : boutons pour choisir le paramètre pour ordoner
-			//db.getClassement();
-				//boolean team : true=classement/équipe false=classement/joueur
-				//int choice :  0=pets 1=money 2=artefactmoney 3=wave
-		
-		db.gameConnection("MatthFlash", "abc123", "Var Motiv = 0");
-		
-		//db.updateTeam("Var Motiv = 0");
+		ArrayList<Object> classement = db.classement(true, "money");
+		System.out.println(classement);
 		
 		
-		//a faire pour créer un joueur dans une nouvelle équipe createTeamPlayer ==> appelé dans gameConnection() SI getTeam = false
-		//db.insertTeam(team);
-		//db.insertPlayer(player, password, team);
-		//db.insertHero(player);
-		//db.insertMonster(player);
-		//db.insertPets(player);
-		//db.updateTeam(team);
+		//db.playerConnection("Swithan", "abc123", "Var Motiv = 0");
 		
-		//a faire pour créer un joueur dans une équipe existante createPlayer() ==> appelé dans gameConnection SI getTeam() = true
-		//db.insertPlayer(player, password, team);
-		//db.insertHero(player);
-		//db.insertMonster(player);
-		//db.insertPets(player);
-		//db.updateTeam(team);
+		String where = " WHERE playerid = "+1;
+		ResultSet resultHero = db.data("*","hero", where);
+		resultHero.beforeFirst();
+		resultHero.next();
+		System.out.println(resultHero.first()+" "+resultHero.getObject(6));
 		
-		//a faire lors de la connexion : gameConnection
-		//db.getPlayer()
-		//db.getHero()
-		//db.getMonster()
-		//db.getPets()
 		
-		//a faire lors de la deconnexion : gameDeconnection()
-		//db.updateHero(player);
-		//db.updateMonster(player);
-		//db.updatePets(player);
-		//db.updateTeam(team);
 	}
 }
