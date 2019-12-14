@@ -29,20 +29,19 @@ public class Monster extends Observable {
 	 * @see Monster
 	 * 
 	 */
-	public void die(Monster monstre, game game) {
-		if (monstre.PV <= 0 && monstre.Number == monstre.bossNumber) { 	//verifie que le boss est mort
+	public void die(Monster monstre, game game, int PV,int MNumber, int BNumber) {
+		if (PV <= 0 && MNumber == BNumber) { 	//verifie que le boss est mort
 			game.setGold(game.getGold() + monstre.goldIncrease);
-			game.setGold(game.getGold() + game.getGold() / 5) ;					//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
-			monstre.goldIncrease += monstre.goldIncrease;				//augmente le nombre de pi�ce que les prochain monstre donnerons
-			monstre.pvIncrease += monstre.pvIncrease;					//augmente les pvs des prochains monstres
-			monstre.waveNumber ++;										//augmente la vague
-			monstre.Number = 1;											
-			monstre.PV = monstre.pvIncrease;
+			game.setGold(game.getGold() + game.getGold() / 5) ;			//donne un grosse prime d�pendant du montant d'argent que poss�de le h�ros actuellement
+			monstre.setGoldIncrease(monstre.getGoldIncrease() + monstre.getGoldIncrease());	//augmente le nombre de pi�ce que les prochain monstre donnerons
+			monstre.setPvIncrease(monstre.getPvIncrease() + monstre.getPvIncrease());					//augmente les pvs des prochains monstres
+			monstre.setWaveNumber(monstre.getWaveNumber() + 1);			//augmente la vague
+			monstre.setNumber(1);											
+			monstre.setPV(monstre.getPvIncrease());
 			if(monstre.waveNumber == 2) {
 				game.heroChoice();
-				activerChoixClasses();	
 			}
-			randomMonster();
+			randomMonster(monstre);
 			
 			if(game.myHero.getCheckClass() == 2) {
 				monstre.tempsBoss = 25;
@@ -52,42 +51,39 @@ public class Monster extends Observable {
 			}
 			
 		}
-		if (monstre.PV <= 0 && monstre.Number == (monstre.bossNumber -1)) { //prepare le boss
-			monstre.Number++;
-			monstre.PV = monstre.pvIncrease*3;
+		else if (PV <= 0 && MNumber == (BNumber -1)) { //prepare le boss
+			monstre.setNumber( monstre.getNumber() + 1);
+			monstre.setPV(monstre.getPvIncrease() * 3);
 			game.setGold(game.getGold() + monstre.goldIncrease);
 			System.out.println("Vous etes au boss. Force à vous !");
-			randomMonster();
+			randomMonster(monstre);
 		}
 		
-		if (monstre.PV <= 0) {
-			monstre.PV = monstre.pvIncrease;
-			monstre.Number ++;
+		else if (PV <= 0) {
+			monstre.setPV(monstre.getPvIncrease());
+			monstre.setNumber( monstre.getNumber()+ 1);
 			game.setGold(game.getGold() + monstre.goldIncrease);	//donne de l'argent a la mort du monstre(ancien goldDrop())
-			randomMonster();
+			randomMonster(monstre);
 		}
 	}
 	
+	/**
+	 */
 	
-	
-	public void randomMonster() {
+	public void randomMonster(Monster monster) {
 		int x = ((int) ((Math.random() * 100) % 3));
 		if (x == 0) {
-			attribute = "aqua";
+			monster.setAttribute("aqua");
 			GUI.buttonMonster.setIcon(GUI.slimeBleu);
 		}
 		if (x == 1) {
-			attribute = "tera";
+			monster.setAttribute("tera");
 			GUI.buttonMonster.setIcon(GUI.slimeVert);
 		}
 		if (x == 2) {
-			attribute = "pyro";
+			monster.setAttribute("pyro");
 			GUI.buttonMonster.setIcon(GUI.slimeRouge);
 		}
-	}
-	
-	public void activerChoixClasses() {
-		
 	}
 	
 	public int getPV() {
@@ -160,8 +156,6 @@ public class Monster extends Observable {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-	}
 
 	public String getAttribute() {
 		return attribute;
@@ -170,5 +164,8 @@ public class Monster extends Observable {
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-
+	
+	public static void main(String[] args) {
+		
+	}
 }

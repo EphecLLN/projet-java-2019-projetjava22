@@ -3,11 +3,11 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	private int petDamages = 1;			//d�gats des pets
-	private int petDmgIncrease = 1;		//augmentation des d�gats apr�s une am�lioration
+	private int petDamages = 1;			//d�gats des pets
+	private int petDmgIncrease = 1;		//augmentation des d�gats apr�s une am�lioration
 	private int petNumber = 0; 			//nombre de pets
 	private int petNumberUP= 1;			//nombre de pets 
-	private int petCostUpgrade = 150;	//prix d'am�lioration d'un familier
+	private int petCostUpgrade = 150;	//prix d'am�lioration d'un familier
 	private double petBuyIncrease = 0.1;//pourcentage d'augmentation du prix de l'achat d'un familier
 	private int petsAttackSpeed = 2000;	//vitesse d'attaque (2000 = 2 secondes)
 	private int petCostBuy = 100;		//prix d'achat d'un familier
@@ -29,15 +29,16 @@ public class Pets extends Observable {
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
-	static int upgradePet(int petDamage, int petIncrease, int gold, int petCostUpgrade) {
-		if(gold >= petCostUpgrade) {
-			petDamage = petDamage + petIncrease;
-			gold -= petCostUpgrade;
+	public void upgradePet(game game,Pets myPets) {
+		if(game.getGold() >= myPets.petCostUpgrade) {
+			myPets.petDamages =myPets.petDamages + myPets.petDmgIncrease;
+			game.setGold(game.getGold() - myPets.petCostUpgrade);
+			myPets.setPetCostUpgrade(getPetCostUpgrade() + myPets.petUpgradeIncrease);
+			myPets.setPetUpgradeIncrease(getPetUpgradeIncrease()*2);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
 		}
-		return petDamage;
 	}
 	
 	/**
@@ -58,14 +59,15 @@ public class Pets extends Observable {
 	 * Cette méthode sert à acheter un nouveau pet
 	 */
 	
-	public void buyPet(game game) {
-		if(game.getGold() >= getPetCostBuy()) {
-			game.setGold( game.getGold() - getPetCostBuy());
-			game.myPets.setPetNumber(game.myPets.getPetNumber() + getPetNumberUP());
-			setPetCostBuy(getPetCostBuy() + getPetCostBuy() * petBuyIncrease);
+	public void buyPet(game game, int gold, int costBuy, int petNbr) {
+		if(gold >= costBuy) {
+			game.setGold(gold - costBuy);
+			setPetNumber(petNbr+ getPetNumberUP());
+			setPetCostBuy(costBuy + costBuy * petBuyIncrease);
 		}
 		else {
 			System.out.println("Vous n'avez pas assez de gold pour améliorer.");
+			setPetNumber(petNbr);
 		}
 	}
 	
@@ -103,6 +105,17 @@ public class Pets extends Observable {
 	 */
 	public int getPetCostUpgrade() {
 		return petCostUpgrade;
+	}
+	
+	public int getPetUpgradeIncrease() {
+		return petUpgradeIncrease;
+	}
+	public void setPetUpgradeIncrease(int prix) {
+		this.petUpgradeIncrease = prix;
+	}
+	
+	public double getPetBuyIncrease() {
+		return petBuyIncrease;
 	}
 
 	/**

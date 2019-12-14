@@ -11,6 +11,11 @@ import java.util.Observable;
  */
 public class Hero extends Observable {
 	
+	/**
+	 * Variable gardant la valeur a laquelle les degats vont 
+	 * etre augment�s a chaque am�lioriations du hero
+	 */
+	
 	private int constUpgradeDamage = 1;
 	
 	/**
@@ -22,6 +27,8 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
+	private String attribute = "aqua";
+
 	
 	
 	/**
@@ -58,26 +65,22 @@ public class Hero extends Observable {
 	 */
 	
 	private int artefactCost = 10;
-	
 	/**
 	 * Cet attribut permet de stocker le type de monstre (Eau, terre ou feu). Cette valeur change de manière aléatoire
 	 * via a fonction screenMonster() de la classe GUI
 	 */
 	
-	
-	private String
-	
-	attribute = "aqua";
 	/*Hero(int petGold,int artefactGold){ //constructeur pour le test
 		Hero.gold = petGold;
 		Hero.artefactCost = artefactGold;
 	}*/
 		
 	/**
-	 * Cette méthode sert à acheter un nouvel artefact.
+	 * Cette méthode sert a�acheter un nouvel artefact.
 	 * 
 	 * @author Lucas Pastori
-	 * @param Artefact	appelle la classe Artefact pour ajouter le nouvel artefact dle tableau d'artefacts
+	 * @param Artefact	appelle la classe Artefact pour ajouter le nouvel artefact du
+	 *  tableau d'artefacts
 	 *  "currentArtefact" et pour retirer celui-ci du tableau "noArtefacts"
 	 *  
 	 * @param game		appelle la classe game pour pouvoir y appliquer les nouveaux artefact via la fonction
@@ -85,9 +88,9 @@ public class Hero extends Observable {
 	 * 
 	 */
 	
-	public void buyArtefact(Artefact artf,game game) {
-		if(getArtefactMoney() >= getArtefactCost() && artf.getCurrentArtefacts().size() !=5) {
-			setArtefactMoney(getArtefactMoney() - getArtefactCost());
+	public void buyArtefact(Artefact artf,game game, int nbrArtfMoney) {
+		if(nbrArtfMoney >= getArtefactCost() && artf.getCurrentArtefacts().size() !=5) {
+			setArtefactMoney(nbrArtfMoney - getArtefactCost());
 			setArtefactCost(getArtefactCost() + artefactCost);
 			double nbrNoArtf = (Math.random() *100) % artf.noArtefacts.length;
 			while(artf.getCurrentArtefacts().contains(artf.noArtefacts[(int) nbrNoArtf])) {
@@ -104,9 +107,15 @@ public class Hero extends Observable {
 		return attribute;
 	}
 	
+	/**
+	 * @param x attribut à set (aqua, terra ou pyro)
+	 */
+	
 	public void setAttribute(String x) {
 		this.attribute = x;
 	}
+	
+
 	
 	/**
 	 * @return les dégâts actuels du heros
@@ -187,6 +196,7 @@ public class Hero extends Observable {
 	public int getArtefactMoney() {
 		return artefactMoney;
 	}
+
 
 	/**
 	 * @param artefactMoney : met à jour la somme d'argant pour les artefacts
