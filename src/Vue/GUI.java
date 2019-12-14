@@ -29,6 +29,10 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	}
 
 	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
+	
+	public JLabel tempsBoss1Label = new JLabel();
+	public JLabel tempsBoss2Label = new JLabel();
+	
 	public JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
 	public JButton buttonUP = new JButton();		
 	public static JButton buttonMonster = new JButton();
@@ -59,7 +63,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JLabel upPetsLabel = new JLabel();
 	public JLabel dmgUPLabel = new JLabel();
 	public JLabel artfMoney = new JLabel();
-	public JLabel artfMoneyToGet = new JLabel();
+	public JLabel resetLabel = new JLabel();
 	public JLabel artfMoneyCost = new JLabel();
 	public JLabel degatsLabel = new JLabel();
 	public JLabel vague = new JLabel();
@@ -67,6 +71,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton buttonHero = new JButton();
 	public JButton buttonCoeur1 = new JButton();
 	public JButton buttonCoeur2 = new JButton();
+	public ImageIcon aquaIcon = new ImageIcon(game.class.getResource("/images/aqua.png"));
+	public ImageIcon pyroIcon = new ImageIcon(game.class.getResource("/images/fire.png"));
+	public ImageIcon teraIcon = new ImageIcon(game.class.getResource("/images/plant.png"));
 	public ImageIcon imageHero0 = new ImageIcon("./images/héro-1.png.png");
 	public ImageIcon imageHero1 = new ImageIcon("./images/héro-2.png.png");
 	public ImageIcon imageHero2 = new ImageIcon("./images/héro-3.png.png");
@@ -87,9 +94,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 
 	public JFrame window = new JFrame("Clicker");
 	public JPanel choiceClass = new JPanel();
+	
 	public static ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
 	public static ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
 	public static ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
+	public static ImageIcon aquaBoss = new ImageIcon("./images/aquaBoss.png");
+	public static ImageIcon teraBoss = new ImageIcon("./images/teraBoss.png");
+	public static ImageIcon pyroBoss = new ImageIcon("./images/pyroBoss.png");
+	
 	public JButton aqua = new JButton();
 	public JButton tera = new JButton();
 	public JButton pyro = new JButton();
@@ -97,6 +109,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons		
 		window.setSize(1200, 700);
 		screenMonster(this, monstre);
+		ajouterTempsBoss(model.myMonster);
 		
 		JFrame window = new JFrame();
 		window.setSize(1200, 900);
@@ -105,6 +118,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		window.setLayout(null);
 		Font stats = new Font("Comic Sans MS", Font.PLAIN, 18);
 
+		/*
+		 * 		PARAMETRES DE LA FENETRE DU NUMERO DE MONSTRE ET DU
+		 * 		NUMERO DE LA VAGUE. 
+		 * 
+		 * 		-> En haut à droite
+		 */
+		
+		//LOGOS DES EPEES EN DECOR
 		
 		JPanel imageEpeeDecor1 = new JPanel();
 		imageEpeeDecor1.setBounds(310, 150, 40, 50);
@@ -143,12 +164,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		buttonEpeeDecor3.setBorder(null);
 		buttonEpeeDecor3.setIcon(epeeDegats);
 		imageEpeeDecor3.add(buttonEpeeDecor3);
-	
+		
 		buttonEpeeDecor4.setBackground(Color.lightGray);
 		buttonEpeeDecor4.setFocusPainted(false);
 		buttonEpeeDecor4.setBorder(null);
 		buttonEpeeDecor4.setIcon(epeeDegats);
 		imageEpeeDecor4.add(buttonEpeeDecor4);
+		
+		//ZONE POUR LE NUMERO DE LA VAGUE
 		
 		JPanel vaguePanel = new JPanel();
 		vaguePanel.setBounds(90, 60, 200, 70);
@@ -160,6 +183,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		vague.setText("Vague n°" + model.myMonster.getWaveNumber());
 		vaguePanel.add(vague);
 		
+		//ZONE POUR LE NUMERO DU MONSTRE EN COURS
+		
 		JPanel numberMonstrePanel = new JPanel();
 		numberMonstrePanel.setBounds(90, 120, 200, 70);
 		numberMonstrePanel.setBackground(Color.darkGray);
@@ -170,21 +195,76 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		numberMonstreLabel.setText("Monstre n°" + model.myMonster.getNumber());
 		numberMonstrePanel.add(numberMonstreLabel);
 		
-		JPanel vagueMonstrePanel = new JPanel();
-		vagueMonstrePanel.setBounds(10, 10, 350, 200);
-		vagueMonstrePanel.setBackground(Color.darkGray);
-		window.add(vagueMonstrePanel);
+		//ZONE GLOBALE POUR INSERER UNE COULEUR DE FOND
+		
+		
+		
+		/*
+		 * 		PARAMETRES DE LA FENETRE POUR LE CLASSEMENT
+		 * 
+		 * 		-> INFERIEUR GAUCHE
+		 */
+		
+		JPanel texteTableauDesScores = new JPanel();
+		texteTableauDesScores.setBounds(10,220,350,426);
+		texteTableauDesScores.setBackground(Color.darkGray);
+		window.add(texteTableauDesScores);
+		
+		tableauDesScores.setForeground(Color.white);
+		tableauDesScores.setFont(stats);
+		tableauDesScores.setText("Meilleurs joueurs :");
+		texteTableauDesScores.add(tableauDesScores);
+		
+		/*
+		 * 		PARAMETRES DE LA FENETRE MONSTRE, HEROS, ATTRIBUTS,
+		 * 		POINTS DE VIE DU MONSTRE ET TIMERBOSS
+		 * 
+		 * 		-> MILIEU CENTRE
+		 */
+		
+		//ZONE POUR LE MONSTRE PRINCIPAL AU CENTRE DE L'ECRAN
 		
 		JPanel monstrePanel = new JPanel();
 		monstrePanel.setBounds(500, 155, 200, 215);
 		monstrePanel.setBackground(Color.darkGray);
 		window.add(monstrePanel);
 		
+		buttonMonster.setBackground(Color.white);
+		buttonMonster.setFocusPainted(false);
+		buttonMonster.setBorder(null);
+		buttonMonster.addActionListener(this);
+		buttonMonster.setIcon(slimeBleu);
+		monstrePanel.add(buttonMonster);
+		
+		//ZONE POUR LES DIFFERENTS ATTRIBUTS DU HEROS (AQUA, PYRO, TERA)
+		
 		JPanel attributePanel = new JPanel();
 		attributePanel.setLayout(new GridLayout(1,3));
 		attributePanel.setBounds(490,560,220,61);
 		attributePanel.setBackground(Color.white);
 		window.add(attributePanel);	
+		
+		aqua.setBackground(Color.white);
+		pyro.setBackground(Color.white);
+		tera.setBackground(Color.white);
+		aqua.setBorderPainted(false);
+		pyro.setBorderPainted(false);
+		tera.setBorderPainted(false);
+		aqua.setFocusPainted(false);
+		pyro.setFocusPainted(false);
+		tera.setFocusPainted(false);
+		aqua.addActionListener(this);
+		pyro.addActionListener(this);
+		tera.addActionListener(this);
+		aqua.setIcon(aquaIcon);
+		pyro.setIcon(pyroIcon);
+		tera.setIcon(teraIcon);
+		aqua.setEnabled(false);
+		attributePanel.add(aqua);
+		attributePanel.add(pyro);
+		attributePanel.add(tera);
+		
+		//ZONE POUR LE HERO PRINCIPAL
 		
 		JPanel heroPanel = new JPanel();
 		heroPanel.setLayout(new GridLayout(1,1));
@@ -199,299 +279,416 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		heroPanel.add(buttonHero);
 		
-		buttonMonster.setBackground(Color.white);
-		buttonMonster.setFocusPainted(false);
-		buttonMonster.setBorder(null);
-		buttonMonster.addActionListener(this);
-		buttonMonster.setIcon(slimeBleu);
-		
-		monstrePanel.add(buttonMonster);
+		//ZONE POUR LES POINTS DE VIE
 		
 		JPanel pvMonstrePanel1 = new JPanel();
 		pvMonstrePanel1.setBounds(505,101,44,50);
 		pvMonstrePanel1.setBackground(Color.white);
-		window.add(pvMonstrePanel1);
+		window.add(pvMonstrePanel1);		
+	
+			buttonCoeur1.setBackground(Color.white);
+			buttonCoeur1.setFocusPainted(false);
+			buttonCoeur1.setBorder(null);
+			buttonCoeur1.setIcon(imageCoeur);
+			pvMonstrePanel1.add(buttonCoeur1);
+	
 		
 		JPanel pvMonstrePanel2 = new JPanel();
 		pvMonstrePanel2.setBounds(650,101,44,50);
 		pvMonstrePanel2.setBackground(Color.white);
 		window.add(pvMonstrePanel2);
-		
-		JPanel coinUpgrade = new JPanel();
-		coinUpgrade.setBounds(910,127,30,34);
-		coinUpgrade.setBackground(Color.darkGray);
-		window.add(coinUpgrade);
-		
-		upgradeGold.setBackground(Color.darkGray);
-		upgradeGold.setFocusPainted(false);
-		upgradeGold.setBorder(null);
-		upgradeGold.setIcon(littleGold);
-		coinUpgrade.add(upgradeGold);
-		
-		JPanel coinNewPet = new JPanel();
-		coinNewPet.setBounds(1020,127,30,34);
-		coinNewPet.setBackground(Color.darkGray);
-		window.add(coinNewPet);
-		
-		newPetGold.setBackground(Color.darkGray);
-		newPetGold.setFocusPainted(false);
-		newPetGold.setBorder(null);
-		newPetGold.setIcon(littleGold);
-		coinNewPet.add(newPetGold);
-		
-		JPanel coinUpgradePets = new JPanel();
-		coinUpgradePets.setBounds(1020,236,30,34);
-		coinUpgradePets.setBackground(Color.darkGray);
-		window.add(coinUpgradePets);
-		
-		upgradePetsGold.setBackground(Color.darkGray);
-		upgradePetsGold.setFocusPainted(false);
-		upgradePetsGold.setBorder(null);
-		upgradePetsGold.setIcon(littleGold);
-		coinUpgradePets.add(upgradePetsGold);
-		
-		JPanel coinReset = new JPanel();
-		coinReset.setBounds(910,236,30,34);
-		coinReset.setBackground(Color.darkGray);
-		window.add(coinReset);
-		
-		resetGold.setBackground(Color.darkGray);
-		resetGold.setFocusPainted(false);
-		resetGold.setBorder(null);
-		resetGold.setIcon(littleArtefactGold);
-		coinReset.add(resetGold);
-		
-		JPanel coinNewArtefact = new JPanel();
-		coinNewArtefact.setBounds(970,347,30,44);
-		coinNewArtefact.setBackground(Color.darkGray);
-		window.add(coinNewArtefact);
 
-		newArtefactGold.setBackground(Color.darkGray);
-		newArtefactGold.setFocusPainted(false);
-		newArtefactGold.setBorder(null);
-		newArtefactGold.setIcon(littleArtefactGold);
-		coinNewArtefact
-		.add(newArtefactGold);
+			buttonCoeur2.setBackground(Color.white);
+			buttonCoeur2.setFocusPainted(false);
+			buttonCoeur2.setBorder(null);
+			buttonCoeur2.setIcon(imageCoeur);
+			pvMonstrePanel2.add(buttonCoeur2);
+			
+		JPanel pointDeVie = new JPanel();
+		pointDeVie.setBounds(550,101,100,50);
+		pointDeVie.setBackground(Color.white);
+		window.add(pointDeVie);
+			
+			PVLabel.setForeground(Color.red);
+			Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 35 );
+			PVLabel.setFont(PVEcriture);
+			PVLabel.setText("   " + monstre.getPV() + "   ");
+			pointDeVie.add(PVLabel);
 		
-		buttonCoeur1.setBackground(Color.white);
-		buttonCoeur1.setFocusPainted(false);
-		buttonCoeur1.setBorder(null);
-		buttonCoeur1.setIcon(imageCoeur);
-		pvMonstrePanel1.add(buttonCoeur1);
+		JPanel compteurMonstre1 = new JPanel();
+		compteurMonstre1.setBounds(400,200,100, 100);
+		compteurMonstre1.setBackground(Color.white);
+		window.add(compteurMonstre1);
 		
-		buttonCoeur2.setBackground(Color.white);
-		buttonCoeur2.setFocusPainted(false);
-		buttonCoeur2.setBorder(null);
-		buttonCoeur2.setIcon(imageCoeur);
-		pvMonstrePanel2.add(buttonCoeur2);
+			tempsBoss1Label.setForeground(Color.red);
+			Font compteurEcriture = new Font("Tempus Sans ITC", Font.PLAIN, 50 );
+			tempsBoss1Label.setFont(compteurEcriture);
+			tempsBoss1Label.setText("");
+			compteurMonstre1.add(tempsBoss1Label);
 		
-		JPanel texteTableauDesScores = new JPanel();
-		texteTableauDesScores.setBounds(10,220,350,420);
-		texteTableauDesScores.setBackground(Color.darkGray);
-		window.add(texteTableauDesScores);
+		JPanel compteurMonstre2 = new JPanel();
+		compteurMonstre2.setBounds(700,200,100, 100);
+		compteurMonstre2.setBackground(Color.white);
+		window.add(compteurMonstre2);
 		
-		tableauDesScores.setForeground(Color.white);
-		tableauDesScores.setFont(stats);
-		tableauDesScores.setText("Meilleurs joueurs :");
-		texteTableauDesScores.add(tableauDesScores);
+			tempsBoss2Label.setForeground(Color.red);
+			tempsBoss2Label.setFont(compteurEcriture);
+			tempsBoss2Label.setText("");
+			compteurMonstre2.add(tempsBoss2Label);
 		
+		/*
+		 * 		PARAMETRES DE LA FENETRE AMELIORATIONS ET LEUR PRIX
+		 * 
+		 * 		-> SUPERIEUR DROIT
+		 */
+			/*
+			 * 		IMAGES DE PIECES
+			 * 
+			 * 		-> SUPERIEUR DROIT
+			 */
+			
+			//ZONE POUR LE LOGO DE LA PIECE POUR L'AMELIORATION DES DEGATS
+			
+			JPanel coinUpgrade = new JPanel();
+			coinUpgrade.setBounds(1050,43,30,34);
+			coinUpgrade.setBackground(Color.darkGray);
+			window.add(coinUpgrade);
+			
+				upgradeGold.setBackground(Color.darkGray);
+				upgradeGold.setFocusPainted(false);
+				upgradeGold.setBorder(null);
+				upgradeGold.setIcon(littleGold);
+				coinUpgrade.add(upgradeGold);
+			
+			//ZONE POUR LE LOGO DE LA PIECE POUR LES NOUVEAUX FAMILIERS
+			
+			JPanel coinNewPet = new JPanel();
+			coinNewPet.setBounds(1050,123,30,34);
+			coinNewPet.setBackground(Color.darkGray);
+			window.add(coinNewPet);
+				
+				newPetGold.setBackground(Color.darkGray);
+				newPetGold.setFocusPainted(false);
+				newPetGold.setBorder(null);
+				newPetGold.setIcon(littleGold);
+				coinNewPet.add(newPetGold);
+			
+			
+			//ZONE POUR LE LOGO DE LA PIECE POUR LE REBORN
+			
+			JPanel coinReset = new JPanel();
+			coinReset.setBounds(1050,283,30,34);
+			coinReset.setBackground(Color.darkGray);
+			window.add(coinReset);
+			
+				resetGold.setBackground(Color.darkGray);
+				resetGold.setFocusPainted(false);
+				resetGold.setBorder(null);
+				resetGold.setIcon(littleGold);
+				coinReset.add(resetGold);
+			
+			//ZONE POUR LE LOGO DE LA PIECE POUR L'AMELIORATION DES FAMILIERS
+			
+			JPanel coinUpgradePets = new JPanel();
+			coinUpgradePets.setBounds(1050,203,30,34);
+			coinUpgradePets.setBackground(Color.darkGray);
+			window.add(coinUpgradePets);
+			
+				upgradePetsGold.setBackground(Color.darkGray);
+				upgradePetsGold.setFocusPainted(false);
+				upgradePetsGold.setBorder(null);
+				upgradePetsGold.setIcon(littleArtefactGold);
+				coinUpgradePets.add(upgradePetsGold);
+				
+			//ZONE POUR LE LOGO DE LA PIECE POUR LES NOUVEAUX ARTEFACTS
+			
+			JPanel coinNewArtefact = new JPanel();
+			coinNewArtefact.setBounds(1050,363,30,34);
+			coinNewArtefact.setBackground(Color.darkGray);
+			window.add(coinNewArtefact);
 		
+				newArtefactGold.setBackground(Color.darkGray);
+				newArtefactGold.setFocusPainted(false);
+				newArtefactGold.setBorder(null);
+				newArtefactGold.setIcon(littleArtefactGold);
+				coinNewArtefact.add(newArtefactGold);
 
-		//  BOUTONS D'AMELIORATION
+			
+				/*
+				 * 		IMAGES DE BOUTTONS
+				 * 
+				 * 		-> SUPERIEUR DROIT
+				 */
+			
+				//ZONE POUR LE BOUTTON DEGATS
+			
+				JPanel imagesUpDegats = new JPanel();
+				imagesUpDegats.setBounds(900,40,112,67);
+				imagesUpDegats.setLayout(new GridLayout(1,1));
+				imagesUpDegats.setBackground(Color.darkGray);
+				window.add(imagesUpDegats);
+								 
+					ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
+				
+					buttonUP.setBackground(Color.darkGray);
+					buttonUP.setFocusPainted(false);
+					buttonUP.setBorder(null);
+					buttonUP.setIcon(UPIcon);
+					buttonUP.addActionListener(this);
+					imagesUpDegats.add(buttonUP);
+					
+				JPanel textesUpDegats = new JPanel();
+				textesUpDegats.setBounds(1050,47,100,67);
+				textesUpDegats.setBackground(Color.darkGray);
+				window.add(textesUpDegats);
+					
+					dmgUPLabel.setForeground(Color.white);
+					dmgUPLabel.setFont(stats);
+					dmgUPLabel.setText("" + myGame.getUpgradeMoneyValue());
+					textesUpDegats.add(dmgUPLabel);
+					
+				//ZONE POUR LE BOUTTON NOUVEAU FAMILIER
+			
+				JPanel imagesNewPixie = new JPanel();
+				imagesNewPixie.setBounds(900,120,112,67);
+				imagesNewPixie.setLayout(new GridLayout(1,1));
+				imagesNewPixie.setBackground(Color.darkGray);
+				window.add(imagesNewPixie);
+				
+				ImageIcon newPet = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
 
-		JPanel imagesUpDegatsNewPixie = new JPanel();
-		imagesUpDegatsNewPixie.setBounds(900,65,230,67);
-		imagesUpDegatsNewPixie.setLayout(new GridLayout(1,2));
-		imagesUpDegatsNewPixie.setBackground(Color.darkGray);
-		window.add(imagesUpDegatsNewPixie);
+					buttonNewPet.setBackground(Color.darkGray);
+					buttonNewPet.setFocusPainted(false);
+					buttonNewPet.setBorder(null);
+					buttonNewPet.setIcon(newPet);
+					buttonNewPet.addActionListener(this);
+					imagesNewPixie.add(buttonNewPet);
+					
+				JPanel textesNewPixie = new JPanel();
+				textesNewPixie.setBounds(1050,127,100,67);
+				textesNewPixie.setBackground(Color.darkGray);
+				window.add(textesNewPixie);
+				
+					newPetLabel.setForeground(Color.white);
+					newPetLabel.setFont(stats);
+					newPetLabel.setText("" + pet.getPetCostBuy());
+					textesNewPixie.add(newPetLabel);
+					
+				//ZONE POUR LE BOUTTON RESET
+				
+				JPanel imagesReset = new JPanel();
+				imagesReset.setBounds(900,200,112,67);
+				imagesReset.setLayout(new GridLayout(1,1));
+				imagesReset.setBackground(Color.darkGray);
+				window.add(imagesReset);
+				
+					ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
+	
+					buttonReborn.setBackground(Color.darkGray);
+					buttonReborn.setFocusPainted(false);
+					buttonReborn.setBorder(null);
+					buttonReborn.setIcon(reset);
+					buttonReborn.addActionListener(this);
+					imagesReset.add(buttonReborn);
+				
+				JPanel textesReset = new JPanel();
+				textesReset.setBounds(1050,207,140,67);
+				textesReset.setBackground(Color.darkGray);
+				window.add(textesReset);
+				
+					resetLabel.setForeground(Color.white);
+					resetLabel.setFont(stats);
+					resetLabel.setText("Gain : +" + (monstre.getWaveNumber() + myGame.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+					textesReset.add(resetLabel);
+					
+				//ZONE POUR LE BOUTTON UPGRADE DES FAMILIERS
+				
+				JPanel imagesUpPet = new JPanel();
+				imagesUpPet.setBounds(900,280,112,67);
+				imagesUpPet.setLayout(new GridLayout(1,1));
+				imagesUpPet.setBackground(Color.darkGray);
+				window.add(imagesUpPet);
+				
+					ImageIcon upPetIcon = new ImageIcon(game.class.getResource("/images/anim upPets.gif"));
+					
+					buttonUpPets.setBackground(Color.darkGray);
+					buttonUpPets.setFocusPainted(false);
+					buttonUpPets.setBorder(null);
+					buttonUpPets.setIcon(upPetIcon);
+					buttonUpPets.addActionListener(this);
+					imagesUpPet.add(buttonUpPets);
+				
+				JPanel textesUpPet = new JPanel();
+				textesUpPet.setBounds(1050,287,100,67);
+				textesUpPet.setBackground(Color.darkGray);
+				window.add(textesUpPet);
+				
+					upPetsLabel.setForeground(Color.white);
+					upPetsLabel.setFont(stats);
+					upPetsLabel.setText("" + pet.getPetCostUpgrade());
+					textesUpPet.add(upPetsLabel);
+				
+				//ZONE POUR LE BOUTTON BUYARTEFACT
+				
+				JPanel imageBuyArtefact = new JPanel();
+				imageBuyArtefact.setBounds(900,360,112,67);
+				imageBuyArtefact.setLayout(new GridLayout(1,1));
+				imageBuyArtefact.setBackground(Color.darkGray);
+				window.add(imageBuyArtefact);
+				
+					ImageIcon artfIcon = new ImageIcon(game.class.getResource("/images/anim newArtefact.gif"));
+	
+					buttonArtf.setBackground(Color.darkGray);
+					buttonArtf.setFocusPainted(false);
+					buttonArtf.setBorder(null);
+					buttonArtf.setIcon(artfIcon);
+					buttonArtf.addActionListener(this);
+					imageBuyArtefact.add(buttonArtf);
+				
+				JPanel textesBuyArtefact = new JPanel();
+				textesBuyArtefact.setBounds(1050,367,100,67);
+				textesBuyArtefact.setBackground(Color.darkGray);
+				window.add(textesBuyArtefact);
+				
+					artfMoneyCost.setForeground(Color.white);
+					artfMoneyCost.setFont(stats);
+					artfMoneyCost.setText("" + hero.getArtefactCost());
+					textesBuyArtefact.add(artfMoneyCost);
 		
-		JPanel textesUpDegatsNewPixie = new JPanel();
-		textesUpDegatsNewPixie.setBounds(900,115,230,67);
-		textesUpDegatsNewPixie.setLayout(new GridLayout(1,2));
-		textesUpDegatsNewPixie.setBackground(Color.darkGray);
-		window.add(textesUpDegatsNewPixie);
+					
+					
+				JPanel choiceClass = new JPanel();
+		        choiceClass.setLayout(new GridLayout(1,3));
+		        choiceClass.setBounds(400,20,400,70);
+		        choiceClass.setBackground(Color.darkGray);
+		        window.add(choiceClass);
+		        
+					ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
+					
+					archerChoice.setBackground(Color.darkGray);
+					archerChoice.setFocusPainted(false);
+					archerChoice.setBorderPainted(false);
+					archerChoice.addActionListener(this);
+					archerChoice.setIcon(archerIcon);
+					archerChoice.setEnabled(false);
+					choiceClass.add(archerChoice);
+					
+					ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berzerker.gif"));
+					
+					berserkChoice.setBackground(Color.darkGray);
+					berserkChoice.setFocusPainted(false);
+					berserkChoice.setBorderPainted(false);
+					berserkChoice.addActionListener(this);
+					berserkChoice.setIcon(berserkIcon);
+					berserkChoice.setEnabled(false);
+					choiceClass.add(berserkChoice);
+					
+					ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
+	
+					mageChoice.setBackground(Color.darkGray);
+					mageChoice.setFocusPainted(false);
+					mageChoice.setBorderPainted(false);
+					mageChoice.addActionListener(this);
+					mageChoice.setIcon(mageIcon);
+					mageChoice.setEnabled(false);
+					choiceClass.add(mageChoice);
+		    	
+		/*
+		 * 		PARAMETRES DE LA FENETRE INFORMATIONS TEL QUE LES DEGATS, LE SOLDE ET LE SOLDE D'ARTEFACTS.
+		 * 
+		 * 		-> INFERIEUR DROIT
+		 */      
 		
-		JPanel imagesResetUpPet = new JPanel();
-		imagesResetUpPet.setBounds(900,175,230,67);
-		imagesResetUpPet.setLayout(new GridLayout(1,2));
-		imagesResetUpPet.setBackground(Color.darkGray);
-		window.add(imagesResetUpPet);
-		
-		JPanel textesResetUpPet = new JPanel();
-		textesResetUpPet.setBounds(900,225,230,67);
-		textesResetUpPet.setLayout(new GridLayout(1,2));
-		textesResetUpPet.setBackground(Color.darkGray);
-		window.add(textesResetUpPet);
-		
-		JPanel imageBuyArtefact = new JPanel();
-		imageBuyArtefact.setBounds(900,285,230,67);
-		imageBuyArtefact.setLayout(new GridLayout(1,2));
-		imageBuyArtefact.setBackground(Color.darkGray);
-		window.add(imageBuyArtefact);
-		
-		JPanel textesBuyArtefact = new JPanel();
-		textesBuyArtefact.setBounds(900,335,230,67);
-		textesBuyArtefact.setLayout(new GridLayout(1,2));
-		textesBuyArtefact.setBackground(Color.darkGray);
-		window.add(textesBuyArtefact);
-
-		JPanel choiceClass = new JPanel();
-        choiceClass.setLayout(new GridLayout(1,3));
-        choiceClass.setBounds(400,20,400,70);
-        choiceClass.setBackground(Color.darkGray);
-        window.add(choiceClass);
-        
+		//ZONE POUR L'AFFICHAGE DES DEGATS
+		        
         JPanel degats = new JPanel();
         degats.setBounds(950,476,50,70);
         degats.setBackground(Color.darkGray);
         window.add(degats);
         
+	        epeeButton.setBackground(Color.darkGray);
+			epeeButton.setFocusPainted(false);
+			epeeButton.setBorder(null);
+			epeeButton.setIcon(epeeDegats);
+			degats.add(epeeButton);
+		
+        JPanel textesDegats = new JPanel();
+        textesDegats.setBounds(910,482,280,30);
+        textesDegats.setBackground(Color.darkGray);
+		window.add(textesDegats);
+        
+			degatLabel.setForeground(Color.white);
+			degatLabel.setFont(stats);
+			degatLabel.setText("Degats : " + hero.getDamage());
+			textesDegats.add(degatLabel);
+		
+		//ZONE POUR L'AFFICHAGE DU SOLDE
+		
         JPanel coin = new JPanel();
         coin.setBounds(950,520,50,70);
         coin.setBackground(Color.darkGray);
         window.add(coin);
         
+	        goldButton.setBackground(Color.darkGray);
+			goldButton.setFocusPainted(false);
+			goldButton.setBorder(null);
+			goldButton.setIcon(bigGold);
+			coin.add(goldButton);
+		
+        JPanel textesCoin = new JPanel();
+		textesCoin.setBounds(900,540,270,30);
+		textesCoin.setBackground(Color.darkGray);
+	    window.add(textesCoin);
+	    
+		    coinLabel.setForeground(Color.white);
+			coinLabel.setFont(stats);
+			coinLabel.setText(" " + model.getGold());
+			textesCoin.add(coinLabel);
+	    
+	    //ZONE POUR L'AFFICHAGE DU SOLDE D'ARTEFACT
+	    
         JPanel artefactCoin = new JPanel();
         artefactCoin.setBounds(950,570,50,70);
         artefactCoin.setBackground(Color.darkGray);
-        window.add(artefactCoin);
+        window.add(artefactCoin);	
         
-        JPanel textesDegats = new JPanel();
-        textesDegats.setBounds(900,482,300,30);
-        textesDegats.setBackground(Color.darkGray);
-		window.add(textesDegats);
+	        artefactGoldButton.setBackground(Color.darkGray);
+			artefactGoldButton.setFocusPainted(false);
+			artefactGoldButton.setBorder(null);
+			artefactGoldButton.setIcon(bigArtefactGold);
+			artefactCoin.add(artefactGoldButton);
 		
-		JPanel textesCoin = new JPanel();
-		textesCoin.setBounds(900,540,300,30);
-		textesCoin.setBackground(Color.darkGray);
-	    window.add(textesCoin);
-			
 	    JPanel textesArtefactCoin = new JPanel();
-	    textesArtefactCoin.setBounds(900,590,300,30);
+	    textesArtefactCoin.setBounds(900,590,270,30);
 	    textesArtefactCoin.setBackground(Color.darkGray);
 		window.add(textesArtefactCoin);
-        
-		ImageIcon UPIcon = new ImageIcon(game.class.getResource("/images/anim up.gif"));
-		
-		buttonUP.setBackground(Color.darkGray);
-		buttonUP.setFocusPainted(false);
-		buttonUP.setBorderPainted(false);
-		buttonUP.setIcon(UPIcon);
-		buttonUP.addActionListener(this);
-		imagesUpDegatsNewPixie.add(buttonUP);
-		
-		ImageIcon newPixie = new ImageIcon(game.class.getResource("/images/anim pixie.gif"));
-		
-		buttonNewPet.setBackground(Color.darkGray);
-		buttonNewPet.setFocusPainted(false);
-		buttonNewPet.setBorder(null);
-		buttonNewPet.setIcon(newPixie);
-		buttonNewPet.addActionListener(this);
-		imagesUpDegatsNewPixie.add(buttonNewPet);
-		
-		dmgUPLabel.setForeground(Color.white);
-		dmgUPLabel.setFont(stats);
-		dmgUPLabel.setText("        " + myGame.getUpgradeMoneyValue());
-		textesUpDegatsNewPixie.add(dmgUPLabel);
-		
-		newPetLabel.setForeground(Color.white);
-		newPetLabel.setFont(stats);
-		newPetLabel.setText("        " + pet.getPetCostBuy());
-		textesUpDegatsNewPixie.add(newPetLabel);
-		
-		ImageIcon reset = new ImageIcon(game.class.getResource("/images/anim reset.gif"));
 
-		buttonReborn.setBackground(Color.darkGray);
-		buttonReborn.setFocusPainted(false);
-		buttonReborn.setBorder(null);
-		buttonReborn.setIcon(reset);
-		buttonReborn.addActionListener(this);
-		imagesResetUpPet.add(buttonReborn);
+			artefactCoinLabel.setForeground(Color.white);
+			artefactCoinLabel.setFont(stats);
+			artefactCoinLabel.setText(" " + hero.getArtefactMoney());
+			textesArtefactCoin.add(artefactCoinLabel);		
 		
-		ImageIcon upPetIcon = new ImageIcon(game.class.getResource("/images/anim upPets.gif"));
+			/*
+			 * 		PARAMETRES DES FENETRES DE FOND POUR DEFINIR LES COULEURS
+			 * 
+			 * 		-> PARTOUT
+			 */      
+			
+		JPanel vagueMonstrePanel = new JPanel();
+		vagueMonstrePanel.setBounds(10, 10, 350, 200);
+		vagueMonstrePanel.setBackground(Color.darkGray);
+		window.add(vagueMonstrePanel); 
 		
-		buttonUpPets.setBackground(Color.darkGray);
-		buttonUpPets.setFocusPainted(false);
-		buttonUpPets.setBorder(null);
-		buttonUpPets.setIcon(upPetIcon);
-		buttonUpPets.addActionListener(this);
-		imagesResetUpPet.add(buttonUpPets);
+		JPanel ameliorationPanel = new JPanel();
+		ameliorationPanel.setBounds(840, 10, 350, 430);
+		ameliorationPanel.setBackground(Color.darkGray);
+		window.add(ameliorationPanel);
 		
-		
-		artfMoneyToGet.setForeground(Color.white);
-		artfMoneyToGet.setFont(stats);
-		artfMoneyToGet.setText("        +" + (monstre.getWaveNumber() + myGame.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
-		textesResetUpPet.add(artfMoneyToGet);
-		
-		upPetsLabel.setForeground(Color.white);
-		upPetsLabel.setFont(stats);
-		upPetsLabel.setText("        " + pet.getPetCostUpgrade());
-		textesResetUpPet.add(upPetsLabel);
-
-		ImageIcon artfIcon = new ImageIcon(game.class.getResource("/images/anim newArtefact.gif"));
-
-		buttonArtf.setBackground(Color.darkGray);
-		buttonArtf.setFocusPainted(false);
-		buttonArtf.setBorder(null);
-		buttonArtf.setIcon(artfIcon);
-		buttonArtf.addActionListener(this);
-		imageBuyArtefact.add(buttonArtf);
-		
-		artfMoneyCost.setForeground(Color.white);
-		artfMoneyCost.setFont(stats);
-		artfMoneyCost.setText("                     " + hero.getArtefactCost());
-		textesBuyArtefact.add(artfMoneyCost);
-				
-		epeeButton.setBackground(Color.darkGray);
-		epeeButton.setFocusPainted(false);
-		epeeButton.setBorder(null);
-		epeeButton.setIcon(epeeDegats);
-		degats.add(epeeButton);
-		
-		goldButton.setBackground(Color.darkGray);
-		goldButton.setFocusPainted(false);
-		goldButton.setBorder(null);
-		goldButton.setIcon(bigGold);
-		coin.add(goldButton);
-		
-		artefactGoldButton.setBackground(Color.darkGray);
-		artefactGoldButton.setFocusPainted(false);
-		artefactGoldButton.setBorder(null);
-		artefactGoldButton.setIcon(bigArtefactGold);
-		artefactCoin.add(artefactGoldButton);
-		
-		degatLabel.setForeground(Color.white);
-		degatLabel.setFont(stats);
-		degatLabel.setText("Degats : " + hero.getDamage());
-		textesDegats.add(degatLabel);
-		
-		coinLabel.setForeground(Color.white);
-		coinLabel.setFont(stats);
-		coinLabel.setText(" " + model.getGold());
-		textesCoin.add(coinLabel);
-		
-		artefactCoinLabel.setForeground(Color.white);
-		artefactCoinLabel.setFont(stats);
-		artefactCoinLabel.setText(" " + hero.getArtefactMoney());
-		textesArtefactCoin.add(artefactCoinLabel);
-
-		
-		
-		// COMPTEUR
-		
-
-		
-		JPanel pointDeVie = new JPanel();
-		pointDeVie.setBounds(550,101,100,50);
-		pointDeVie.setBackground(Color.white);
-		window.add(pointDeVie);
-		
-		PVLabel.setForeground(Color.red);
-		Font PVEcriture = new Font("Comic Sans MS", Font.PLAIN, 35 );
-		PVLabel.setFont(PVEcriture);
-		PVLabel.setText("   " + monstre.getPV() + "   ");
-		pointDeVie.add(PVLabel);
-		
+		JPanel informationsPanel = new JPanel();
+		informationsPanel.setBounds(840, 450, 350, 196);
+		informationsPanel.setBackground(Color.darkGray);
+		window.add(informationsPanel);
+			
 		JPanel backgroundGauche = new JPanel();
 		backgroundGauche.setBounds(0,0,373,700);
 		backgroundGauche.setBackground(Color.lightGray);
@@ -517,65 +714,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		backgroundDroite.setBackground(Color.lightGray);
 		window.add(backgroundDroite);
 		
-
+			
 		
-		
-		ImageIcon aquaIcon = new ImageIcon(game.class.getResource("/images/aqua.png"));
-		ImageIcon pyroIcon = new ImageIcon(game.class.getResource("/images/fire.png"));
-		ImageIcon teraIcon = new ImageIcon(game.class.getResource("/images/plant.png"));
 		screenMonster(this, monstre);
 		changerAttaqueHero(myGame, this);
-		
-		aqua.setBackground(Color.white);
-		pyro.setBackground(Color.white);
-		tera.setBackground(Color.white);
-		aqua.setBorderPainted(false);
-		pyro.setBorderPainted(false);
-		tera.setBorderPainted(false);
-		aqua.setFocusPainted(false);
-		pyro.setFocusPainted(false);
-		tera.setFocusPainted(false);
-		aqua.addActionListener(this);
-		pyro.addActionListener(this);
-		tera.addActionListener(this);
-		aqua.setIcon(aquaIcon);
-		pyro.setIcon(pyroIcon);
-		tera.setIcon(teraIcon);
-		aqua.setEnabled(false);
-		attributePanel.add(aqua);
-		attributePanel.add(pyro);
-		attributePanel.add(tera);
-		
-		ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
-		ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berzerker.gif"));
-		ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
-		
-		archerChoice.setBackground(Color.darkGray);
-		archerChoice.setFocusPainted(false);
-		archerChoice.setBorderPainted(false);
-		archerChoice.addActionListener(this);
-		archerChoice.setIcon(archerIcon);
-		archerChoice.setEnabled(false);
-		
-		berserkChoice.setBackground(Color.darkGray);
-		berserkChoice.setFocusPainted(false);
-		berserkChoice.setBorderPainted(false);
-		berserkChoice.addActionListener(this);
-		berserkChoice.setIcon(berserkIcon);
-		berserkChoice.setEnabled(false);
-		
-		mageChoice.setBackground(Color.darkGray);
-		mageChoice.setFocusPainted(false);
-		mageChoice.setBorderPainted(false);
-		mageChoice.addActionListener(this);
-		mageChoice.setIcon(mageIcon);
-		mageChoice.setEnabled(false);
-		
-		choiceClass.add(archerChoice);
-		choiceClass.add(berserkChoice);
-		choiceClass.add(mageChoice);
-		
-		ajouterClasses(this, monstre);
+		ajouterClasses(this, monstre, model.myHero);
+		ajouterTempsBoss(model.myMonster);
 		window.setVisible(true);
 	}
 	
@@ -596,44 +740,79 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	
 	
 	public void screenMonster(GUI myGUI, Monster myMonster) {
-		if (myMonster.getAttribute() == "aqua") {
-			GUI.buttonMonster.setIcon(GUI.slimeBleu);
+		if(myMonster.getNumber() == 10) {
+			if (myMonster.getAttribute() == "aqua") {
+				GUI.buttonMonster.setIcon(GUI.aquaBoss);
+			}
+			if (myMonster.getAttribute() == "tera") {
+				GUI.buttonMonster.setIcon(GUI.teraBoss);
+			}
+			if (myMonster.getAttribute() == "pyro") {
+				GUI.buttonMonster.setIcon(GUI.pyroBoss);
+			}
 		}
-		if (myMonster.getAttribute() == "tera") {
-			GUI.buttonMonster.setIcon(GUI.slimeVert);
-		}
-		if (myMonster.getAttribute() == "pyro") {
-			GUI.buttonMonster.setIcon(GUI.slimeRouge);
+		
+		else {
+			if (myMonster.getAttribute() == "aqua") {
+				GUI.buttonMonster.setIcon(GUI.slimeBleu);
+			}
+			if (myMonster.getAttribute() == "tera") {
+				GUI.buttonMonster.setIcon(GUI.slimeVert);
+			}
+			if (myMonster.getAttribute() == "pyro") {
+				GUI.buttonMonster.setIcon(GUI.slimeRouge);
+			}
 		}
 	}
 	
-	public void ajouterClasses(GUI myGUI, Monster monstre) {
-		if(monstre.getWaveNumber() == 2) {
+	public void ajouterClasses(GUI myGUI, Monster monstre, Hero myHero) {
+		if(monstre.getWaveNumber() == 2 && myHero.getCheckClass() == 0) {
 			GUI.archerChoice.setEnabled(true);
 			GUI.berserkChoice.setEnabled(true);
 			GUI.mageChoice.setEnabled(true);
 		}
-	}	
+	}
+	
+	public void ajouterTempsBoss(Monster monstre) {
+		if(monstre.getNumber() == 10) {
+			tempsBoss1Label.setText("" + model.myMonster.getTempsBoss() + "");
+			tempsBoss2Label.setText("" + model.myMonster.getTempsBoss() + "");
+		}
+		else {
+			tempsBoss1Label.setText("");
+			tempsBoss2Label.setText("");
+		}
+	}
+	
 	
 	public static void main(String[] args) {
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		
+		if(model.myMonster.getNumber() == 10) {
+			tempsBoss1Label.setText("" + model.myMonster.getTempsBoss() + "");
+			tempsBoss2Label.setText("" + model.myMonster.getTempsBoss() + "");
+		}
+		else {
+			tempsBoss1Label.setText("");
+			tempsBoss2Label.setText("");
+		}
 		PVLabel.setText("   " + model.myMonster.getPV() + "   ");
 		
 		numberMonstreLabel.setText("Monstre n°" + model.myMonster.getNumber());
 		vague.setText("Vague n°" + model.myMonster.getWaveNumber());
 		
-		dmgUPLabel.setText("        " + model.getUpgradeMoneyValue());
-		newPetLabel.setText("        " + model.myPets.getPetCostBuy());		
-		artfMoneyToGet.setText("        +" + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
-		upPetsLabel.setText("        " + model.myPets.getPetCostUpgrade());
-		artfMoneyCost.setText("                     " + model.myHero.getArtefactCost());
+		dmgUPLabel.setText("" + model.getUpgradeMoneyValue());
+		newPetLabel.setText("" + model.myPets.getPetCostBuy());		
+		resetLabel.setText("Gain : +" + (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1));
+		upPetsLabel.setText("" + model.myPets.getPetCostUpgrade());
+		artfMoneyCost.setText("" + model.myHero.getArtefactCost());
 		
 		degatLabel.setText("Degats : " + model.myHero.getDamage());
 		coinLabel.setText(" " + model.getGold() );
-		artefactCoinLabel.setText("" + model.myHero.getArtefactMoney());	
+		artefactCoinLabel.setText(" " + model.myHero.getArtefactMoney());	
 
 	}
 
@@ -654,8 +833,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		if (x == buttonMonster) {
 			controller.attack();
 			screenMonster(this, model.myMonster);
-			ajouterClasses(this, model.myMonster);
+			ajouterClasses(this, model.myMonster, model.myHero);
 			changerAttaqueHero(model, this);
+			ajouterTempsBoss(model.myMonster);
 		}
 		if (x == buttonUP) {
 			controller.upgrade();
@@ -671,12 +851,21 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 		if (x == archerChoice) {
 			controller.classChoice(1);
+			archerChoice.setEnabled(true);
+			berserkChoice.setEnabled(false);
+			mageChoice.setEnabled(false);
 		}
 		if (x == berserkChoice) {
 			controller.classChoice(3);
+			archerChoice.setEnabled(false);
+			berserkChoice.setEnabled(true);
+			mageChoice.setEnabled(false);
 		}
 		if (x == mageChoice) {
 			controller.classChoice(2);
+			archerChoice.setEnabled(false);
+			berserkChoice.setEnabled(false);
+			mageChoice.setEnabled(true);
 		}
 		if (x == buttonArtf) {
 			controller.oneMoreArtf();

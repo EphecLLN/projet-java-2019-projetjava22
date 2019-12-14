@@ -46,13 +46,13 @@ public class gameController {
     }
     public void attributeChoice(int x) {
     	if (x == 1) {
-    		model.myHero.setAttribute("aqua");
+    		model.myHero.setAttributeHero("aqua");
     	}
     	if (x == 2) {
-    		model.myHero.setAttribute("pyro");
+    		model.myHero.setAttributeHero("pyro");
     	}
     	if (x == 3) {
-    		model.myHero.setAttribute("tera");
+    		model.myHero.setAttributeHero("tera");
     	}
     	control();
     }

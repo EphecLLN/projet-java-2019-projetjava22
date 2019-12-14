@@ -65,55 +65,44 @@ public class game extends Observable {
         notifyObservers();
 	}
 
-	public void attack(Monster monstre,Hero heroGame, Artefact artf) {
-		if(heroGame.getCheckClass() == 3) {
+	public void attack(Monster monstre, Artefact artf, int dmg, String dmgAtribute, String monsterAttribute) {
+		if(myHero.getCheckClass() == 3) {
 			double randomBerzerker = (Math.random() *100) % 5;
 			if((int) randomBerzerker == 1) {
 				System.out.println("CRITIQUE !");
-				monstre.setPV(monstre.getPV() - (heroGame.getDamage() * 2));
-				monstre.die(monstre,this);
-				this.nbrClic ++;
-				imageHero++;
-			}
-			else {
-				monstre.setPV(monstre.getPV() - heroGame.getDamage());
-				monstre.die(monstre,this);
+				monstre.setPV(monstre.getPV() - (dmg * 2));
+				monstre.die(monstre,this, monstre.getPV(), monstre.getNumber(), monstre.getbossNumber());
 				this.nbrClic ++;
 				imageHero++;
 			}
 		}
         if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
-			monstre.setPV(monstre.getPV() - heroGame.getDamage() * 5);
+			monstre.setPV(monstre.getPV() - dmg * 5);
 			this.nbrClic ++;
 			imageHero++;
 		}
-        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "tera")) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if (dmgAtribute == "pyro" && monsterAttribute == "tera") {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "aqua") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if (dmgAtribute == "tera" && monsterAttribute == "aqua") {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "pyro") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() * 2);
+        if (dmgAtribute == "aqua" && monsterAttribute == "pyro") {
+        	monstre.setPV(monstre.getPV() - dmg * 2);
         }
-        if ((heroGame.getAttribute() == "pyro" && monstre.getAttribute() == "aqua")) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if ((dmgAtribute == "pyro" && monsterAttribute == "aqua")) {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() == "tera" && monstre.getAttribute() == "pyro") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if (dmgAtribute == "tera" && monsterAttribute == "pyro") {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() == "aqua" && monstre.getAttribute() == "tera") {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage() / 2);
+        if (dmgAtribute == "aqua" && monsterAttribute == "tera") {
+        	monstre.setPV(monstre.getPV() - dmg / 2);
         }
-        if (heroGame.getAttribute() ==  monstre.getAttribute() ) {
-        	monstre.setPV(monstre.getPV() - heroGame.getDamage());
+        if (dmgAtribute ==  monsterAttribute ) {
+        	monstre.setPV(monstre.getPV() - dmg);
         }
-		else if(heroGame.getCheckClass() != 3){
-			monstre.setPV(monstre.getPV() - heroGame.getDamage());
-        }
-		monstre.die(myMonster,this);
-		this.nbrClic ++;
-		monstre.die(monstre,this);
+        monstre.die(monstre,this, monstre.getPV(), monstre.getNumber(), monstre.getbossNumber());
 		this.nbrClic ++;
 		imageHero++;
 		setChanged();
@@ -275,8 +264,6 @@ public class game extends Observable {
 	public class PetsDamages extends TimerTask {
 	    public void run() {
 	    	attackPets(myMonster, myPets);
-			PVLabel.setText("monstre PV : " + myMonster.getPV());
-			argentLabel.setText("argent : " + gold );
 	    }
 	}
 	
@@ -298,6 +285,8 @@ public class game extends Observable {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
 				System.out.println(myMonster.getTempsBoss());
 			}
+			setChanged();
+	        notifyObservers();
 		}
 	}
 	

@@ -10,7 +10,6 @@ public class Pets extends Observable {
 	private int petNumberUP= 1;
 	private int petCostUpgrade = 150;
 	private double petBuyIncrease = 0.1;
-	private int petsAttackSpeed = 2000;
 	private int petCostBuy = 100;
 	
 	/**

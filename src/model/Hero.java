@@ -22,7 +22,7 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
-	private String attribute = "aqua";
+	private String attributeHero = "aqua";
 
 	
 	
@@ -97,16 +97,16 @@ public class Hero extends Observable {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
 		}
 	}
-	public String getAttribute() {
-		return attribute;
+	public String getAttributeHero() {
+		return attributeHero;
 	}
 	
 	/**
 	 * @param x attribut à set (aqua, terra ou pyro)
 	 */
 	
-	public void setAttribute(String x) {
-		this.attribute = x;
+	public void setAttributeHero(String x) {
+		this.attributeHero = x;
 	}
 	
 

@@ -15,8 +15,8 @@ public class Monster extends Observable {
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
-	private String attribute = "";
-	int tempsBoss = 20;
+	private String attribute = "aqua";
+	private int tempsBoss = 20;
 	
 	/**
 	 * @author Lucas Pastori
@@ -150,6 +150,8 @@ public class Monster extends Observable {
 	
 	public void setTempsBoss(int tempsboss) {
 		this.tempsBoss = tempsboss;
+		setChanged();
+        notifyObservers();
 	}
 
 	//la m�thode goldDrop() a �t� directement mise dans die()
@@ -163,6 +165,8 @@ public class Monster extends Observable {
 
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
+		setChanged();
+        notifyObservers();
 	}
 	
 	public static void main(String[] args) {
