@@ -3,19 +3,22 @@ package model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 public class database {
+	/**
+	 * Cet attribut sert à vérifier si la 
+	 */
 	int affectedRows;
 			
 	/**
+	 * 
 	 * @param column
 	 * @param table
 	 * @param where
-	 * @return result : renvoie le resultat de la requete
+	 * @return result : renvoie le resultat de la requete en format ResultSet
 	 */
 	private ResultSet data (String column,String table, String where) {
 		ResultSet result = null;
@@ -59,8 +62,7 @@ public class database {
 		int playerId = 0;
 		try {
 			if(result.first()){
-				playerId = Integer.parseInt(result.getObject(1).toString());	
-				playerId += 1;
+				playerId = result.getInt(1);	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -117,8 +119,8 @@ public class database {
 			resultHero.beforeFirst();
 			while(resultPlayer.next()) {
 				resultHero.next();
-				playerID = Integer.parseInt(resultPlayer.getObject(1).toString());
-				heroID = Integer.parseInt(resultHero.getObject(1).toString());
+				playerID = resultPlayer.getInt(1);
+				heroID = resultHero.getInt(1);
 				if(playerID == heroID) {
 					teammoney += Integer.parseInt(resultHero.getObject(2).toString());
 					teampets += Integer.parseInt(resultHero.getObject(3).toString());
@@ -273,7 +275,6 @@ public class database {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
 		int petsIncrease = pets.getPetCostUpgrade(); // = add dans la DB
-		int petsNumber = pets.getPetNumber();
 		int petsBuyCost = pets.getPetCostBuy();
 		int petsUpgradeCost = pets.getPetCostUpgrade();
 		try {
@@ -281,7 +282,7 @@ public class database {
 			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("UPDATE pets SET damage="+petsDamage + ", add=" + petsIncrease + ", amount=" + petsNumber + ", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
+			affectedRows = state.executeUpdate("UPDATE pets SET damage="+petsDamage + ", add=" + petsIncrease +", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -488,7 +489,7 @@ public class database {
 		}
 	}	
 	
-	private void gameDeconnection(String name) {
+	public void gameDeconnection(String name) {
 		String team = "";
 		ResultSet result = data("playername, teamname", "player JOIN team ON team.teamid = player.teamid", " WHERE playername = '"+name+"'");
 		try {
@@ -564,17 +565,11 @@ public class database {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		database db = new database(); 
 		
-		ArrayList<Object> classement = db.classement(true, "money");
-		System.out.println(classement);
+		db.gameDeconnection("Paul");
+
+		db.playerConnection("Paul", "pswd", "Var Motiv = 0");
 		
-		
-		//db.playerConnection("Swithan", "abc123", "Var Motiv = 0");
-		
-		String where = " WHERE playerid = "+1;
-		ResultSet resultHero = db.data("*","hero", where);
-		resultHero.beforeFirst();
-		resultHero.next();
-		System.out.println(resultHero.first()+" "+resultHero.getObject(6));
+		db.updateTeam("Var Motiv = 0");
 		
 		
 	}

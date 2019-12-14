@@ -87,6 +87,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public ImageIcon epeeDegats = new ImageIcon("./images/epeeDegats.jpg");
 	
 	public JLabel tableauDesScores = new JLabel();
+	
 	public JButton buttonEpeeDecor1 = new JButton();
 	public JButton buttonEpeeDecor2 = new JButton();
 	public JButton buttonEpeeDecor3 = new JButton();
@@ -570,11 +571,6 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		ajouterClasses(this, monstre);
 		window.setVisible(true);
 		
-		/*window.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				database.gameDeconnection(null).getInstance.actionPerformed(null);
-			}
-		});*/
 	}
 	
 	public void changerAttaqueHero(game game, GUI myGUI) {

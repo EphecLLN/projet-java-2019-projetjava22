@@ -5,8 +5,8 @@ import java.util.Observable;
 public class Pets extends Observable {
 	private int petDamages = 1;			//dï¿½gats des pets
 	private int petDmgIncrease = 1;		//augmentation des dï¿½gats aprï¿½s une amï¿½lioration
-	private int petNumber = 0; 			//nombre de pets
-	private int petNumberUP= 1;			//nombre de pets 
+	private int petNumber = 2; 			//nombre de pets
+	private int petNumberUP= 1;			//nombre de pets ajoutés
 	private int petCostUpgrade = 150;	//prix d'amï¿½lioration d'un familier
 	private double petBuyIncrease = 0.1;//pourcentage d'augmentation du prix de l'achat d'un familier
 	private int petsAttackSpeed = 2000;	//vitesse d'attaque (2000 = 2 secondes)

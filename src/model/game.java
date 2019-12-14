@@ -3,23 +3,10 @@
  */
 package model;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Observable;
 import java.util.TimerTask;
-import java.util.Timer;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import Vue.Console;
-import Vue.GUI;
-import java.util.Observable;
 
 /**
  * @author Lucas Pastori
@@ -31,7 +18,7 @@ public class game extends Observable {
 	 * ---------------------------------------------*/
 
 	int nbrClic = 0;
-	private int gold = 1050;
+	private int gold = 1000;
 	private int upgradeMoneyValue = 10;
 	int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
