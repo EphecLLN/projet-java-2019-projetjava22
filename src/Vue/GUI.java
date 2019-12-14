@@ -554,45 +554,49 @@ public class GUI extends gameVue implements Observer, ActionListener{
 					artfMoneyCost.setFont(stats);
 					artfMoneyCost.setText("" + hero.getArtefactCost());
 					textesBuyArtefact.add(artfMoneyCost);
-		
 					
-					
-				JPanel choiceClass = new JPanel();
-		        choiceClass.setLayout(new GridLayout(1,3));
-		        choiceClass.setBounds(400,20,400,70);
-		        choiceClass.setBackground(Color.darkGray);
-		        window.add(choiceClass);
-		        
-					ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
-					
-					archerChoice.setBackground(Color.darkGray);
-					archerChoice.setFocusPainted(false);
-					archerChoice.setBorderPainted(false);
-					archerChoice.addActionListener(this);
-					archerChoice.setIcon(archerIcon);
-					archerChoice.setEnabled(false);
-					choiceClass.add(archerChoice);
-					
-					ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berzerker.gif"));
-					
-					berserkChoice.setBackground(Color.darkGray);
-					berserkChoice.setFocusPainted(false);
-					berserkChoice.setBorderPainted(false);
-					berserkChoice.addActionListener(this);
-					berserkChoice.setIcon(berserkIcon);
-					berserkChoice.setEnabled(false);
-					choiceClass.add(berserkChoice);
-					
-					ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
-	
-					mageChoice.setBackground(Color.darkGray);
-					mageChoice.setFocusPainted(false);
-					mageChoice.setBorderPainted(false);
-					mageChoice.addActionListener(this);
-					mageChoice.setIcon(mageIcon);
-					mageChoice.setEnabled(false);
-					choiceClass.add(mageChoice);
-		    	
+			/*
+			 * 		PARAMETRES DE LA FENETRE DU CHOIX DE LA CLASSE
+			 * 
+			 * 		-> SUPERIEUR CENTRE
+			 */
+				
+			JPanel choiceClass = new JPanel();
+	        choiceClass.setLayout(new GridLayout(1,3));
+	        choiceClass.setBounds(400,20,400,70);
+	        choiceClass.setBackground(Color.darkGray);
+	        window.add(choiceClass);
+	        
+				ImageIcon archerIcon = new ImageIcon(game.class.getResource("/images/anim archer.gif"));
+				
+				archerChoice.setBackground(Color.darkGray);
+				archerChoice.setFocusPainted(false);
+				archerChoice.setBorderPainted(false);
+				archerChoice.addActionListener(this);
+				archerChoice.setIcon(archerIcon);
+				archerChoice.setEnabled(false);
+				choiceClass.add(archerChoice);
+				
+				ImageIcon berserkIcon = new ImageIcon(game.class.getResource("/images/anim berzerker.gif"));
+				
+				berserkChoice.setBackground(Color.darkGray);
+				berserkChoice.setFocusPainted(false);
+				berserkChoice.setBorderPainted(false);
+				berserkChoice.addActionListener(this);
+				berserkChoice.setIcon(berserkIcon);
+				berserkChoice.setEnabled(false);
+				choiceClass.add(berserkChoice);
+				
+				ImageIcon mageIcon = new ImageIcon(game.class.getResource("/images/anim mage.gif"));
+
+				mageChoice.setBackground(Color.darkGray);
+				mageChoice.setFocusPainted(false);
+				mageChoice.setBorderPainted(false);
+				mageChoice.addActionListener(this);
+				mageChoice.setIcon(mageIcon);
+				mageChoice.setEnabled(false);
+				choiceClass.add(mageChoice);
+	    	
 		/*
 		 * 		PARAMETRES DE LA FENETRE INFORMATIONS TEL QUE LES DEGATS, LE SOLDE ET LE SOLDE D'ARTEFACTS.
 		 * 

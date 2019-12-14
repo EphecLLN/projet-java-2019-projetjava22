@@ -167,7 +167,7 @@ public class game extends Observable {
 
 		}
 		else {
-			String choixHerosDenied = "bloqué";
+			String choixHerosDenied = " / ";
 			return choixHerosDenied;
 		}
 	}
@@ -270,12 +270,11 @@ public class game extends Observable {
 	public class ChronoMonstre extends TimerTask {
 		public void run() {
 			if(myMonster.getTempsBoss() == 0) {
-				System.out.println("Vous avez perdu.");
+				System.out.println("Vous avez perdu. Reborn en cours...");
 				reborn(myMonster, myHero, myPets);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
 				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
-				System.out.println(myMonster.getTempsBoss());
 			}
 			setChanged();
 	        notifyObservers();

@@ -1,4 +1,4 @@
-package Contrôleur;
+package ContrÃ´leur;
 
 import Vue.gameVue;
 import model.game;
@@ -15,7 +15,7 @@ public class gameController {
     	control();
     }
     public void attack() {
-    	model.attack(model.myMonster, model.myArtf,  model.myHero.getDamage(),  model.myHero.getAttribute(), model.myMonster.getAttribute());
+    	model.attack(model.myMonster, model.myArtf,  model.myHero.getDamage(),  model.myHero.getAttributeHero(), model.myMonster.getAttribute());
     	control();
     }
     public void reset() {
