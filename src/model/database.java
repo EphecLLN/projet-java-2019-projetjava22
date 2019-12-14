@@ -7,42 +7,41 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * @author Nathan Debongnie
+ *
+ */
 public class database {
 	/**
-	 * Cet attribut sert à vérifier si la 
+	 * Cet attribut sert à vérifier si la table a été modifiée
 	 */
 	int affectedRows;
 			
 	/**
-	 * 
-	 * @param column
-	 * @param table
-	 * @param where
+	 * Méthode qui renvoie les données des colonnes demandées de la table avec ou sans condition
+	 * @param column : la ou les colonnes dont on veut reçevoir les données
+	 * @param table : la table qui contient ces colonnes
+	 * @param condition : Si nécessaire, les condition de la requete 
+	 * 			exemple : WHERE ou ORDER BY
 	 * @return result : renvoie le resultat de la requete en format ResultSet
 	 */
-	private ResultSet data (String column,String table, String where) {
+	private ResultSet data (String column,String table, String condition) {
 		ResultSet result = null;
 		try {
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			//L'objet result contient le résultat de la requête SQL
-			result = state.executeQuery("SELECT "+ column +" FROM "+ table + where);
+			result = state.executeQuery("SELECT "+ column +" FROM "+ table + condition);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		return result;
 	};
-	private ResultSet orderedData(String column, String table, String order) {
-		ResultSet result = null;
-		try {
-			Connection connect = connexion();
-			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			result = state.executeQuery("SELECT "+ column + " FROM "+ table + order);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+	
+	/**
+	 * Méthode qui permet la connexion à la db
+	 * @return conn : Contient l'adresse de la base de données
+	 */
 	private Connection connexion (){
 		Connection conn = null;
 		try {
@@ -57,6 +56,11 @@ public class database {
 		return conn;
 	};
 	
+	/**
+	 * Méthode permettant de récuperer l'identifiant d'un joueur dans une table
+	 * @param name : nom du joueur dont on veut connaitre l'identifiant
+	 * @return playerId : l'identifiant du joueur concerné
+	 */
 	private int getId(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
 		int playerId = 0;
@@ -69,13 +73,17 @@ public class database {
 		}
 		return playerId;
 	}
+	/**
+	 * Méthode permettant de récuperer le dernier identifiant de la table player
+	 * @return id : l'identifiant du dernier joueur de la base de donnée
+	 */
 	private int getLastId() {
 		int id = 0;
 		ResultSet result = data("playerid", "player", "");
 		try {
 			if(result.first()){
 				result.last();
-				id = Integer.parseInt(result.getObject(1).toString());
+				id = result.getInt(1);
 			}
 		} catch (NumberFormatException | SQLException e) {
 			e.printStackTrace();
@@ -83,6 +91,11 @@ public class database {
 		return id;
 	}
 	
+	/**
+	 * Méthode permettant d'inserer une nouvelle équipe dans la base de données
+	 * @param team : le nom de l'équipe qu'il faut rajouter dans la BDD
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int insertTeam (String team) {
 		try {
 			ArrayList<String> values = new ArrayList<String>();
@@ -102,6 +115,11 @@ public class database {
 		}
 		return affectedRows;
 	};
+	/**
+	 * Méthode permettant de modifier les valeurs d'une équipe déjà existante dans la BDD
+	 * @param team : l'équipe qu'on souhaite modifier
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int updateTeam (String team) {
 		try {
 			Connection connect = connexion();
@@ -134,6 +152,13 @@ public class database {
 		return affectedRows;
 	}
 
+	/**
+	 * Méthode permettant de rajouter un joueur dans la BDD
+	 * @param name : nom du joueur à rajouter dans la table
+	 * @param password : mot de passe pour la connexion
+	 * @param team : nom de l'équipe dans laquelle le joueur joue
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int insertPlayer (String name, String password, String team) {
 		try {
 			Connection connect = connexion();
@@ -150,6 +175,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * Méthode permettant de modifier les données (le moment de la dernière connection) d'un joueur en particulier
+	 * @param name : nom du joueur que l'on souhaite modifier
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int updatePlayer(String name) {
 		try {
 			Connection connect = connexion();
@@ -161,6 +191,11 @@ public class database {
 		return affectedRows;
 	}
 
+	/**
+	 * Méthode permettant de rajouter les données appartenant au joueur dans la table hero
+	 * @param name : nom du joueur que l'on souhaite ajouter dans la BDD
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int insertHero(String name) {
 		game game = new game();
 		Hero hero = new Hero();
@@ -187,6 +222,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * Méthode permettant de modifier les données concernant le hero d'un joueur
+	 * @param name : nom du joueur concerné par la modification
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int updateHero(String name) {
 		game game = new game();
 		Hero hero = new Hero();
@@ -217,6 +257,11 @@ public class database {
 		return affectedRows;
 	}
 	
+	/**
+	 * Méthode permettant de rajouter les données concernant l'état des monstres 
+	 * @param name : nom du joueur concerné par la modification
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int insertMonster(String name) {
 		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
@@ -235,6 +280,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * Méthode permettant de modifier les données concernant l'état des monstres
+	 * @param name : nom du joueur concerné par la modification
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int updateMonster(String name) {
 		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
@@ -254,6 +304,11 @@ public class database {
 		return affectedRows;
 	}	
 	
+	/**
+	 * Méthode permettant de rajouter les données concernant l'état des familiers
+	 * @param name : le joueur concerné 
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int insertPets(String name) {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
@@ -271,6 +326,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * Méthode permettant de modifier les données concernant l'état des familiers
+	 * @param name : le joueur concerné
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int updatePets(String name) {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
@@ -290,6 +350,13 @@ public class database {
 		return affectedRows;
 	}	
 	
+	/**
+	 * Méthode permettant de rajouter un joueur dans une nouvelle équipe, ainsi que ses données actuelles dans le jeu
+	 * @param name : nom du joueur que l'on souhaite rajouter
+	 * @param password : mot de passe du joueur à rajouter
+	 * @param team : nom de l'équipe qui doit être créée et à laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int createTeamPlayer(String name, String password, String team) {
 		affectedRows = insertTeam(team);
 		affectedRows += insertPlayer(name, password, team);
@@ -299,6 +366,13 @@ public class database {
 		affectedRows += updateTeam(team);
 		return affectedRows;
 	}
+	/**
+	 * Méthode permettant de rajouter un joueur dans une équipe existante, ainsi que ses données actuelles dans le jeu
+	 * @param name : nom du joueur que l'on souhaite rajouter
+	 * @param password : mot de passe du joueur que l'on souhaite rajouter
+	 * @param team : nom de l'équipe à laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 */
 	private int createPlayer(String name, String password, String team) {
 		affectedRows = insertPlayer(name, password, team);
 		affectedRows += insertHero(name);
@@ -308,6 +382,13 @@ public class database {
 		return affectedRows;
 	}
 	
+	/**
+	 * Méthode permettant de vérifier si l'équipe existe déjà dans la BDD
+	 * @param team : nom de l'équipe que l'on souhaite rechercher dans la BDD
+	 * @return check : 
+	 * 				true si l'équipe existe déjà
+	 * 				false si l'équipe n'existe pas encore
+	 */
 	private boolean checkTeam(String team) {
 		boolean check = false;
 		ResultSet resultTeam = data("*","team","");
@@ -329,6 +410,14 @@ public class database {
 		
 		return check;
 	}
+	/**
+	 * Méthode permettant de vérifier si le joueur existe déjà dans la BDD et si le mot de passe est correct
+	 * @param name : nom du joueur que l'on souhaite retrouver
+	 * @param password : mot de passe du joueur que l'on souhaite retrouver
+	 * @return check : 
+	 * 				true si le joueur existe déjà et que le mot de passe est correct
+	 * 				false si le joueur n'existe pas encore ou/et le mot de passe n'est pas correct
+	 */
 	private boolean checkPlayer (String name, String password) {
 		boolean check = false;
 		ResultSet resultPlayer = data("playername, playerpassword", "player", "");
@@ -361,30 +450,43 @@ public class database {
 		}
 		return check;
 	}
+	/**
+	 * Méthode permetant de vérifier si le joueur existe dans la base de donnée sans vérifier le mot de passe
+	 * @param name : nom du joueur que l'on souhaite retrouver
+	 * @return check : 
+	 * 				true si le joueur existe déjà
+	 * 				false si le joueur n'existe pas encore
+	 */
 	private boolean checkPlayerName (String name) {
 		boolean check = false;
 		ResultSet resultPlayer = data("playername", "player", "");
 		
 		try {
-			//si il y a au moins 1 joueur
-			//if(resultPlayer.first()) {
-				//tant qu'il y a des joueurs
-				resultPlayer.beforeFirst();
-				while(resultPlayer.next()) {
-					String resultName = resultPlayer.getObject(1).toString();
-					//Si le mot de passe est correct pour ce joueur
-					if(resultName.equals(name)) {
-						check = true;
-						return check;
-					}
+			//tant qu'il y a des joueurs
+			resultPlayer.beforeFirst();
+			while(resultPlayer.next()) {
+				String resultName = resultPlayer.getObject(1).toString();
+				//Si le mot de passe est correct pour ce joueur
+				if(resultName.equals(name)) {
+					check = true;
+					return check;
 				}
-			//}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return check;
 	}
 	
+	/**
+	 * Méthode permettant de connecter ou d'inscrire un nouveau joueur
+	 * @param name : nom du joueur concerné
+	 * @param password : mot de passe du joueur concerné
+	 * @param team : équipe dans laquelle le joueur (doit) se trouve(r)
+	 * @return connect : 
+	 * 				true si l'équipe existe déjà
+	 * 				false si l'équipe n'existe pas encore
+	 */
 	private boolean playerConnection(String name, String password, String team) {
 		boolean connect = false;
 		boolean checkTeam = checkTeam(team);
@@ -424,6 +526,10 @@ public class database {
 		return connect;
 	}
 	
+	/**
+	 * Méthode permettant de connecter le joueur et de récuperer son état d'avancement dans la BDD
+	 * @param name : nom du joueur concerné
+	 */
 	private void gameConnection(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'"); 
 		game game = new game();
@@ -433,7 +539,7 @@ public class database {
 		Artefact artefact = new Artefact();
 		try {
 			result.first();
-			int playerID = Integer.parseInt(result.getObject(1).toString());
+			int playerID = result.getInt(1);
 			String where = " WHERE playerid = "+playerID;
 			ResultSet resultHero = data("*","hero", where);
 			ResultSet resultMonster = data("*","monster", where);
@@ -489,6 +595,10 @@ public class database {
 		}
 	}	
 	
+	/**
+	 * Méthode permettant de mettre à jour l'état du joueur avant qu'il ne quitte le jeu
+	 * @param name : nom du joueur concerné
+	 */
 	public void gameDeconnection(String name) {
 		String team = "";
 		ResultSet result = data("playername, teamname", "player JOIN team ON team.teamid = player.teamid", " WHERE playername = '"+name+"'");
@@ -505,13 +615,23 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
+	/**
+	 * Méthode permettant d'établir le classement en fonction de la demande du joueur
+	 * @param table : permet de choisir l'unité sur laquelle le classement ce base
+	 * 				true : classement par équipe
+	 * 				false : classement individuel
+	 * @param ordre : permet de choisir la donnée sur laquelle les éléments sont triés (classement ascendant)
+	 * 				pets : ordonner en fonction du nombre de familiers
+	 * 				money : ordonner en fonction de l'argent
+	 * @return
+	 */
 	private ArrayList<Object> classement(boolean table, String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			if(table) {
 				//classement par équipe
 				if(ordre.equals("pets")) {
-					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
+					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -521,7 +641,7 @@ public class database {
 					}
 				}
 				else if(ordre.equals("money")) {
-					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
+					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -533,7 +653,7 @@ public class database {
 			} else {
 				//classement par joueurs
 				if (ordre.equals("money")) {
-					ResultSet result = orderedData("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
+					ResultSet result = data("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -544,7 +664,7 @@ public class database {
 				}
 				else {
 					if (ordre.equals("pets")) {
-						ResultSet result = orderedData("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
+						ResultSet result = data("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
 						result.beforeFirst();
 						while(!result.isLast()) {
 							result.next();
