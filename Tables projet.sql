@@ -1,11 +1,3 @@
-CREATE SEQUENCE artefact_sequence START 1 INCREMENT 1;
-CREATE TABLE artefact (
-    artefactID  integer not null default nextval('artefact_sequence'),
-    artefactName varchar(50) not NULL,
-    
-    CONSTRAINT pk_artefactID primary key (artefactID)
-);
-
 CREATE SEQUENCE team_sequence START 1 INCREMENT 1;
 CREATE TABLE team (
     teamID  integer not null default nextval('team_sequence'),
@@ -24,8 +16,7 @@ CREATE TABLE player (
     lastConnexion timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     teamID  integer not null default nextval('team_sequence'),
     
-    constraint pk_playerID primary KEY (playerID),
-    CONSTRAINT fk_player_team FOREIGN KEY (teamID) REFERENCES team(teamID)
+    constraint pk_playerID primary KEY (playerID)
 );
 
 CREATE SEQUENCE hero_sequence START 1 INCREMENT 1;
@@ -35,11 +26,10 @@ CREATE TABLE hero (
     damage integer not NULL default 1,
     pets integer default NULL,
     artefactMoney integer default NULL,
-    artefactID  integer not null default nextval('artefact_sequence'), 
+    artefacts varchar(150) default NULL, 
     
     CONSTRAINT pk_statsPlayerID primary key (playerID),
-    CONSTRAINT fk_hero_player FOREIGN KEY (playerID) REFERENCES player(playerID),
-    CONSTRAINT fk_hero_artefact FOREIGN KEY (artefactID) REFERENCES artefact(artefactID)
+    CONSTRAINT fk_hero_player FOREIGN KEY (playerID) REFERENCES player(playerID)
 );
 
 CREATE SEQUENCE monster_sequence START 1 INCREMENT 1;
@@ -48,7 +38,6 @@ CREATE TABLE monster (
     pv integer not NULL default 10,
     "add" integer not NULL default 10,
     "number" integer not NULL default 1,
-    boss integer not NULL default 10,
     goldIncrease integer not NULL default 6,
     wave integer default NULL,
 
@@ -70,5 +59,4 @@ CREATE TABLE pets (
     CONSTRAINT fk_pets_player FOREIGN KEY (playerID) REFERENCES player(playerID)
 );
 
-DROP TABLE artefact, hero, monster, pets, player, team;
-
+DROP TABLE pets,hero,team,player,monster

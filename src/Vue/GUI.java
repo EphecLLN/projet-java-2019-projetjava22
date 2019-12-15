@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,10 +18,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.sun.glass.ui.Window;
+
 import Contrôleur.gameController;
 import model.Hero;
 import model.Monster;
 import model.Pets;
+import model.database;
 import model.game;
 
 public class GUI extends gameVue implements Observer, ActionListener{
@@ -27,9 +32,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		super(model, controller);
 		// TODO Auto-generated constructor stub
 	}
-
+	
+	
+	
+	
 	public JLabel PVLabel = new JLabel(); 		// pv en int. graph.
-	public JLabel argentLabel = new JLabel(); 			// pas encore implementer (degats par seconde en int. graph.
+	public JLabel argentLabel = new JLabel(); 			// pas encore implemente (degats par seconde en int. graph.
 	public JButton buttonUP = new JButton();		
 	public static JButton buttonMonster = new JButton();
 	public JButton buttonReborn = new JButton();
@@ -561,6 +569,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		
 		ajouterClasses(this, monstre);
 		window.setVisible(true);
+		
+		/*window.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				database.gameDeconnection(null).getInstance.actionPerformed(null);
+			}
+		});*/
 	}
 	
 	public void changerAttaqueHero(game game, GUI myGUI) {
