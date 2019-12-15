@@ -16,7 +16,7 @@ public class Hero extends Observable {
 	 * etre augment�s a chaque am�lioriations du hero
 	 */
 	
-	private int constUpgradeDamage = 1;
+	private int constUpDamage = 1;
 	
 	/**
 	 * L'integer damage sert a enregistrer les degats infligés par le héros.
@@ -128,14 +128,14 @@ public class Hero extends Observable {
 	/**
 	 * @return the constUpgradeDamage
 	 */
-	public int getConstUpgradeDamage() {
-		return constUpgradeDamage;
+	public int getConstUpDamage() {
+		return constUpDamage;
 	}
 	/**
 	 * @param constUpgradeDamage the constUpgradeDamage to set
 	 */
-	public void setConstUpgradeDamage(int constUpgradeDamage) {
-		this.constUpgradeDamage = constUpgradeDamage;
+	public void setConstUpDamage(int constUpgradeDamage) {
+		this.constUpDamage = constUpgradeDamage;
 	}
 	/**
 	 * @return chiffre actuel représentant la classe active

@@ -30,15 +30,12 @@ public class game extends Observable {
 	 * variables de game
 	 * ---------------------------------------------*/
 
-	int nbrClic = 0;
-	private int gold = 1050;
+	private int nbrClic = 0;
+	private int gold = 1000;
 	private int upgradeMoneyValue = 10;
-	int upgradecroissance = 2;
+	private int upgradecroissance = 2;
 	private int nbrUpgrade = 0;
-	int imageHero = 2;
-	int save5 = 0;
-	int save2x = 0;
-	int savePet = 0;
+	private int imageHero = 2;
 	
 	/*----------------------------------------------
 	 * variables utiles à game 
@@ -51,9 +48,9 @@ public class game extends Observable {
 	Console myConsole = new Console(this, null);
 	
 	
-	void attackPets(Monster monstre, int pDmg, int pNbr) {
-		monstre.setPV(monstre.getPV() - pDmg * pNbr);
-		if(pNbr != 0) {
+	void attackPets(Monster monstre, int petDmg, int petNbr) {
+		monstre.setPV(monstre.getPV() - petDmg * petNbr);
+		if(petNbr != 0) {
 			monstre.die(monstre,this, myMonster.getPV(),myMonster.getNumber(), myMonster.getbossNumber());
 		}
 		setChanged();
@@ -71,7 +68,7 @@ public class game extends Observable {
 				imageHero++;
 			}
 		}
-        if (artf.activate10hit == true && this.nbrClic % 10 == 0) {
+        if (artf.isActivate10Hit() == true && this.nbrClic % 10 == 0) {
 			monstre.setPV(monstre.getPV() - dmg * 5);
 			this.nbrClic ++;
 			imageHero++;
@@ -116,7 +113,7 @@ public class game extends Observable {
         notifyObservers();
 	}
 	
-	public void reborn(Monster monstre,Hero heroGame,Pets myPet) {
+	public void reborn(Monster monstre,Hero heroGame,Pets myPet,Artefact artf) {
 		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() + this.getNbrUpgrade() / 10 + myPets.getPetNumber() /10 -1));
 		heroGame.setDamage(1);
 		heroGame.setConstDamage(1);
@@ -125,7 +122,7 @@ public class game extends Observable {
 		setUpgradeMoneyValue(10);
 		upgradecroissance = 2;
 		myHero.setCheckClass(0);
-		monstre.setTempsBoss(20);
+		monstre.setTimeBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
 		monstre.setPvIncrease(10);
@@ -136,8 +133,9 @@ public class game extends Observable {
 		myPet.setPetCostBuy(100);
 		myPet.setPetCostUpgrade(150);
 		myPet.setPetDamages(1);
-		save5 = 0;
-		save2x = 0;
+		artf.setActivate5More(true);
+		artf.setActivate2xDmg(true);
+		artf.setActivate2xPet(true);
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
 		setChanged();
         notifyObservers();
@@ -179,7 +177,7 @@ public class game extends Observable {
 	
 	public void mageChoice(Hero heroGame) {
 		heroGame.setCheckClass(2);
-		myMonster.setTempsBoss(25);
+		myMonster.setTimeBoss(25);
 	}
 	
 	public void berzerkerChoice(Hero heroGame) {
@@ -198,25 +196,25 @@ public class game extends Observable {
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
 		
 		for (int i = 0; i<artf.getCurrentArtefacts().size() ; i++) {
-			if (artf.getCurrentArtefacts().contains("doublePet") && savePet != 1) {
+			if (artf.getCurrentArtefacts().contains("doublePet") && artf.isActivate2xPet() != true) {
 				pet.setPetNumber(pet.getPetNumber() * 2);
 				pet.setPetNumberUP(2);	
-				savePet = 1;
+				artf.setActivate2xPet(true);
 			}
-			if (artf.getCurrentArtefacts().contains("+5DMG") && save5 != 1) {
+			if (artf.getCurrentArtefacts().contains("+5DMG") && artf.isActivate5More() != true) {
 				hero.setConstDamage(hero.getConstDamage() + 5);
-				save5 = 1;
+				artf.setActivate5More(true);
 			}
-			if (artf.getCurrentArtefacts().contains("doubleDMG") && save2x != 1) {
+			if (artf.getCurrentArtefacts().contains("doubleDMG") && artf.isActivate2xDmg() != true) {
 				hero.setConstDamage(hero.getConstDamage() *2);
-				hero.setConstUpgradeDamage(2);
-				save2x = 1;
+				hero.setConstUpDamage(2);
+				artf.setActivate2xDmg(true);
 			}
 			if (artf.getCurrentArtefacts().contains("-1Boss")) {
 				monster.setbossNumber(9);
 			}
 			if (artf.getCurrentArtefacts().contains("every10Hit")) {
-				artf.activate10hit = true;
+				artf.setActivate10Hit(true);
 			}
 			hero.setDamage(hero.getConstDamage());
 			

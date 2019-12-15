@@ -16,7 +16,7 @@ public class Monster extends Observable {
 	private int waveNumber = 1;						//Nombre de monstre tu�s au total
 	private int goldIncrease = 6;
 	private String attribute = "aqua";
-	int tempsBoss = 20;
+	private int timeBoss = 20;
 	
 	/**
 	 * @author Lucas Pastori
@@ -44,10 +44,10 @@ public class Monster extends Observable {
 			randomMonster(monstre);
 			
 			if(game.myHero.getCheckClass() == 2) {
-				monstre.tempsBoss = 25;
+				monstre.timeBoss = 25;
 			}
 			else {
-				monstre.tempsBoss = 20;
+				monstre.timeBoss = 20;
 			}
 			
 		}
@@ -143,8 +143,8 @@ public class Monster extends Observable {
         notifyObservers();
 	}
 	
-	public int getTempsBoss() {
-		return tempsBoss;
+	public int getTimeBoss() {
+		return timeBoss;
 	}
 	
 	public void setTempsBoss(int tempsboss) {

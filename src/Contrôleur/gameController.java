@@ -11,7 +11,7 @@ public class gameController {
         model = m;
     }
     public void upgrade() {
-    	model.upgrade(model.myHero, model.myHero.getConstUpgradeDamage());
+    	model.upgrade(model.myHero, model.myHero.getConstUpDamage());
     	control();
     }
     public void attack() {
@@ -19,7 +19,7 @@ public class gameController {
     	control();
     }
     public void reset() {
-    	model.reborn(model.myMonster, model.myHero, model.myPets);
+    	model.reborn(model.myMonster, model.myHero, model.myPets,model.myArtf);
     	control();
     }
     public void oneMorePet() {
