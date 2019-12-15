@@ -148,7 +148,7 @@ public class Monster extends Observable {
 	}
 	
 	public void setTempsBoss(int tempsboss) {
-		this.tempsBoss = tempsboss;
+		this.timeBoss = tempsboss;
 		setChanged();
         notifyObservers();
 	}
@@ -170,7 +170,7 @@ public class Monster extends Observable {
 	
 	public String getTempsBossConsole() {
 		if(this.Number == 10) {
-			String tempsBossConsole = "" + getTempsBoss();
+			String tempsBossConsole = "" + getTimeBoss();
 			return tempsBossConsole;
 		}
 		else {
