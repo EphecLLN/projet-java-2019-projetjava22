@@ -28,7 +28,7 @@ public class Console extends gameVue implements Observer{
 	 * en encodant la bonne input dans la console 
 	 * @param game classe du mod�le affect�e
 	 */
-	public void Scan(game game) {
+	public void Scan() {
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
@@ -115,4 +115,5 @@ public class Console extends gameVue implements Observer{
 	public void disableWarning() {
 		
 	}
+
 }

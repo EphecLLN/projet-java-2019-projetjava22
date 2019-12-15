@@ -8,7 +8,7 @@ import model.game;
 
 public abstract class gameVue implements Observer{
 	protected game model;
-    protected gameController controller;
+	protected gameController controller;
     
     gameVue(game model,
     		gameController controller) {
@@ -16,7 +16,6 @@ public abstract class gameVue implements Observer{
             this.controller = controller;
             model.addObserver(this); // Connexion entre la vue et le modele
         }
-
         public abstract void enableWarning();
         public abstract void disableWarning() ;
 }

@@ -22,7 +22,7 @@ public class database {
 		try {
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			//L'objet result contient le résultat de la requête SQL
+			//L'objet result contient le rï¿½sultat de la requï¿½te SQL
 			result = state.executeQuery("SELECT "+ column +" FROM "+ table + where);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -311,12 +311,12 @@ public class database {
 		boolean check = false;
 		ResultSet resultTeam = data("*","team","");
 		try {
-			//si il y a des équipes dans la table
+			//si il y a des ï¿½quipes dans la table
 			if(resultTeam.first()) {
 				resultTeam.beforeFirst();
-				//tant qu'il y a des équipes dans la table
+				//tant qu'il y a des ï¿½quipes dans la table
 				while(resultTeam.next()) {
-					//si l'équipe en paramètre = l'équipe sélectionnée
+					//si l'ï¿½quipe en paramï¿½tre = l'ï¿½quipe sï¿½lectionnï¿½e
 					if(team.equals(resultTeam.getObject(2))) {
 						check = true;
 					}
@@ -390,7 +390,7 @@ public class database {
 		System.out.println(checkTeam);
 		boolean checkPlayer = checkPlayer(name, password);
 		boolean checkPlayerName = checkPlayerName(name);
-		//si l'équipe existe
+		//si l'ï¿½quipe existe
 		if(checkTeam) {
 			//si le joueur existe
 			if(checkPlayer) {
@@ -409,10 +409,10 @@ public class database {
 				}
 			}
 		}
-		//si l'équipe existe pas
+		//si l'ï¿½quipe existe pas
 		else {
 			if(!checkPlayerName) {
-				//rajouter l'équipe et le joueur (dans toutes les tables)
+				//rajouter l'ï¿½quipe et le joueur (dans toutes les tables)
 				createTeamPlayer(name, password, team);
 				if(checkPlayer && checkTeam) {
 					connect=true;
@@ -508,7 +508,7 @@ public class database {
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			if(table) {
-				//classement par équipe
+				//classement par ï¿½quipe
 				if(ordre.equals("pets")) {
 					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
 					result.beforeFirst();

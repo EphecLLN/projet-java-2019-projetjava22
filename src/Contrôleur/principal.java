@@ -9,7 +9,7 @@ import model.game.ArcherPetsDamages;
 import model.game.ChronoMonstre;
 import model.game.PetsDamages;
 
-public class principal {
+public class Principal {
 
 	public static void main(String[] args) {
 		//Cr�ation du mod�le
@@ -47,7 +47,7 @@ public class principal {
 		//genere l'interface graphique 
 		myGUI.genererUI(myGame.myMonster, myGame.myHero, myGame.myPets, myGame);
 		//genere le scanner pour rentrer les commandes dans la console
-		myConsole.Scan(myGame);
+		myConsole.Scan();
 		
 	}
 }

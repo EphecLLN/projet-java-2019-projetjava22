@@ -50,6 +50,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton goldButton = new JButton();
 	public JButton artefactGoldButton = new JButton();
 	public JButton epeeButton = new JButton();
+	public JButton save = new JButton();
 	
 	public JButton upgradeGold = new JButton();
 	public JButton newPetGold = new JButton();
@@ -567,6 +568,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		choiceClass.add(berserkChoice);
 		choiceClass.add(mageChoice);
 		
+		save.setBackground(Color.DARK_GRAY);
+		save.setFocusPainted(false);
+		save.setBorderPainted(false);
+		save.addActionListener(this);
+		save.setIcon(null);
+		
 		ajouterClasses(this, monstre);
 		window.setVisible(true);
 		
@@ -696,6 +703,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			aqua.setEnabled(true);
 			pyro.setEnabled(true);
 			tera.setEnabled(false);
+		}
+		if (x == save) {
 		}
 	}
 
