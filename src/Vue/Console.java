@@ -117,7 +117,7 @@ public class Console extends gameVue implements Observer{
 		System.out.println("-----------------------------------------------------------------------------------------------------");
 		System.out.println("type du monstre : " + model.myMonster.getAttribute());
 		System.out.println("type d'attaque : " + model.myHero.getAttribute());
-		System.out.println("changer d'attribut d'attaque : (\baqua) / (\bpyro) / (\btera)");
+		System.out.println("changer d'attribut d'attaque : (aqua) / (pyro) / (tera)");
 		System.out.println("-----------------------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
 		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ")  / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redemarrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
 		System.out.println("acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / augmenter les degats des familiers (p) (" + model.myPets.getPetCostUpgrade() + ")" );
