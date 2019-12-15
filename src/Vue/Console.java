@@ -5,7 +5,7 @@ import java.util.Observer;
 import java.util.Scanner;
 
 
-import ContrÃ´leur.gameController;
+import Contrôleur.gameController;
 import model.game;
 import model.game.PetsDamages;
 /**
@@ -72,13 +72,13 @@ public class Console extends gameVue implements Observer{
 				controller.reset();
 			}
 			if (userAction.contentEquals("w")) {
-				model.myHero.setAttributeHero("aqua");
+				controller.attributeChoice(1);
 			}
 			if (userAction.contentEquals("p")) {
-				model.myHero.setAttributeHero("pyro");	
+				controller.attributeChoice(2);	
 			}
 			if (userAction.contentEquals("t")) {
-				model.myHero.setAttributeHero("tera");
+				controller.attributeChoice(3);
 			}
 			if (userAction.contentEquals("f")) { 
 				controller.oneMorePet();

@@ -147,8 +147,8 @@ public class Monster extends Observable {
 		return timeBoss;
 	}
 	
-	public void setTempsBoss(int tempsboss) {
-		this.timeBoss = tempsboss;
+	public void setTimeBoss(int tempsboss) {
+		this.setTempsBoss(tempsboss);;
 		setChanged();
         notifyObservers();
 	}

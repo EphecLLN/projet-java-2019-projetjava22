@@ -798,8 +798,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	
 	public void ajouterTempsBoss(Monster monstre) {
 		if(monstre.getNumber() == 10) {
-			tempsBoss1Label.setText("" + model.myMonster.getTempsBossConsole() + "");
-			tempsBoss2Label.setText("" + model.myMonster.getTempsBossConsole() + "");
+			tempsBoss1Label.setText("" + model.myMonster.getTimeBoss() + "");
+			tempsBoss2Label.setText("" + model.myMonster.getTimeBoss() + "");
 		}
 		else {
 			tempsBoss1Label.setText("");
@@ -815,8 +815,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public void update(Observable o, Object arg) {
 		
 		if(model.myMonster.getNumber() == 10) {
-			tempsBoss1Label.setText("" + model.myMonster.getTempsBossConsole() + "");
-			tempsBoss2Label.setText("" + model.myMonster.getTempsBossConsole() + "");
+			tempsBoss1Label.setText("" + model.myMonster.getTimeBoss() + "");
+			tempsBoss2Label.setText("" + model.myMonster.getTimeBoss() + "");
 		}
 		else {
 			tempsBoss1Label.setText("");

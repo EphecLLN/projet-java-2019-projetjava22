@@ -271,7 +271,7 @@ public class game extends Observable {
 				reborn(myMonster, myHero, myPets, myArtf);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
-				myMonster.setTempsBoss(myMonster.getTimeBoss() - 1);
+				myMonster.setTimeBoss(myMonster.getTimeBoss() - 1);
 			}
 			setChanged();
 	        notifyObservers();
