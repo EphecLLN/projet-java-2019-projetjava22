@@ -32,51 +32,65 @@ public class Console extends gameVue implements Observer{
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au m�me niveau 
+			System.out.println("\n\n\n\n");
 			System.out.println("solde : " + model.getGold());
-			System.out.println("solde artefact : " + model.myHero.getArtefactMoney());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 			System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
-			System.out.println("Choix des heros : " + model.getHeroChoice());
-			System.out.println("-------------------------------------------------------------------------------------");
+			System.out.println("Vos familiers infligent : " + model.myPets.getPetDamages() + " degats");
+			System.out.println("Choix du heros : " + model.getHeroChoice());
+			System.out.println("-----------------------------------------------------------------------------------------------------");
 			System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
-			System.out.println("Vous etes � la vague : " + model.myMonster.getWaveNumber());
+			System.out.println("Vous etes a la vague : " + model.myMonster.getWaveNumber());
 			System.out.println("monstre : " + model.myMonster.getPV() + " pv");
-			System.out.println("-------------------------------------------------------------------------------------");
+			System.out.println("-----------------------------------------------------------------------------------------------------");
 			System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts() );
+			System.out.println("-----------------------------------------------------------------------------------------------------");
 			System.out.println("type du monstre : " + model.myMonster.getAttribute());
-			System.out.println("-------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
-			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / red�marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1) + ")");
-			System.out.println();
-					
+			System.out.println("type d'attaque : " + model.myHero.getAttribute());
+			System.out.println("changer d'attribut d'attaque : (\baqua) / (\bpyro) / (\btera)");
+			System.out.println("-----------------------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
+			System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ")  / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redemarrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
+			System.out.println("changer d'attribut d'attaque : (aqua) / (pyro) / (tera)");
+			System.out.println("acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / augmenter les degats des familiers (p) (" + model.myPets.getPetCostUpgrade() + ")" );
+			
 			String userAction = myScan.nextLine();  
 			if (userAction.contentEquals("")) {
-				model.attack(model.myMonster,model.myArtf, model.myHero.getDamage(), model.myHero.getAttribute(), model.myMonster.getAttribute());
+				controller.attack();
 			}
 			if (userAction.contentEquals("a")) {
-				model.upgrade(model.myHero,model.myHero.getConstUpDamage());
+				controller.upgrade();
 				System.out.println("vous avez ameliore vos degats");
 				
 			}	
 			if (userAction.contentEquals("r")) {
-				model.reborn(model.myMonster, model.myHero, model.myPets,model.myArtf);
-			}
-			if (userAction.contentEquals("s")) {
+				controller.reset();
 			}
 			if (userAction.contentEquals("f")) { 
-				model.myPets.buyPet(model, model.getGold(), model.myPets.getPetCostBuy(), model.myPets.getPetNumber());
+				controller.oneMorePet();
+			}
+			if (userAction.contentEquals("p")) {
+				controller.upgradePets();
 			}
 			if (userAction.contentEquals("archer")) {
-				model.archerChoice(model.myHero);
+				controller.classChoice(1);
 			}
 			if (userAction.contentEquals("mage")) {
-				model.mageChoice(model.myHero);
+				controller.classChoice(2);
 			}
 			if (userAction.contentEquals("berzerker")) {
-				model.berzerkerChoice(model.myHero);
+				controller.classChoice(3);
 			}
 			if (userAction.contentEquals("x")) {
-				model.myHero.buyArtefact(model.myArtf, model, model.myHero.getArtefactMoney());
+				controller.oneMoreArtf();
+			}
+			if (userAction.contentEquals("aqua")) {
+				controller.attributeChoice(1);
+			}
+			if (userAction.contentEquals("pyro")) {
+				controller.attributeChoice(2);
+			}
+			if (userAction.contentEquals("tera")) {
+				controller.attributeChoice(3);
 			}
 		}
 }
@@ -92,17 +106,21 @@ public class Console extends gameVue implements Observer{
 		System.out.println("solde : " + model.getGold());
 		System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
 		System.out.println("Vous possedez : " + model.myPets.getPetNumber() + " familiers");
-		System.out.println("Choix des heros : " + model.getHeroChoice());
-		System.out.println("-------------------------------------------------------------------------------------");
+		System.out.println("Vos familiers infligent : " + model.myPets.getPetDamages() + " degats");
+		System.out.println("Choix du heros : " + model.getHeroChoice());
+		System.out.println("-----------------------------------------------------------------------------------------------------");
 		System.out.println("Vous etes au monstre : " + model.myMonster.getNumber());
-		System.out.println("Vous etes � la vague : " + model.myMonster.getWaveNumber());
+		System.out.println("Vous etes a la vague : " + model.myMonster.getWaveNumber());
 		System.out.println("monstre : " + model.myMonster.getPV() + " pv");
-		System.out.println("-------------------------------------------------------------------------------------");
+		System.out.println("-----------------------------------------------------------------------------------------------------");
 		System.out.println("artefacts : " + model.myArtf.getCurrentArtefacts() );
+		System.out.println("-----------------------------------------------------------------------------------------------------");
 		System.out.println("type du monstre : " + model.myMonster.getAttribute());
-		System.out.println("-------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
-		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ") / acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / red�marrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
-		
+		System.out.println("type d'attaque : " + model.myHero.getAttribute());
+		System.out.println("changer d'attribut d'attaque : (\baqua) / (\bpyro) / (\btera)");
+		System.out.println("-----------------------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
+		System.out.println("attaque (enter) / amelioration (a) (" + model.getUpgradeMoneyValue() + ")  / acheter un artefact (x) (" + model.myHero.getArtefactCost() + ") / redemarrer (r) ("+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 +")"));
+		System.out.println("acheter familier (f) (" + model.myPets.getPetCostBuy() + ") / augmenter les degats des familiers (p) (" + model.myPets.getPetCostUpgrade() + ")" );
 	}
 
 	@Override
