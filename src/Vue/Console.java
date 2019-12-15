@@ -66,7 +66,14 @@ public class Console extends gameVue implements Observer{
 			if (userAction.contentEquals("r")) {
 				model.reborn(model.myMonster, model.myHero, model.myPets);
 			}
-			if (userAction.contentEquals("s")) {
+			if (userAction.contentEquals("w")) {
+				model.myHero.setAttributeHero("aqua");
+			}
+			if (userAction.contentEquals("p")) {
+				model.myHero.setAttributeHero("pyro");	
+			}
+			if (userAction.contentEquals("t")) {
+				model.myHero.setAttributeHero("tera");
 			}
 			if (userAction.contentEquals("f")) { 
 				model.myPets.buyPet(model, model.getGold(), model.myPets.getPetCostBuy(), model.myPets.getPetNumber());
