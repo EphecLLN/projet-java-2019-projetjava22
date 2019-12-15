@@ -13,10 +13,10 @@ public class Hero extends Observable {
 	
 	/**
 	 * Variable gardant la valeur a laquelle les degats vont 
-	 * etre augment�s a chaque am�lioriations du hero
+	 * etre augment�s a chaque am�lioriations du hero
 	 */
 	
-	private int constUpgradeDamage = 1;
+	private int constUpDamage = 1;
 	
 	/**
 	 * L'integer damage sert a enregistrer les degats infligés par le héros.
@@ -27,7 +27,7 @@ public class Hero extends Observable {
 	 */
 	
 	private int damage = 1;
-	private String attribute = "aqua";
+	private String attributeHero = "aqua";
 
 	
 	
@@ -57,7 +57,7 @@ public class Hero extends Observable {
 	 * Cet attribut permet de stocker l'argent spécial pour les artefact récolté durant la résurection (reborn)
 	 */
 	
-	private int artefactMoney = 310;
+	private int artefactMoney = 0;
 	
 	/**
 	 * Cet attribut stocke le prix d'achat d'un nouvel artefact. Cette valeur doit être strictement positive,
@@ -76,7 +76,7 @@ public class Hero extends Observable {
 	}*/
 		
 	/**
-	 * Cette méthode sert a�acheter un nouvel artefact.
+	 * Cette méthode sert a�acheter un nouvel artefact.
 	 * 
 	 * @author Lucas Pastori
 	 * @param Artefact	appelle la classe Artefact pour ajouter le nouvel artefact du
@@ -103,16 +103,16 @@ public class Hero extends Observable {
 			System.out.println("Vous n'avez pas assez de Artefact Gold pour améliorer.");
 		}
 	}
-	public String getAttribute() {
-		return attribute;
+	public String getAttributeHero() {
+		return attributeHero;
 	}
 	
 	/**
 	 * @param x attribut à set (aqua, terra ou pyro)
 	 */
 	
-	public void setAttribute(String x) {
-		this.attribute = x;
+	public void setAttributeHero(String x) {
+		this.attributeHero = x;
 	}
 	
 
@@ -128,14 +128,14 @@ public class Hero extends Observable {
 	/**
 	 * @return the constUpgradeDamage
 	 */
-	public int getConstUpgradeDamage() {
-		return constUpgradeDamage;
+	public int getConstUpDamage() {
+		return constUpDamage;
 	}
 	/**
 	 * @param constUpgradeDamage the constUpgradeDamage to set
 	 */
-	public void setConstUpgradeDamage(int constUpgradeDamage) {
-		this.constUpgradeDamage = constUpgradeDamage;
+	public void setConstUpDamage(int constUpgradeDamage) {
+		this.constUpDamage = constUpgradeDamage;
 	}
 	/**
 	 * @return chiffre actuel représentant la classe active

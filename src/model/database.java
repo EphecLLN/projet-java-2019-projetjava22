@@ -13,15 +13,15 @@ import java.util.ArrayList;
  */
 public class database {
 	/**
-	 * Cet attribut sert à vérifier si la table a été modifiée
+	 * Cet attribut sert ï¿½ vï¿½rifier si la table a ï¿½tï¿½ modifiï¿½e
 	 */
 	int affectedRows;
 			
 	/**
-	 * Méthode qui renvoie les données des colonnes demandées de la table avec ou sans condition
-	 * @param column : la ou les colonnes dont on veut reçevoir les données
+	 * Mï¿½thode qui renvoie les donnï¿½es des colonnes demandï¿½es de la table avec ou sans condition
+	 * @param column : la ou les colonnes dont on veut reï¿½evoir les donnï¿½es
 	 * @param table : la table qui contient ces colonnes
-	 * @param condition : Si nécessaire, les condition de la requete 
+	 * @param condition : Si nï¿½cessaire, les condition de la requete 
 	 * 			exemple : WHERE ou ORDER BY
 	 * @return result : renvoie le resultat de la requete en format ResultSet
 	 */
@@ -30,7 +30,7 @@ public class database {
 		try {
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			//L'objet result contient le résultat de la requête SQL
+			//L'objet result contient le rï¿½sultat de la requï¿½te SQL
 			result = state.executeQuery("SELECT "+ column +" FROM "+ table + condition);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -39,14 +39,14 @@ public class database {
 	};
 	
 	/**
-	 * Méthode qui permet la connexion à la db
-	 * @return conn : Contient l'adresse de la base de données
+	 * Mï¿½thode qui permet la connexion ï¿½ la db
+	 * @return conn : Contient l'adresse de la base de donnï¿½es
 	 */
 	private Connection connexion (){
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			String url = "jdbc:postgresql://localhost:5432/Clicker";
+			String url = "jdbc:postgresql://127.0.0.1:5432/Clicker";
 			String user = "postgres";
 			String passwd = "DBA";   
 			conn = DriverManager.getConnection(url,user, passwd);
@@ -57,9 +57,9 @@ public class database {
 	};
 	
 	/**
-	 * Méthode permettant de récuperer l'identifiant d'un joueur dans une table
+	 * Mï¿½thode permettant de rï¿½cuperer l'identifiant d'un joueur dans une table
 	 * @param name : nom du joueur dont on veut connaitre l'identifiant
-	 * @return playerId : l'identifiant du joueur concerné
+	 * @return playerId : l'identifiant du joueur concernï¿½
 	 */
 	private int getId(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
@@ -74,8 +74,8 @@ public class database {
 		return playerId;
 	}
 	/**
-	 * Méthode permettant de récuperer le dernier identifiant de la table player
-	 * @return id : l'identifiant du dernier joueur de la base de donnée
+	 * Mï¿½thode permettant de rï¿½cuperer le dernier identifiant de la table player
+	 * @return id : l'identifiant du dernier joueur de la base de donnï¿½e
 	 */
 	private int getLastId() {
 		int id = 0;
@@ -92,9 +92,9 @@ public class database {
 	}
 	
 	/**
-	 * Méthode permettant d'inserer une nouvelle équipe dans la base de données
-	 * @param team : le nom de l'équipe qu'il faut rajouter dans la BDD
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant d'inserer une nouvelle ï¿½quipe dans la base de donnï¿½es
+	 * @param team : le nom de l'ï¿½quipe qu'il faut rajouter dans la BDD
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int insertTeam (String team) {
 		try {
@@ -116,9 +116,9 @@ public class database {
 		return affectedRows;
 	};
 	/**
-	 * Méthode permettant de modifier les valeurs d'une équipe déjà existante dans la BDD
-	 * @param team : l'équipe qu'on souhaite modifier
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de modifier les valeurs d'une ï¿½quipe dï¿½jï¿½ existante dans la BDD
+	 * @param team : l'ï¿½quipe qu'on souhaite modifier
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int updateTeam (String team) {
 		try {
@@ -153,11 +153,11 @@ public class database {
 	}
 
 	/**
-	 * Méthode permettant de rajouter un joueur dans la BDD
-	 * @param name : nom du joueur à rajouter dans la table
+	 * Mï¿½thode permettant de rajouter un joueur dans la BDD
+	 * @param name : nom du joueur ï¿½ rajouter dans la table
 	 * @param password : mot de passe pour la connexion
-	 * @param team : nom de l'équipe dans laquelle le joueur joue
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * @param team : nom de l'ï¿½quipe dans laquelle le joueur joue
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int insertPlayer (String name, String password, String team) {
 		try {
@@ -176,9 +176,9 @@ public class database {
 		return affectedRows;
 	}
 	/**
-	 * Méthode permettant de modifier les données (le moment de la dernière connection) d'un joueur en particulier
+	 * Mï¿½thode permettant de modifier les donnï¿½es (le moment de la derniï¿½re connection) d'un joueur en particulier
 	 * @param name : nom du joueur que l'on souhaite modifier
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int updatePlayer(String name) {
 		try {
@@ -192,9 +192,9 @@ public class database {
 	}
 
 	/**
-	 * Méthode permettant de rajouter les données appartenant au joueur dans la table hero
+	 * Mï¿½thode permettant de rajouter les donnï¿½es appartenant au joueur dans la table hero
 	 * @param name : nom du joueur que l'on souhaite ajouter dans la BDD
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int insertHero(String name) {
 		game game = new game();
@@ -223,9 +223,9 @@ public class database {
 		return affectedRows;
 	}
 	/**
-	 * Méthode permettant de modifier les données concernant le hero d'un joueur
-	 * @param name : nom du joueur concerné par la modification
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de modifier les donnï¿½es concernant le hero d'un joueur
+	 * @param name : nom du joueur concernï¿½ par la modification
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int updateHero(String name) {
 		game game = new game();
@@ -258,9 +258,9 @@ public class database {
 	}
 	
 	/**
-	 * Méthode permettant de rajouter les données concernant l'état des monstres 
-	 * @param name : nom du joueur concerné par la modification
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de rajouter les donnï¿½es concernant l'ï¿½tat des monstres 
+	 * @param name : nom du joueur concernï¿½ par la modification
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int insertMonster(String name) {
 		Monster monster = new Monster();
@@ -281,9 +281,9 @@ public class database {
 		return affectedRows;
 	}
 	/**
-	 * Méthode permettant de modifier les données concernant l'état des monstres
-	 * @param name : nom du joueur concerné par la modification
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de modifier les donnï¿½es concernant l'ï¿½tat des monstres
+	 * @param name : nom du joueur concernï¿½ par la modification
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int updateMonster(String name) {
 		Monster monster = new Monster();
@@ -305,9 +305,9 @@ public class database {
 	}	
 	
 	/**
-	 * Méthode permettant de rajouter les données concernant l'état des familiers
-	 * @param name : le joueur concerné 
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de rajouter les donnï¿½es concernant l'ï¿½tat des familiers
+	 * @param name : le joueur concernï¿½ 
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int insertPets(String name) {
 		Pets pets = new Pets(); 
@@ -327,9 +327,9 @@ public class database {
 		return affectedRows;
 	}
 	/**
-	 * Méthode permettant de modifier les données concernant l'état des familiers
-	 * @param name : le joueur concerné
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * Mï¿½thode permettant de modifier les donnï¿½es concernant l'ï¿½tat des familiers
+	 * @param name : le joueur concernï¿½
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int updatePets(String name) {
 		Pets pets = new Pets(); 
@@ -351,11 +351,11 @@ public class database {
 	}	
 	
 	/**
-	 * Méthode permettant de rajouter un joueur dans une nouvelle équipe, ainsi que ses données actuelles dans le jeu
+	 * Mï¿½thode permettant de rajouter un joueur dans une nouvelle ï¿½quipe, ainsi que ses donnï¿½es actuelles dans le jeu
 	 * @param name : nom du joueur que l'on souhaite rajouter
-	 * @param password : mot de passe du joueur à rajouter
-	 * @param team : nom de l'équipe qui doit être créée et à laquelle le joueur doit appartenir
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * @param password : mot de passe du joueur ï¿½ rajouter
+	 * @param team : nom de l'ï¿½quipe qui doit ï¿½tre crï¿½ï¿½e et ï¿½ laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int createTeamPlayer(String name, String password, String team) {
 		affectedRows = insertTeam(team);
@@ -367,11 +367,11 @@ public class database {
 		return affectedRows;
 	}
 	/**
-	 * Méthode permettant de rajouter un joueur dans une équipe existante, ainsi que ses données actuelles dans le jeu
+	 * Mï¿½thode permettant de rajouter un joueur dans une ï¿½quipe existante, ainsi que ses donnï¿½es actuelles dans le jeu
 	 * @param name : nom du joueur que l'on souhaite rajouter
 	 * @param password : mot de passe du joueur que l'on souhaite rajouter
-	 * @param team : nom de l'équipe à laquelle le joueur doit appartenir
-	 * @return affectedRows : nombre de lignes modifiées dans la BDD
+	 * @param team : nom de l'ï¿½quipe ï¿½ laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifiï¿½es dans la BDD
 	 */
 	private int createPlayer(String name, String password, String team) {
 		affectedRows = insertPlayer(name, password, team);
@@ -383,22 +383,22 @@ public class database {
 	}
 	
 	/**
-	 * Méthode permettant de vérifier si l'équipe existe déjà dans la BDD
-	 * @param team : nom de l'équipe que l'on souhaite rechercher dans la BDD
+	 * Mï¿½thode permettant de vï¿½rifier si l'ï¿½quipe existe dï¿½jï¿½ dans la BDD
+	 * @param team : nom de l'ï¿½quipe que l'on souhaite rechercher dans la BDD
 	 * @return check : 
-	 * 				true si l'équipe existe déjà
-	 * 				false si l'équipe n'existe pas encore
+	 * 				true si l'ï¿½quipe existe dï¿½jï¿½
+	 * 				false si l'ï¿½quipe n'existe pas encore
 	 */
 	private boolean checkTeam(String team) {
 		boolean check = false;
 		ResultSet resultTeam = data("*","team","");
 		try {
-			//si il y a des équipes dans la table
+			//si il y a des ï¿½quipes dans la table
 			if(resultTeam.first()) {
 				resultTeam.beforeFirst();
-				//tant qu'il y a des équipes dans la table
+				//tant qu'il y a des ï¿½quipes dans la table
 				while(resultTeam.next()) {
-					//si l'équipe en paramètre = l'équipe sélectionnée
+					//si l'ï¿½quipe en paramï¿½tre = l'ï¿½quipe sï¿½lectionnï¿½e
 					if(team.equals(resultTeam.getObject(2))) {
 						check = true;
 					}
@@ -411,11 +411,11 @@ public class database {
 		return check;
 	}
 	/**
-	 * Méthode permettant de vérifier si le joueur existe déjà dans la BDD et si le mot de passe est correct
+	 * Mï¿½thode permettant de vï¿½rifier si le joueur existe dï¿½jï¿½ dans la BDD et si le mot de passe est correct
 	 * @param name : nom du joueur que l'on souhaite retrouver
 	 * @param password : mot de passe du joueur que l'on souhaite retrouver
 	 * @return check : 
-	 * 				true si le joueur existe déjà et que le mot de passe est correct
+	 * 				true si le joueur existe dï¿½jï¿½ et que le mot de passe est correct
 	 * 				false si le joueur n'existe pas encore ou/et le mot de passe n'est pas correct
 	 */
 	private boolean checkPlayer (String name, String password) {
@@ -451,10 +451,10 @@ public class database {
 		return check;
 	}
 	/**
-	 * Méthode permetant de vérifier si le joueur existe dans la base de donnée sans vérifier le mot de passe
+	 * Mï¿½thode permetant de vï¿½rifier si le joueur existe dans la base de donnï¿½e sans vï¿½rifier le mot de passe
 	 * @param name : nom du joueur que l'on souhaite retrouver
 	 * @return check : 
-	 * 				true si le joueur existe déjà
+	 * 				true si le joueur existe dï¿½jï¿½
 	 * 				false si le joueur n'existe pas encore
 	 */
 	private boolean checkPlayerName (String name) {
@@ -479,13 +479,13 @@ public class database {
 	}
 	
 	/**
-	 * Méthode permettant de connecter ou d'inscrire un nouveau joueur
-	 * @param name : nom du joueur concerné
-	 * @param password : mot de passe du joueur concerné
-	 * @param team : équipe dans laquelle le joueur (doit) se trouve(r)
+	 * Mï¿½thode permettant de connecter ou d'inscrire un nouveau joueur
+	 * @param name : nom du joueur concernï¿½
+	 * @param password : mot de passe du joueur concernï¿½
+	 * @param team : ï¿½quipe dans laquelle le joueur (doit) se trouve(r)
 	 * @return connect : 
-	 * 				true si l'équipe existe déjà
-	 * 				false si l'équipe n'existe pas encore
+	 * 				true si l'ï¿½quipe existe dï¿½jï¿½
+	 * 				false si l'ï¿½quipe n'existe pas encore
 	 */
 	private boolean playerConnection(String name, String password, String team) {
 		boolean connect = false;
@@ -493,7 +493,7 @@ public class database {
 		System.out.println(checkTeam);
 		boolean checkPlayer = checkPlayer(name, password);
 		boolean checkPlayerName = checkPlayerName(name);
-		//si l'équipe existe
+		//si l'ï¿½quipe existe
 		if(checkTeam) {
 			//si le joueur existe
 			if(checkPlayer) {
@@ -512,10 +512,10 @@ public class database {
 				}
 			}
 		}
-		//si l'équipe existe pas
+		//si l'ï¿½quipe existe pas
 		else {
 			if(!checkPlayerName) {
-				//rajouter l'équipe et le joueur (dans toutes les tables)
+				//rajouter l'ï¿½quipe et le joueur (dans toutes les tables)
 				createTeamPlayer(name, password, team);
 				if(checkPlayer && checkTeam) {
 					connect=true;
@@ -527,8 +527,8 @@ public class database {
 	}
 	
 	/**
-	 * Méthode permettant de connecter le joueur et de récuperer son état d'avancement dans la BDD
-	 * @param name : nom du joueur concerné
+	 * Mï¿½thode permettant de connecter le joueur et de rï¿½cuperer son ï¿½tat d'avancement dans la BDD
+	 * @param name : nom du joueur concernï¿½
 	 */
 	private void gameConnection(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'"); 
@@ -596,8 +596,8 @@ public class database {
 	}	
 	
 	/**
-	 * Méthode permettant de mettre à jour l'état du joueur avant qu'il ne quitte le jeu
-	 * @param name : nom du joueur concerné
+	 * Mï¿½thode permettant de mettre ï¿½ jour l'ï¿½tat du joueur avant qu'il ne quitte le jeu
+	 * @param name : nom du joueur concernï¿½
 	 */
 	public void gameDeconnection(String name) {
 		String team = "";
@@ -615,21 +615,11 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
-	/**
-	 * Méthode permettant d'établir le classement en fonction de la demande du joueur
-	 * @param table : permet de choisir l'unité sur laquelle le classement ce base
-	 * 				true : classement par équipe
-	 * 				false : classement individuel
-	 * @param ordre : permet de choisir la donnée sur laquelle les éléments sont triés (classement ascendant)
-	 * 				pets : ordonner en fonction du nombre de familiers
-	 * 				money : ordonner en fonction de l'argent
-	 * @return
-	 */
 	private ArrayList<Object> classement(boolean table, String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			if(table) {
-				//classement par équipe
+				//classement par ï¿½quipe
 				if(ordre.equals("pets")) {
 					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
 					result.beforeFirst();
