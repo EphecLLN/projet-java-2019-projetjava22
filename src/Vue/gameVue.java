@@ -3,7 +3,7 @@ package Vue;
 import java.util.Observer;
 
 
-import Contrôleur.gameController;
+import ContrÃ´leur.gameController;
 import model.game;
 
 public abstract class gameVue implements Observer{

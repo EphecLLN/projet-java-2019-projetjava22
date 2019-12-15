@@ -55,7 +55,6 @@ public class Monster extends Observable {
 			monstre.setNumber( monstre.getNumber() + 1);
 			monstre.setPV(monstre.getPvIncrease() * 3);
 			game.setGold(game.getGold() + monstre.goldIncrease);
-			System.out.println("Vous etes au boss. Force à vous !");
 			randomMonster(monstre);
 		}
 		
@@ -148,8 +147,10 @@ public class Monster extends Observable {
 		return timeBoss;
 	}
 	
-	public void setTimeBoss(int tempsboss) {
-		this.timeBoss = tempsboss;
+	public void setTempsBoss(int tempsboss) {
+		this.tempsBoss = tempsboss;
+		setChanged();
+        notifyObservers();
 	}
 
 	//la m�thode goldDrop() a �t� directement mise dans die()
@@ -163,6 +164,19 @@ public class Monster extends Observable {
 
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
+		setChanged();
+        notifyObservers();
+	}
+	
+	public String getTempsBossConsole() {
+		if(this.Number == 10) {
+			String tempsBossConsole = "" + getTempsBoss();
+			return tempsBossConsole;
+		}
+		else {
+			String slash = "/";
+			return slash;
+		}
 	}
 	
 	public static void main(String[] args) {

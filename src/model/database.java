@@ -17,7 +17,7 @@ public class database {
 	 * @param where
 	 * @return result : renvoie le resultat de la requete
 	 */
-	private ResultSet data (String column,String table, String where) {
+	public ResultSet data (String column,String table, String where) {
 		ResultSet result = null;
 		try {
 			Connection connect = connexion();
@@ -44,7 +44,7 @@ public class database {
 		Connection conn = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			String url = "jdbc:postgresql://localhost:5432/Clicker";
+			String url = "jdbc:postgresql://127.0.0.1:5432/Clicker";
 			String user = "postgres";
 			String passwd = "DBA";   
 			conn = DriverManager.getConnection(url,user, passwd);
@@ -504,7 +504,7 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
-	private ArrayList<Object> classement(boolean table, String ordre){
+	public ArrayList<Object> classement(boolean table, String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			if(table) {

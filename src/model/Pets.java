@@ -3,14 +3,13 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	private int petUpgradeIncrease = 100;
+	int petUpgradeIncrease = 100;
 	private int petDamages = 1;
 	private int petDmgIncrease = 1;
 	private int petNumber = 0;
 	private int petNumberUP= 1;
 	private int petCostUpgrade = 150;
 	private double petBuyIncrease = 0.1;
-	private int petsAttackSpeed = 2000;
 	private int petCostBuy = 100;
 	
 	/**

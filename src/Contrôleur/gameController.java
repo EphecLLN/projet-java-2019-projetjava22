@@ -1,4 +1,4 @@
-package Contrôleur;
+package ContrÃ´leur;
 
 import Vue.gameVue;
 import model.game;
@@ -16,7 +16,7 @@ public class gameController {
     	control();
     }
     public void attack() {
-    	model.attack(model.myMonster, model.myArtf,  model.myHero.getDamage(),  model.myHero.getAttribute(), model.myMonster.getAttribute());
+    	model.attack(model.myMonster, model.myArtf,  model.myHero.getDamage(),  model.myHero.getAttributeHero(), model.myMonster.getAttribute());
     	control();
     }
     public void reset() {
@@ -47,13 +47,13 @@ public class gameController {
     }
     public void attributeChoice(int x) {
     	if (x == 1) {
-    		model.myHero.setAttribute("aqua");
+    		model.myHero.setAttributeHero("aqua");
     	}
     	if (x == 2) {
-    		model.myHero.setAttribute("pyro");
+    		model.myHero.setAttributeHero("pyro");
     	}
     	if (x == 3) {
-    		model.myHero.setAttribute("tera");
+    		model.myHero.setAttributeHero("tera");
     	}
     	control();
     }
