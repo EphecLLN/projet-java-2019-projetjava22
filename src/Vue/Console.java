@@ -54,12 +54,12 @@ public class Console extends gameVue implements Observer{
 				model.attack(model.myMonster,model.myArtf, model.myHero.getDamage(), model.myHero.getAttribute(), model.myMonster.getAttribute());
 			}
 			if (userAction.contentEquals("a")) {
-				model.upgrade(model.myHero,model.myHero.getConstUpgradeDamage());
+				model.upgrade(model.myHero,model.myHero.getConstUpDamage());
 				System.out.println("vous avez ameliore vos degats");
 				
 			}	
 			if (userAction.contentEquals("r")) {
-				model.reborn(model.myMonster, model.myHero, model.myPets);
+				model.reborn(model.myMonster, model.myHero, model.myPets,model.myArtf);
 			}
 			if (userAction.contentEquals("s")) {
 			}

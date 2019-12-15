@@ -3,7 +3,7 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	int petUpgradeIncrease = 100;
+	private int petUpgradeIncrease = 100;
 	private int petDamages = 1;
 	private int petDmgIncrease = 1;
 	private int petNumber = 0;

@@ -214,7 +214,8 @@ class gameTest {
 		Hero testeur = new Hero();
 		Pets testP = new Pets();
 		Monster testM = new Monster();
-		tests.reborn(testM, testeur, testP);
+		Artefact testA = new Artefact();
+		tests.reborn(testM, testeur, testP,testA);
 		if (testeur.getDamage() != 1) {
 			fail("damage");
 		}
@@ -307,7 +308,7 @@ class gameTest {
 		if(ATest.getCurrentArtefacts().contains("-1Boss") && MTest.getbossNumber() != 9 ) {
 			fail("double Dmg");
 		}
-		if(ATest.getCurrentArtefacts().contains("every10Hit") && ATest.activate10hit != true ) {
+		if(ATest.getCurrentArtefacts().contains("every10Hit") && ATest.isActivate10Hit() != true ) {
 			fail("every10Hit");
 		}
 		tests = new game();
