@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Vue.Console;
-import Vue.GUI;
 import java.util.Observable;
 
 /**
@@ -44,7 +43,6 @@ public class game extends Observable {
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
-	public database myDatabase = new database();
 	Console myConsole = new Console(this, null);
 	
 	
@@ -122,7 +120,7 @@ public class game extends Observable {
 		setUpgradeMoneyValue(10);
 		upgradecroissance = 2;
 		myHero.setCheckClass(0);
-		monstre.setTimeBoss(20);
+		monstre.setTempsBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
 		monstre.setPvIncrease(10);
@@ -177,7 +175,7 @@ public class game extends Observable {
 	
 	public void mageChoice(Hero heroGame) {
 		heroGame.setCheckClass(2);
-		myMonster.setTimeBoss(25);
+		myMonster.setTempsBoss(25);
 	}
 	
 	public void berzerkerChoice(Hero heroGame) {
@@ -268,12 +266,12 @@ public class game extends Observable {
 	
 	public class ChronoMonstre extends TimerTask {
 		public void run() {
-			if(myMonster.getTempsBoss() == 0) {
+			if(myMonster.getTimeBoss() == 0) {
 				System.out.println("Vous avez perdu. Reborn en cours...");
-				reborn(myMonster, myHero, myPets);
+				reborn(myMonster, myHero, myPets, myArtf);
 			}
 			else if(myMonster.getNumber() == myMonster.getbossNumber()) {
-				myMonster.setTempsBoss(myMonster.getTempsBoss() - 1);
+				myMonster.setTempsBoss(myMonster.getTimeBoss() - 1);
 			}
 			setChanged();
 	        notifyObservers();

@@ -53,7 +53,6 @@ public class Console extends gameVue implements Observer{
 			System.out.println("Acheter familier 	(f) (" + model.myPets.getPetCostBuy() + ")			Passer en type Tera (t)");
 			System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")");
 			System.out.println("Redemarrer 		(r) (+"+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 + ")"));
-			System.out.println(model.myDatabase.data("*","player",""));
 			
 			/* for(int j=0; j < 5; j++) {
 				System.out.println(model.myDatabase.classement(true, "pets"));
@@ -126,7 +125,6 @@ public class Console extends gameVue implements Observer{
 		System.out.println("Acheter familier 	(f) (" + model.myPets.getPetCostBuy() + ")			Passer en type Tera (t)");
 		System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")");
 		System.out.println("Redemarrer 		(r) (+"+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 + ")"));
-		System.out.println(model.myDatabase.data("*","player",""));
 	}
 
 	@Override
