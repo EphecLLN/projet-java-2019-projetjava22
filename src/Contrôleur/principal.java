@@ -14,6 +14,8 @@ public class principal {
 	public static void main(String[] args) {
 		//Cr�ation du mod�le
 		
+		
+		
 		game myGame = new game();
 		//Cr�ation des contr�leurs : Un pour chaque vue
 		//Chaque contr�leur doit avoir une r�f�rence vers le mod�le pour pouvoir le commander

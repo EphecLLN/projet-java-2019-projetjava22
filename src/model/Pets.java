@@ -23,7 +23,10 @@ public class Pets extends Observable {
 	 * 		pour pouvoir effectuer celle-ci (valeur positive)
 	 * @param costUpgrade
 	 * 		coût de l'amélioration, il faut avoir un montant supérieur ou égal de golds pour pouvoir
-	 * 		effectuer l'amélioration (valeur positive)	
+	 * 		effectuer l'amélioration (valeur positive)
+	 * 
+	 * @return petDamage
+	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
 	public void upgradePet(game game,Pets myPets) {

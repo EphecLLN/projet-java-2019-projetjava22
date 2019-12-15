@@ -8,10 +8,8 @@ class PetsTest {
 
 	@Test
 	void test() {
-		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu, petCostBuy;
-		Pets pets = new Pets();
-		game test = new game();
-		
+		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
+		Pets Pets = new Pets();
 		//Test de la fonction upgradePet
 		
 		gold = 30;
@@ -54,7 +52,7 @@ class PetsTest {
 					fail("upgrade gold < petCostUpgrade");
 				}
 
-		//Test de la méthode attackPet		
+		//Test de la mï¿½thode attackPet		
 				
 		petDamage = 1;
 		petNumber = 1;
@@ -115,7 +113,7 @@ class PetsTest {
 		petNumber = 1;
 		pets.buyPet(test, gold, petCostBuy, petNumber);
 		if (pets.getPetNumber() != 1) {
-			fail("pas d'argent mais déja 1 ");
+			fail("pas d'argent mais dï¿½ja 1 ");
 		}
 	}
 
