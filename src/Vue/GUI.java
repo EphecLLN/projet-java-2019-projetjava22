@@ -14,6 +14,7 @@ import java.util.Observer;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -114,6 +115,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton tera = new JButton();
 	public JButton pyro = new JButton();
 	
+	public JComboBox table;
+	public JComboBox ordre;
+
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons		
 		window.setSize(1200, 700);
 		screenMonster(this, monstre);
