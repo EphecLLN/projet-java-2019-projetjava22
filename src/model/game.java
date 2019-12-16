@@ -3,12 +3,10 @@
  */
 package model;
 
-
+import java.util.Observable;
 import java.util.TimerTask;
 
-
 import Vue.Console;
-import java.util.Observable;
 
 /**
  * @author Lucas Pastori

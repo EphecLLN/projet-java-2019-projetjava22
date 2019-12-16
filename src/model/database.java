@@ -3,43 +3,45 @@ package model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * @author Nathan Debongnie
+ *
+ */
 public class database {
+	/**
+	 * Cet attribut sert � v�rifier si la table a �t� modifi�e
+	 */
 	int affectedRows;
 			
 	/**
-	 * @param column
-	 * @param table
-	 * @param where
-	 * @return result : renvoie le resultat de la requete
+	 * M�thode qui renvoie les donn�es des colonnes demand�es de la table avec ou sans condition
+	 * @param column : la ou les colonnes dont on veut re�evoir les donn�es
+	 * @param table : la table qui contient ces colonnes
+	 * @param condition : Si n�cessaire, les condition de la requete 
+	 * 			exemple : WHERE ou ORDER BY
+	 * @return result : renvoie le resultat de la requete en format ResultSet
 	 */
-	public ResultSet data (String column,String table, String where) {
+	private ResultSet data (String column,String table, String condition) {
 		ResultSet result = null;
 		try {
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			//L'objet result contient le r�sultat de la requ�te SQL
-			result = state.executeQuery("SELECT "+ column +" FROM "+ table + where);
+			result = state.executeQuery("SELECT "+ column +" FROM "+ table + condition);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		return result;
 	};
-	private ResultSet orderedData(String column, String table, String order) {
-		ResultSet result = null;
-		try {
-			Connection connect = connexion();
-			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			result = state.executeQuery("SELECT "+ column + " FROM "+ table + order);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+	
+	/**
+	 * M�thode qui permet la connexion � la db
+	 * @return conn : Contient l'adresse de la base de donn�es
+	 */
 	private Connection connexion (){
 		Connection conn = null;
 		try {
@@ -54,26 +56,34 @@ public class database {
 		return conn;
 	};
 	
+	/**
+	 * M�thode permettant de r�cuperer l'identifiant d'un joueur dans une table
+	 * @param name : nom du joueur dont on veut connaitre l'identifiant
+	 * @return playerId : l'identifiant du joueur concern�
+	 */
 	private int getId(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'");
 		int playerId = 0;
 		try {
 			if(result.first()){
-				playerId = Integer.parseInt(result.getObject(1).toString());	
-				playerId += 1;
+				playerId = result.getInt(1);	
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return playerId;
 	}
+	/**
+	 * M�thode permettant de r�cuperer le dernier identifiant de la table player
+	 * @return id : l'identifiant du dernier joueur de la base de donn�e
+	 */
 	private int getLastId() {
 		int id = 0;
 		ResultSet result = data("playerid", "player", "");
 		try {
 			if(result.first()){
 				result.last();
-				id = Integer.parseInt(result.getObject(1).toString());
+				id = result.getInt(1);
 			}
 		} catch (NumberFormatException | SQLException e) {
 			e.printStackTrace();
@@ -81,6 +91,11 @@ public class database {
 		return id;
 	}
 	
+	/**
+	 * M�thode permettant d'inserer une nouvelle �quipe dans la base de donn�es
+	 * @param team : le nom de l'�quipe qu'il faut rajouter dans la BDD
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int insertTeam (String team) {
 		try {
 			ArrayList<String> values = new ArrayList<String>();
@@ -100,6 +115,11 @@ public class database {
 		}
 		return affectedRows;
 	};
+	/**
+	 * M�thode permettant de modifier les valeurs d'une �quipe d�j� existante dans la BDD
+	 * @param team : l'�quipe qu'on souhaite modifier
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int updateTeam (String team) {
 		try {
 			Connection connect = connexion();
@@ -117,8 +137,8 @@ public class database {
 			resultHero.beforeFirst();
 			while(resultPlayer.next()) {
 				resultHero.next();
-				playerID = Integer.parseInt(resultPlayer.getObject(1).toString());
-				heroID = Integer.parseInt(resultHero.getObject(1).toString());
+				playerID = resultPlayer.getInt(1);
+				heroID = resultHero.getInt(1);
 				if(playerID == heroID) {
 					teammoney += Integer.parseInt(resultHero.getObject(2).toString());
 					teampets += Integer.parseInt(resultHero.getObject(3).toString());
@@ -132,6 +152,13 @@ public class database {
 		return affectedRows;
 	}
 
+	/**
+	 * M�thode permettant de rajouter un joueur dans la BDD
+	 * @param name : nom du joueur � rajouter dans la table
+	 * @param password : mot de passe pour la connexion
+	 * @param team : nom de l'�quipe dans laquelle le joueur joue
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int insertPlayer (String name, String password, String team) {
 		try {
 			Connection connect = connexion();
@@ -148,6 +175,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * M�thode permettant de modifier les donn�es (le moment de la derni�re connection) d'un joueur en particulier
+	 * @param name : nom du joueur que l'on souhaite modifier
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int updatePlayer(String name) {
 		try {
 			Connection connect = connexion();
@@ -159,6 +191,11 @@ public class database {
 		return affectedRows;
 	}
 
+	/**
+	 * M�thode permettant de rajouter les donn�es appartenant au joueur dans la table hero
+	 * @param name : nom du joueur que l'on souhaite ajouter dans la BDD
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int insertHero(String name) {
 		game game = new game();
 		Hero hero = new Hero();
@@ -185,6 +222,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * M�thode permettant de modifier les donn�es concernant le hero d'un joueur
+	 * @param name : nom du joueur concern� par la modification
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int updateHero(String name) {
 		game game = new game();
 		Hero hero = new Hero();
@@ -215,6 +257,11 @@ public class database {
 		return affectedRows;
 	}
 	
+	/**
+	 * M�thode permettant de rajouter les donn�es concernant l'�tat des monstres 
+	 * @param name : nom du joueur concern� par la modification
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int insertMonster(String name) {
 		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
@@ -233,6 +280,11 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * M�thode permettant de modifier les donn�es concernant l'�tat des monstres
+	 * @param name : nom du joueur concern� par la modification
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int updateMonster(String name) {
 		Monster monster = new Monster();
 		int monsterPV = monster.getPV();
@@ -252,6 +304,11 @@ public class database {
 		return affectedRows;
 	}	
 	
+	/**
+	 * M�thode permettant de rajouter les donn�es concernant l'�tat des familiers
+	 * @param name : le joueur concern� 
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int insertPets(String name) {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
@@ -269,11 +326,15 @@ public class database {
 		}
 		return affectedRows;
 	}
+	/**
+	 * M�thode permettant de modifier les donn�es concernant l'�tat des familiers
+	 * @param name : le joueur concern�
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int updatePets(String name) {
 		Pets pets = new Pets(); 
 		int petsDamage = pets.getPetDamages();
 		int petsIncrease = pets.getPetCostUpgrade(); // = add dans la DB
-		int petsNumber = pets.getPetNumber();
 		int petsBuyCost = pets.getPetCostBuy();
 		int petsUpgradeCost = pets.getPetCostUpgrade();
 		try {
@@ -281,7 +342,7 @@ public class database {
 			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("UPDATE pets SET damage="+petsDamage + ", add=" + petsIncrease + ", amount=" + petsNumber + ", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
+			affectedRows = state.executeUpdate("UPDATE pets SET damage="+petsDamage + ", add=" + petsIncrease +", buycost=" + petsBuyCost + ", upgradecost=" + petsUpgradeCost +"WHERE playerid="+playerId);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -289,6 +350,13 @@ public class database {
 		return affectedRows;
 	}	
 	
+	/**
+	 * M�thode permettant de rajouter un joueur dans une nouvelle �quipe, ainsi que ses donn�es actuelles dans le jeu
+	 * @param name : nom du joueur que l'on souhaite rajouter
+	 * @param password : mot de passe du joueur � rajouter
+	 * @param team : nom de l'�quipe qui doit �tre cr��e et � laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int createTeamPlayer(String name, String password, String team) {
 		affectedRows = insertTeam(team);
 		affectedRows += insertPlayer(name, password, team);
@@ -298,6 +366,13 @@ public class database {
 		affectedRows += updateTeam(team);
 		return affectedRows;
 	}
+	/**
+	 * M�thode permettant de rajouter un joueur dans une �quipe existante, ainsi que ses donn�es actuelles dans le jeu
+	 * @param name : nom du joueur que l'on souhaite rajouter
+	 * @param password : mot de passe du joueur que l'on souhaite rajouter
+	 * @param team : nom de l'�quipe � laquelle le joueur doit appartenir
+	 * @return affectedRows : nombre de lignes modifi�es dans la BDD
+	 */
 	private int createPlayer(String name, String password, String team) {
 		affectedRows = insertPlayer(name, password, team);
 		affectedRows += insertHero(name);
@@ -307,6 +382,13 @@ public class database {
 		return affectedRows;
 	}
 	
+	/**
+	 * M�thode permettant de v�rifier si l'�quipe existe d�j� dans la BDD
+	 * @param team : nom de l'�quipe que l'on souhaite rechercher dans la BDD
+	 * @return check : 
+	 * 				true si l'�quipe existe d�j�
+	 * 				false si l'�quipe n'existe pas encore
+	 */
 	private boolean checkTeam(String team) {
 		boolean check = false;
 		ResultSet resultTeam = data("*","team","");
@@ -328,6 +410,14 @@ public class database {
 		
 		return check;
 	}
+	/**
+	 * M�thode permettant de v�rifier si le joueur existe d�j� dans la BDD et si le mot de passe est correct
+	 * @param name : nom du joueur que l'on souhaite retrouver
+	 * @param password : mot de passe du joueur que l'on souhaite retrouver
+	 * @return check : 
+	 * 				true si le joueur existe d�j� et que le mot de passe est correct
+	 * 				false si le joueur n'existe pas encore ou/et le mot de passe n'est pas correct
+	 */
 	private boolean checkPlayer (String name, String password) {
 		boolean check = false;
 		ResultSet resultPlayer = data("playername, playerpassword", "player", "");
@@ -360,30 +450,43 @@ public class database {
 		}
 		return check;
 	}
+	/**
+	 * M�thode permetant de v�rifier si le joueur existe dans la base de donn�e sans v�rifier le mot de passe
+	 * @param name : nom du joueur que l'on souhaite retrouver
+	 * @return check : 
+	 * 				true si le joueur existe d�j�
+	 * 				false si le joueur n'existe pas encore
+	 */
 	private boolean checkPlayerName (String name) {
 		boolean check = false;
 		ResultSet resultPlayer = data("playername", "player", "");
 		
 		try {
-			//si il y a au moins 1 joueur
-			//if(resultPlayer.first()) {
-				//tant qu'il y a des joueurs
-				resultPlayer.beforeFirst();
-				while(resultPlayer.next()) {
-					String resultName = resultPlayer.getObject(1).toString();
-					//Si le mot de passe est correct pour ce joueur
-					if(resultName.equals(name)) {
-						check = true;
-						return check;
-					}
+			//tant qu'il y a des joueurs
+			resultPlayer.beforeFirst();
+			while(resultPlayer.next()) {
+				String resultName = resultPlayer.getObject(1).toString();
+				//Si le mot de passe est correct pour ce joueur
+				if(resultName.equals(name)) {
+					check = true;
+					return check;
 				}
-			//}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return check;
 	}
 	
+	/**
+	 * M�thode permettant de connecter ou d'inscrire un nouveau joueur
+	 * @param name : nom du joueur concern�
+	 * @param password : mot de passe du joueur concern�
+	 * @param team : �quipe dans laquelle le joueur (doit) se trouve(r)
+	 * @return connect : 
+	 * 				true si l'�quipe existe d�j�
+	 * 				false si l'�quipe n'existe pas encore
+	 */
 	private boolean playerConnection(String name, String password, String team) {
 		boolean connect = false;
 		boolean checkTeam = checkTeam(team);
@@ -423,6 +526,10 @@ public class database {
 		return connect;
 	}
 	
+	/**
+	 * M�thode permettant de connecter le joueur et de r�cuperer son �tat d'avancement dans la BDD
+	 * @param name : nom du joueur concern�
+	 */
 	private void gameConnection(String name) {
 		ResultSet result = data("playerid","player"," WHERE playername = '"+name+"'"); 
 		game game = new game();
@@ -432,7 +539,7 @@ public class database {
 		Artefact artefact = new Artefact();
 		try {
 			result.first();
-			int playerID = Integer.parseInt(result.getObject(1).toString());
+			int playerID = result.getInt(1);
 			String where = " WHERE playerid = "+playerID;
 			ResultSet resultHero = data("*","hero", where);
 			ResultSet resultMonster = data("*","monster", where);
@@ -488,7 +595,11 @@ public class database {
 		}
 	}	
 	
-	private void gameDeconnection(String name) {
+	/**
+	 * M�thode permettant de mettre � jour l'�tat du joueur avant qu'il ne quitte le jeu
+	 * @param name : nom du joueur concern�
+	 */
+	public void gameDeconnection(String name) {
 		String team = "";
 		ResultSet result = data("playername, teamname", "player JOIN team ON team.teamid = player.teamid", " WHERE playername = '"+name+"'");
 		try {
@@ -504,13 +615,13 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
-	public ArrayList<Object> classement(boolean table, String ordre){
+	private ArrayList<Object> classement(boolean table, String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			if(table) {
 				//classement par �quipe
 				if(ordre.equals("pets")) {
-					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
+					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -520,7 +631,7 @@ public class database {
 					}
 				}
 				else if(ordre.equals("money")) {
-					ResultSet result = orderedData("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
+					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -532,7 +643,7 @@ public class database {
 			} else {
 				//classement par joueurs
 				if (ordre.equals("money")) {
-					ResultSet result = orderedData("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
+					ResultSet result = data("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
 					result.beforeFirst();
 					while(!result.isLast()) {
 						result.next();
@@ -543,7 +654,7 @@ public class database {
 				}
 				else {
 					if (ordre.equals("pets")) {
-						ResultSet result = orderedData("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
+						ResultSet result = data("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
 						result.beforeFirst();
 						while(!result.isLast()) {
 							result.next();
@@ -564,17 +675,11 @@ public class database {
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		database db = new database(); 
 		
-		ArrayList<Object> classement = db.classement(true, "money");
-		System.out.println(classement);
+		db.gameDeconnection("Paul");
+
+		db.playerConnection("Paul", "pswd", "Var Motiv = 0");
 		
-		
-		//db.playerConnection("Swithan", "abc123", "Var Motiv = 0");
-		
-		String where = " WHERE playerid = "+1;
-		ResultSet resultHero = db.data("*","hero", where);
-		resultHero.beforeFirst();
-		resultHero.next();
-		System.out.println(resultHero.first()+" "+resultHero.getObject(6));
+		db.updateTeam("Var Motiv = 0");
 		
 		
 	}
