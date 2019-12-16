@@ -48,7 +48,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("Artefacts actuels : " + model.myArtf.getCurrentArtefacts() );
 			System.out.println("Type du monstre : " + model.myMonster.getAttribute());
 			System.out.println("Type du heros : " + model.myHero.getAttributeHero());
-			System.out.println("-------------------------------------------------------------------------------------"); // cr�e une s�paration pour plus de propret�
+			System.out.println("-------------------------------------------------------------------------------------"); // cree une s�paration pour plus de propret�
 			System.out.println("Attaque 		(enter)				Passer en type Aqua (w)");
 			System.out.println("Amelioration 		(a) (" + model.getUpgradeMoneyValue() + ")			Passer en type Pyro (p)");
 			System.out.println("Acheter familier 	(f) (" + model.myPets.getPetCostBuy() + ")			Passer en type Tera (t)");

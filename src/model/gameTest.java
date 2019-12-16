@@ -199,13 +199,13 @@ class gameTest {
 		upDmg = 2;
 		tests.upgrade(testeur, upDmg);
 		if (testeur.getDamage() != 3) {
-			fail("+1dmg");
+			fail("2 +1dmg");
 		}
 		testeur = new Hero();
 		upDmg = 0;
 		tests.upgrade(testeur, upDmg);
 		if (testeur.getDamage() != 1) {
-			fail("+1dmg");
+			fail("0 +1dmg");
 		}
 	}
 

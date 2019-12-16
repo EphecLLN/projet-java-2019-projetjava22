@@ -20,7 +20,7 @@ public class game extends Observable {
 	 * ---------------------------------------------*/
 	
 	private int nbrClic = 0;
-	private int gold = 1000;
+	private int gold = 0;
 	private int upgradeMoneyValue = 10; // permet d'augmenter le cout de l'amelioration
 	private int upgradecroissance = 2;	// augmente la variable du dessus 
 	private int nbrUpgrade = 0;
