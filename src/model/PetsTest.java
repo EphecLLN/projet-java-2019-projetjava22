@@ -9,48 +9,34 @@ class PetsTest {
 	@Test
 	void test() {
 		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
-		Pets Pets = new Pets();
+		int petCostBuy ;
+		Pets pets = new Pets();
+		game test = new game();
 		//Test de la fonction upgradePet
 		
-		gold = 30;
-		petCostUpgrade = 30;	
-		petDamage = 0;
-		petIncrease = 0;
-			resultatAttendu = 0;
-			resultatObtenu = pets.upgradePet(petDamage, petIncrease, gold, petCostUpgrade);	
-				if(resultatAttendu != resultatObtenu) {
-					fail("upgrade D0 I0");
-				}
+		
+		gold = 0;
+		pets = new Pets();
+		pets.upgradePet(test, pets, gold);
+		if(pets.getPetDamages() != 1) {
+			fail("0x");
+		}
+		
+		gold = 150;
+		pets = new Pets();
+		pets.upgradePet(test, pets, gold);
+		if(pets.getPetDamages() != 2) {
+			fail("upgrade 1x");
+		}
 
-		gold = 30;
-		petCostUpgrade = 30;				
-		petDamage = -1;
-		petIncrease = -1;
-			resultatAttendu = -2;
-			resultatObtenu = pets.upgradePet(petDamage, petIncrease, gold, petCostUpgrade);
-				if(resultatAttendu != resultatObtenu) {
-					fail("upgrade D-1 I-1");
-				}
-				
-		gold = 30;
-		petCostUpgrade = 30;	
-		petDamage = 1;
-		petIncrease = 1;
-			resultatAttendu = 2;
-			resultatObtenu = pets.upgradePet(petDamage, petIncrease, gold, petCostUpgrade);	
-				if(resultatAttendu != resultatObtenu) {
-					fail("upgrade D1 I1");
-				}
 
-		gold = 20;
-		petCostUpgrade = 30;	
-		petDamage = 5;
-		petIncrease = 5;
-			resultatAttendu = 5;
-			resultatObtenu = pets.upgradePet(petDamage, petIncrease, gold, petCostUpgrade);	
-				if(resultatAttendu != resultatObtenu) {
-					fail("upgrade gold < petCostUpgrade");
-				}
+		gold = 400;
+		pets = new Pets();
+		pets.upgradePet(test, pets, gold);
+		if(pets.getPetDamages() != 2) {
+			fail("upgrade 2x");
+		}
+
 
 		//Test de la m�thode attackPet		
 				

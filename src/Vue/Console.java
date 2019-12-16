@@ -24,9 +24,9 @@ public class Console extends gameVue implements Observer{
 	
 	
 	/**
-	 * donne une premi�re fois le texte a l'utilisateur et permet d'activer une m�thode 
+	 * donne une premiere fois le texte a l'utilisateur et permet d'activer une methode 
 	 * en encodant la bonne input dans la console 
-	 * @param game classe du mod�le affect�e
+	 * (scan la ligne de commande)
 	 */
 	public void Scan() {
 		Scanner myScan = new Scanner(System.in);
@@ -113,9 +113,12 @@ public class Console extends gameVue implements Observer{
 	public static void main(String[] args) {
 	    
    	}
-
+	
+	/**
+	 * met a jour les donnees de la console lors de modification dans le model
+	 */
 	@Override
-	public void update(Observable o, Object arg) { // remet � r�guli�rement l'interface console 
+	public void update(Observable o, Object arg) { // remet regulierement a jour l'interface console 
 		
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		System.out.println("-------------------------------------------------------------------------------------");
@@ -141,6 +144,9 @@ public class Console extends gameVue implements Observer{
 		System.out.println("Redemarrer 		(r) (+"+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 + ")"));
 	}
 
+	/**
+	 * previens en cas de probleme
+	 */
 	@Override
 	public void enableWarning() {
 		System.out.println("Alerte"); // pr�vient en cas de probl�me

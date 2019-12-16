@@ -49,9 +49,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JButton buttonNewPet = new JButton();
 	public JButton buttonUpPets = new JButton();
 	public JButton buttonArtf = new JButton();
-	public static JButton archerChoice = new JButton();
-	public static JButton mageChoice = new JButton();
-	public static JButton berserkChoice = new JButton();
+	public JButton archerChoice = new JButton();
+	public JButton mageChoice = new JButton();
+	public JButton berserkChoice = new JButton();
 	public JButton goldButton = new JButton();
 	public JButton artefactGoldButton = new JButton();
 	public JButton epeeButton = new JButton();
@@ -119,7 +119,14 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JComboBox table;
 	public JComboBox ordre;
 
-	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) { //commande g�n�rant l'inteface ainsi que les bouttons		
+	/**
+	 * methode qui genere l'interface graphique 
+	 * @param monstre : monstre a modifier
+	 * @param hero : hero a modifier
+	 * @param pet : pet a modifier
+	 * @param myGame : jeu a afficher
+	 */
+	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) {		
 		window.setSize(1200, 700);
 		screenMonster(this, monstre);
 		ajouterTempsBoss(model.myMonster);
@@ -745,7 +752,11 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			}
 		});*/
 	}
-	
+	/**
+	 * change l'affichage du hero dans la GUI
+	 * @param game : permet d'aller prendre l'image du hero 
+	 * @param myGUI : GUI a modifier
+	 */
 	public void changerAttaqueHero(game game, GUI myGUI) {
 		if(game.getImageHero()%4 == 0) {
 			myGUI.buttonHero.setIcon(myGUI.imageHero0);
@@ -761,7 +772,11 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 	}
 	
-	
+	/**
+	 * permet de changer l'icone du monstre selon son attribut et si c'est un boss ou non
+	 * @param myGUI : GUI a modifier
+	 * @param myMonster : monstre a verifier
+	 */
 	public void screenMonster(GUI myGUI, Monster myMonster) {
 		if(myMonster.getNumber() == 10) {
 			if (myMonster.getAttribute() == "aqua") {
@@ -787,15 +802,23 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			}
 		}
 	}
-	
+	/**
+	 * methode qui rajoute les boutons de classe a la GUI
+	 * @param myGUI : gui affectee
+	 * @param monstre : permet de verifier la vague a laquelle afficher les boutons
+	 * @param myHero : permet de verifier qu'aucune class a deja ete choisie
+	 */
 	public void ajouterClasses(GUI myGUI, Monster monstre, Hero myHero) {
 		if(monstre.getWaveNumber() == 2 && myHero.getCheckClass() == 0) {
-			GUI.archerChoice.setEnabled(true);
-			GUI.berserkChoice.setEnabled(true);
-			GUI.mageChoice.setEnabled(true);
+			myGUI.archerChoice.setEnabled(true);
+			myGUI.berserkChoice.setEnabled(true);
+			myGUI.mageChoice.setEnabled(true);
 		}
 	}
-	
+	/**
+	 * affiche le chrono a l'apparition d'un boss
+	 * @param monstre : permet de verifier que le monstre est bien un boss
+	 */
 	public void ajouterTempsBoss(Monster monstre) {
 		if(monstre.getNumber() == 10) {
 			tempsBoss1Label.setText("" + model.myMonster.getTimeBoss() + "");
@@ -810,7 +833,10 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	
 	public static void main(String[] args) {
 	}
-
+	
+	/**
+	 * met a jour la GUI lors de modification dans le model
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		
@@ -849,7 +875,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		// TODO Auto-generated method stub
 		
 	}
-
+	/**
+	 * verifie quel bouton a ete active et agit en consuequence
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object x = e.getSource();

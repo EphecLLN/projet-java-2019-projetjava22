@@ -6,14 +6,14 @@ import Vue.GUI;
 
 /**
  * @author Lucas Pastori
- * classe cr�ant les monstres 
+ * classe creant les monstres 
  */
 public class Monster extends Observable {				
 	private int PV = 10 ;							//pv du monstre actuel
-	private int pvIncrease = 10;					//incr�mentation des pvs
+	private int pvIncrease = 10;					//incrementation des pvs
 	private int Number = 1;							//Numero du monstre dans la vague
 	private int bossNumber = 10;					//Nombre de monstre a tuer pour arriver au boss
-	private int waveNumber = 1;						//Nombre de monstre tu�s au total
+	private int waveNumber = 1;						//Nombre de monstre tues au total
 	private int goldIncrease = 6;
 	private String attribute = "aqua";
 	private int timeBoss = 20;
@@ -67,6 +67,8 @@ public class Monster extends Observable {
 	}
 	
 	/**
+	 * permet de "randomiser" le type du prochain monstre a la mort de l'un d'entre eux
+	 * @param monster : monstre a "randomiser"
 	 */
 	
 	public void randomMonster(Monster monster) {
@@ -148,7 +150,7 @@ public class Monster extends Observable {
 	}
 	
 	public void setTimeBoss(int tempsboss) {
-		this.setTempsBoss(tempsboss);;
+		this.timeBoss = tempsboss;
 		setChanged();
         notifyObservers();
 	}

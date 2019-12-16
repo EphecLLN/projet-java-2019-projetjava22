@@ -8,18 +8,18 @@ import java.util.List;
 
 /**
  * @author lucas Pastori
- * classe regoupant les diffï¿½rents artï¿½facts (pouvoirs supplï¿½mentaires) 
+ * classe regoupant les differents artefacts (pouvoirs supplementaires) 
  * et les activant si il se trouvent dans le bon tableau.
  */
 public class Artefact {
 	
-	private ArrayList<String> currentArtefacts = new ArrayList<String>(); 
+	private ArrayList<String> currentArtefacts = new ArrayList<String>(); // list des artefact possede
 	public String[] noArtefacts = {"doublePet","doubleDMG","+5DMG","-1Boss","every10Hit"};
-	private boolean activate10Hit = false;
-	private boolean activate5More = false;
-	private boolean activate2xDmg = false;
-	private boolean activate2xPet = false;
-	
+	private boolean activate10Hit = false; // empêche la reactivation de l'artefact a chaque achat
+	private boolean activate5More = false; // empêche la reactivation de l'artefact a chaque achat
+	private boolean activate2xDmg = false; // empêche la reactivation de l'artefact a chaque achat
+	private boolean activate2xPet = false; // empêche la reactivation de l'artefact a chaque achat
+	 
 	/**
 	 * @return the currentArtefacts
 	 */

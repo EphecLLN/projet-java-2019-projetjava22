@@ -11,6 +11,7 @@ public class gameController {
     public gameController(game m) {
         model = m;
     }
+    // toute les methode qui suivent servent a recuperer les methodes du model pour le controleur
     public void upgrade() {
     	model.upgrade(model.myHero, model.myHero.getConstUpDamage());
     	control();
@@ -28,7 +29,7 @@ public class gameController {
     	control();
     }
     public void upgradePets() {
-    	model.myPets.upgradePet(model, model.myPets);
+    	model.myPets.upgradePet(model, model.myPets, model.getGold());
     }
     public void oneMoreArtf() {
     	model.myHero.buyArtefact(model.myArtf, model, model.myHero.getArtefactMoney());
@@ -66,6 +67,11 @@ public class gameController {
             }
         }
     }
+    /**
+     * 
+     * permet de rajouter une vue a ce controleur
+     * @param view : vue a ajouter
+     */
     public void addView(gameVue view) {
         this.view = view;
     }

@@ -3,8 +3,8 @@ package model;
 import java.util.Observable;
 
 /**
- * Classe qui créé et enregistre les données liées au héros
- * Description des principales fonctionnalités de la classe :
+ * Classe qui cree et enregistre les donnees liees au heros
+ * Description des principales fonctionnalites de la classe :
  * 
  * Stock les informations liées au heros tel que la classe choisie, les artefacts obtenus et l'argent d'artefact.
  * @author Nathan Debongnie, Matthieu Luyckx
@@ -57,7 +57,7 @@ public class Hero extends Observable {
 	 * Cet attribut permet de stocker l'argent spécial pour les artefact récolté durant la résurection (reborn)
 	 */
 	
-	private int artefactMoney = 0;
+	private int artefactMoney = 310;
 	
 	/**
 	 * Cet attribut stocke le prix d'achat d'un nouvel artefact. Cette valeur doit être strictement positive,
@@ -83,7 +83,7 @@ public class Hero extends Observable {
 	 *  tableau d'artefacts
 	 *  "currentArtefact" et pour retirer celui-ci du tableau "noArtefacts"
 	 *  
-	 * @param game		appelle la classe game pour pouvoir y appliquer les nouveaux artefact via la fonction
+	 * @param game appelle la classe game pour pouvoir y appliquer les nouveaux artefact via la fonction
 	 * "applyArtefacts" qui se trouve dans le classe game.
 	 * 
 	 */

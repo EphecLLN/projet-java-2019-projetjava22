@@ -3,7 +3,7 @@ package model;
 import java.util.Observable;
 
 public class Pets extends Observable {
-	int petUpgradeIncrease = 100;
+	private int petUpgradeIncrease = 100;
 	private int petDamages = 1;
 	private int petDmgIncrease = 1;
 	private int petNumber = 0;
@@ -29,10 +29,10 @@ public class Pets extends Observable {
 	 * 		retourne les dégâts des pets après avoir été améliorés	
 	 */
 	
-	public void upgradePet(game game,Pets myPets) {
-		if(game.getGold() >= myPets.petCostUpgrade) {
+	public void upgradePet(game game,Pets myPets, int gold) {
+		if(gold >= myPets.petCostUpgrade) {
 			myPets.petDamages =myPets.petDamages + myPets.petDmgIncrease;
-			game.setGold(game.getGold() - myPets.petCostUpgrade);
+			game.setGold(gold - myPets.petCostUpgrade);
 			myPets.setPetCostUpgrade(getPetCostUpgrade() + myPets.petUpgradeIncrease);
 			myPets.setPetUpgradeIncrease(getPetUpgradeIncrease()*2);
 		}

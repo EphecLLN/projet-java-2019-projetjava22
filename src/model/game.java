@@ -3,19 +3,9 @@
  */
 package model;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.TimerTask;
-import java.util.Timer;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.util.TimerTask;
+
 
 import Vue.Console;
 import java.util.Observable;
@@ -28,13 +18,13 @@ public class game extends Observable {
 	/*----------------------------------------------
 	 * variables de game
 	 * ---------------------------------------------*/
-
+	
 	private int nbrClic = 0;
 	private int gold = 1000;
-	private int upgradeMoneyValue = 10;
-	private int upgradecroissance = 2;
+	private int upgradeMoneyValue = 10; // permet d'augmenter le cout de l'amelioration
+	private int upgradecroissance = 2;	// augmente la variable du dessus 
 	private int nbrUpgrade = 0;
-	private int imageHero = 2;
+	private int imageHero = 2;			// permet une animation dans la GUI
 	
 	/*----------------------------------------------
 	 * variables utiles à game 
@@ -45,7 +35,13 @@ public class game extends Observable {
 	public Pets myPets = new Pets();
 	Console myConsole = new Console(this, null);
 	
-	
+	/** 
+	 * methode infligeant des degats au monstre selon le nonmbre de familiers que l'on possede
+	 * et le nombre de degats que ceux-ci possedent.
+	 * @param monstre : monstre affecter par les degats
+	 * @param petDmg  : degats actuel des familiers
+	 * @param petNbr  :	nombre de familiers actuels
+	 */
 	void attackPets(Monster monstre, int petDmg, int petNbr) {
 		monstre.setPV(monstre.getPV() - petDmg * petNbr);
 		if(petNbr != 0) {
@@ -54,7 +50,16 @@ public class game extends Observable {
 		setChanged();
         notifyObservers();
 	}
-
+	
+	/**
+	 * methode infligeant les degats au monstre a chaque clic
+	 * Verifie le systeme d'element ainsi que la classe berserker et le "every10Hit".
+	 * @param monstre : monstre subissant les degats
+	 * @param artf : permet de verifier si every10hit est active
+	 * @param dmg : degats du hero applique au monstre
+	 * @param dmgAtribute : attribut du hero
+	 * @param monsterAttribute : attribut du monstre
+	 */
 	public void attack(Monster monstre, Artefact artf, int dmg, String dmgAtribute, String monsterAttribute) {
 		if(myHero.getCheckClass() == 3) {
 			double randomBerzerker = (Math.random() *100) % 5;
@@ -98,6 +103,11 @@ public class game extends Observable {
 		setChanged();
 	    notifyObservers();
 	}
+	/**
+	 * methode qui augmente les degats du hero 
+	 * @param heroGame : hero dont les degats sont augmentes
+	 * @param constUP : valeur d'incrementation des degats
+	 */
 	public void upgrade(Hero heroGame, int constUP) {
 		if (gold >= getUpgradeMoneyValue()) {
 			heroGame.setConstDamage(heroGame.getConstDamage() + constUP);
@@ -110,7 +120,14 @@ public class game extends Observable {
 		setChanged();
         notifyObservers();
 	}
-	
+	/**
+	 * Methode qui reinitialise le jeu au premier monstre.
+	 * Celle-ci donne aussi de l'argent permettant d'acheter des artefacts (dependant de l'avancement en jeu).
+	 * @param monstre : permet de reinitialiser certains parametres du monstre.
+	 * @param heroGame : permet de reinitialiser certains parametres du heros.
+	 * @param myPet : permet de reinitialiser certains parametres du pet.
+	 * @param artf : reactive les artefacts.
+	 */
 	public void reborn(Monster monstre,Hero heroGame,Pets myPet,Artefact artf) {
 		heroGame.setArtefactMoney(heroGame.getArtefactMoney() + (monstre.getWaveNumber() + this.getNbrUpgrade() / 10 + myPets.getPetNumber() /10 -1));
 		heroGame.setDamage(1);
@@ -120,7 +137,7 @@ public class game extends Observable {
 		setUpgradeMoneyValue(10);
 		upgradecroissance = 2;
 		myHero.setCheckClass(0);
-		monstre.setTempsBoss(20);
+		monstre.setTimeBoss(20);
 		monstre.setGoldIncrease(6);
 		monstre.setPV(10);
 		monstre.setPvIncrease(10);
@@ -131,19 +148,24 @@ public class game extends Observable {
 		myPet.setPetCostBuy(100);
 		myPet.setPetCostUpgrade(150);
 		myPet.setPetDamages(1);
-		artf.setActivate5More(true);
-		artf.setActivate2xDmg(true);
-		artf.setActivate2xPet(true);
+		artf.setActivate5More(false);
+		artf.setActivate2xDmg(false);
+		artf.setActivate2xPet(false);
 		applyArtefacts(myArtf, myPet, heroGame, monstre);
 		setChanged();
         notifyObservers();
 	}
-	
+	/**
+	 * affiche le choix de hero en console
+	 */
 	void heroChoice() {
 		System.out.println("Vous avez débloqué 3 nouveau héros, choisissez-en un :");
 		System.out.println("archer / mage / berzerker");
 	}
-	
+	/**
+	 * debloque le choix de hero
+	 * @return le choix du joueur.
+	 */
 	public String getHeroChoice() {
 		if(myMonster.getWaveNumber() >= 2 && myHero.getCheckClass() == 0) {
 			String choixHerosOk = "archer / mage / berzerker";
@@ -168,16 +190,25 @@ public class game extends Observable {
 			return choixHerosDenied;
 		}
 	}
-	
+	/**
+	 * transforme le hero en archer
+	 * @param heroGame hero a modifier
+	 */
 	public void archerChoice(Hero heroGame) {
 		heroGame.setCheckClass(1);
 	}
-	
+	/**
+	 * transforme le hero en mage
+	 * @param heroGame hero a modifier
+	 */
 	public void mageChoice(Hero heroGame) {
 		heroGame.setCheckClass(2);
-		myMonster.setTempsBoss(25);
+		myMonster.setTimeBoss(25);
 	}
-	
+	/**
+	 * transforme le hero en berserker
+	 * @param heroGame hero a modifier
+	 */
 	public void berzerkerChoice(Hero heroGame) {
 		heroGame.setCheckClass(3);
 	}
@@ -190,7 +221,13 @@ public class game extends Observable {
 		this.imageHero = number;
 	}
 
-	
+	/**
+	 * methode qui permet d'activer les artefacts a l'achat ou lors d'un reborn
+	 * @param artf : stocke les artefacts actuels
+	 * @param pet : familier sur lequel agir
+	 * @param hero : hero sur lequel agir
+	 * @param monster : monstre sur lequel agir
+	 */
 	public void applyArtefacts(Artefact artf,Pets pet,Hero hero, Monster monster) {
 		
 		for (int i = 0; i<artf.getCurrentArtefacts().size() ; i++) {
