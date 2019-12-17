@@ -645,7 +645,7 @@ public class database {
 			}
 			else {
 				//classement par joueurs
-				ResultSet result = data("playername, topwave, topnumber", "player", " JOIN monster ON mosnter.playerid=player.playerid ORDER BY topwave DESC, topnumber DESC");
+				ResultSet result = data("playername AS joueur, topwave AS vague, topnumber AS monstre", "player", " JOIN monster ON monster.playerid=player.playerid ORDER BY topwave DESC, topnumber DESC");
 				result.beforeFirst();
 				while(!result.isLast()) {
 					result.next();
@@ -663,6 +663,6 @@ public class database {
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		database db = new database();
-		db.playerConnection("InkMonster", "test", "Var Motiv = 1");
+		//db.playerConnection("Paul", "test", "Var Motiv = 1");
 	}
 }
