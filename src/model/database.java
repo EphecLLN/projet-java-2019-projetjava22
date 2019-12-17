@@ -615,53 +615,28 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
-	private ArrayList<Object> classement(boolean table, String ordre){
+	private ArrayList<Object> classement( String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
-			if(table) {
-				//classement par �quipe
-				if(ordre.equals("pets")) {
-					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teampets ASC");
-					result.beforeFirst();
-					while(!result.isLast()) {
-						result.next();
-						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
-							classement.add(result.getObject(i));
-						}
+			//classement par �quipe
+			if(ordre.equals("pets")) {
+				ResultSet result = data("teamname, teamwave, teammonsternumber", "team", " ORDER BY teamwave DESC, teammonsternumber DESC");
+				result.beforeFirst();
+				while(!result.isLast()) {
+					result.next();
+					for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+						classement.add(result.getObject(i));
 					}
 				}
-				else if(ordre.equals("money")) {
-					ResultSet result = data("teamname, teammoney, teampets", "team", " ORDER BY teammoney ASC");
-					result.beforeFirst();
-					while(!result.isLast()) {
-						result.next();
-						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
-							classement.add(result.getObject(i));
-						}
-					}
-				}
-			} else {
+			}
+			else {
 				//classement par joueurs
-				if (ordre.equals("money")) {
-					ResultSet result = data("playername, gold, amount", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY gold ASC");
-					result.beforeFirst();
-					while(!result.isLast()) {
-						result.next();
-						for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
-							classement.add(result.getObject(i));
-						}
-					}
-				}
-				else {
-					if (ordre.equals("pets")) {
-						ResultSet result = data("playername, amount,gold", "player", " JOIN hero ON hero.playerid=player.playerid JOIN pets ON pets.playerid=player.playerid ORDER BY amount ASC");
-						result.beforeFirst();
-						while(!result.isLast()) {
-							result.next();
-							for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
-								classement.add(result.getObject(i));
-							}
-						}
+				ResultSet result = data("playername, topwave, topnumber", "player", " JOIN monster ON mosnter.playerid=player.playerid ORDER BY topwave DESC, topnumber DESC");
+				result.beforeFirst();
+				while(!result.isLast()) {
+					result.next();
+					for(int i = 1; i< result.getMetaData().getColumnCount()+1; i++) {
+						classement.add(result.getObject(i));
 					}
 				}
 			}
@@ -673,14 +648,6 @@ public class database {
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		database db = new database(); 
-		
-		db.gameDeconnection("Paul");
-
-		db.playerConnection("Paul", "pswd", "Var Motiv = 0");
-		
-		db.updateTeam("Var Motiv = 0");
-		
 		
 	}
 }
