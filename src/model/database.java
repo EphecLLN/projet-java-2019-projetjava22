@@ -126,11 +126,11 @@ public class database {
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			String whereTeam = " WHERE team.teamname = '"+team+"'";
 			//SELECT playerid, gold, pets FROM hero
-			ResultSet resultHero = data("playerid, gold, pets", "hero","");
+			ResultSet resultHero = data("playerid, topwave, topnumber", "monster","");
 			//SELECT playerid, teamname FROM player 
 			ResultSet resultPlayer = data("playerid, teamname", "player JOIN team ON team.teamid = player.teamid", whereTeam);
-			int teammoney = 0;
-			int teampets = 0;
+			int topwave = 0;
+			int topnumber = 0;
 			int playerID;
 			int heroID;
 			resultPlayer.beforeFirst();
@@ -140,12 +140,11 @@ public class database {
 				playerID = resultPlayer.getInt(1);
 				heroID = resultHero.getInt(1);
 				if(playerID == heroID) {
-					teammoney += Integer.parseInt(resultHero.getObject(2).toString());
-					teampets += Integer.parseInt(resultHero.getObject(3).toString());
+					topwave += Integer.parseInt(resultHero.getObject(2).toString());
+					topnumber += Integer.parseInt(resultHero.getObject(3).toString());
 				}
-				affectedRows = state.executeUpdate("UPDATE team SET teammoney = "+teammoney+", teampets ="+teampets+" WHERE teamname = '"+team+"'");
 			}
-			//System.out.println(team + " : "+teammoney+" "+teampets);
+			affectedRows = state.executeUpdate("UPDATE team SET teamwave = "+topwave+", teammonsternumber ="+topnumber+" WHERE teamname = '"+team+"'");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -269,11 +268,17 @@ public class database {
 		int monsterNumber = monster.getNumber();
 		int goldIncrease = monster.getGoldIncrease();
 		int wave = monster.getWaveNumber();
+		int topWave = 0;
+		int topNumber = 0;
+		if(wave>topWave) {
+			topWave= wave;
+			topNumber = monsterNumber;
+		}
 		try {
 			int playerId = getLastId();
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("INSERT INTO monster VALUES (" + playerId + ", " + monsterPV + ", " + pvIncrease + ", " + monsterNumber + ", " + goldIncrease + ", " + wave + ")");
+			affectedRows = state.executeUpdate("INSERT INTO monster VALUES (" + playerId + ", " + monsterPV + ", " + pvIncrease + ", " + monsterNumber + ", " + goldIncrease + ", " + wave + ", "+topWave+", "+topNumber+")");
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -292,11 +297,17 @@ public class database {
 		int monsterNumber = monster.getNumber();
 		int goldIncrease = monster.getGoldIncrease();
 		int wave = monster.getWaveNumber();
+		int topWave = 0;
+		int topNumber = 0;
+		if(wave>topWave) {
+			topWave= wave;
+			topNumber = monsterNumber;
+		}
 		try {
 			int playerId = getId(name);
 			Connection connect = connexion();
 			Statement state = connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			affectedRows = state.executeUpdate("UPDATE monster SET pv=" + monsterPV + ", add=" + pvIncrease + ", number=" + monsterNumber + ", goldincrease=" + goldIncrease + ", wave="+wave+"WHERE playerid="+playerId);
+			affectedRows = state.executeUpdate("UPDATE monster SET pv=" + monsterPV + ", add=" + pvIncrease + ", number=" + monsterNumber + ", goldincrease=" + goldIncrease + ", wave="+wave+", topwave="+topWave+", topnumber="+topNumber+"WHERE playerid="+playerId);
 			state.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -615,12 +626,15 @@ public class database {
 		affectedRows += updatePets(name);
 	}
 	
-	private ArrayList<Object> classement( String ordre){
+	public ArrayList<Object> classement( String ordre){
 		ArrayList<Object> classement = new ArrayList<Object>();
 		try {
 			//classement par �quipe
-			if(ordre.equals("pets")) {
-				ResultSet result = data("teamname, teamwave, teammonsternumber", "team", " ORDER BY teamwave DESC, teammonsternumber DESC");
+			if(ordre.equals("team")) {
+				ResultSet result = data("teamname AS equipe, teamwave AS vague, teammonsternumber AS monstre", "team", " ORDER BY teamwave DESC, teammonsternumber DESC");
+				for(int i = 1;i<result.getMetaData().getColumnCount()+1;i++) {
+					classement.add(result.getMetaData().getColumnName(i));
+				}
 				result.beforeFirst();
 				while(!result.isLast()) {
 					result.next();
@@ -648,6 +662,7 @@ public class database {
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		
+		database db = new database();
+		db.playerConnection("InkMonster", "test", "Var Motiv = 1");
 	}
 }

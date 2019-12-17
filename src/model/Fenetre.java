@@ -32,7 +32,8 @@ public static void main(String[] args){
   Fenetre fen = new Fenetre();
   database db = new database();
   
-  ArrayList<Object> classement = new ArrayList<Object>();
+  ArrayList<Object> classement = db.classement("team");
+  System.out.println(classement);
   String[] title = new String[3];
   boolean d1 = false;
   boolean d2 = false;
@@ -44,31 +45,32 @@ public static void main(String[] args){
   Object[] data3 = new Object[3];
   Object[] data4 = new Object[3];
   Object[] data5 = new Object[3];
-  Object[][] data = new Object[(classement.size()-3)/3][3];
+  Object[][] data = new Object[5][3];
   
   for(int i = 0; i<classement.size();i++) {
-	  if(i<3) {
-		  title[i] = classement.get(i).toString();
+	  if(i>15 && classement.size()>i) {
+		  data5[i-15] = classement.get(i);
+		  d5 = true;
 	  }
-	  else if(i<6 && classement.size()>i) {
-		  data1[i-3] = classement.get(i);
-		  d1= true;
-	  }
-	  else if(i<9 && classement.size()>i) {
-		  data2[i-6] = classement.get(i);
-		  d2= true;
-	  }
-	  else if(i<12 && classement.size()>i) {
-		  data3[i-9] = classement.get(i);
-		  d3 = true;
-	  }
-	  else if(i<15 && classement.size()>i) {
+	  else if(i>12 && classement.size()>i) {
 		  data4[i-12] = classement.get(i);
 		  d4 = true;
 	  }
-	  else if(i<18 && classement.size()>i) {
-		  data5[i-15] = classement.get(i);
-		  d5 = true;
+	  else if(i>8 && classement.size()>i) {
+		  data3[i-9] = classement.get(i);
+		  d3 = true;
+	  }
+	  else if(i>5 && classement.size()>i) {
+		  data2[i-6] = classement.get(i);
+		  d2= true;
+	  }
+	  else if(i>2 && classement.size()>i) {
+		  data1[i-3] = classement.get(i);
+		  d1= true;
+	  }
+	  else {
+		  System.out.println(classement.get(i));
+		  title[i] = classement.get(i).toString();
 	  }
   }
   if(d5) {
