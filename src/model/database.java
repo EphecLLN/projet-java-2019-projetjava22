@@ -498,7 +498,7 @@ public class database {
 	 * 				true si l'�quipe existe d�j�
 	 * 				false si l'�quipe n'existe pas encore
 	 */
-	private boolean playerConnection(String name, String password, String team) {
+	public boolean playerConnection(String name, String password, String team) {
 		boolean connect = false;
 		boolean checkTeam = checkTeam(team);
 		System.out.println(checkTeam);

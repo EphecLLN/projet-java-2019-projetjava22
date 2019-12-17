@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -118,9 +119,18 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			+ ""
 			+ "/images/pyroBoss.png"));
 	
+	JButton connect = new JButton();
+	JButton deconnect = new JButton();
+
+	
 	public static JButton aqua = new JButton();
 	public static JButton tera = new JButton();
 	public static JButton pyro = new JButton();
+	
+	public TextField inputTeam = new TextField(20);
+	public TextField inputName = new TextField(20);
+	public TextField inputPassword = new TextField(20);
+
 	
 	public JComboBox table;
 	public JComboBox ordre;
@@ -220,10 +230,89 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		numberMonstreLabel.setText("Monstre n°" + model.myMonster.getNumber());
 		numberMonstrePanel.add(numberMonstreLabel);
 		
-		//ZONE GLOBALE POUR INSERER UNE COULEUR DE FOND
+		//ZONE POUR LE LOGIN
 		
+		JPanel texteTeam = new JPanel();
+		texteTeam.setBounds(10, 230, 130, 30);
+		texteTeam.setBackground(Color.darkGray);
+		window.add(texteTeam);
 		
+		JPanel texteName = new JPanel();
+		texteName.setBounds(10, 290, 130, 30);
+		texteName.setBackground(Color.darkGray);
+		window.add(texteName);
 		
+		JPanel textePassword = new JPanel();
+		textePassword.setBounds(10, 350, 130, 30);
+		textePassword.setBackground(Color.darkGray);
+		window.add(textePassword);
+		
+		JLabel teamLabel = new JLabel();
+		teamLabel.setForeground(Color.white);
+		teamLabel.setFont(stats);
+		teamLabel.setText("Equipe : ");
+		texteTeam.add(teamLabel);
+		
+		JLabel nameLabel = new JLabel();
+		nameLabel.setForeground(Color.white);
+		nameLabel.setFont(stats);
+		nameLabel.setText("Pseudo : ");
+		texteName.add(nameLabel);
+		
+		JLabel passwordLabel = new JLabel();
+		passwordLabel.setForeground(Color.white);
+		passwordLabel.setFont(stats);
+		passwordLabel.setText("Mot de Passe : ");
+		textePassword.add(passwordLabel);
+		
+		JPanel loginTeam = new JPanel();
+		loginTeam.setBounds(150, 230, 200, 30);
+		loginTeam.setBackground(Color.darkGray);
+		window.add(loginTeam);
+		
+		JPanel loginName = new JPanel();
+		loginName.setBounds(150, 290, 200, 30);
+		loginName.setBackground(Color.darkGray);
+		window.add(loginName);
+		
+		JPanel loginPassword = new JPanel();
+		loginPassword.setBounds(150, 350, 200, 30);
+		loginPassword.setBackground(Color.darkGray);
+		window.add(loginPassword);
+		
+		loginTeam.add(inputTeam);
+		loginName.add(inputName);
+		loginPassword.add(inputPassword);
+		
+		JPanel connectDeconnect = new JPanel();
+		connectDeconnect.setBounds(20, 410, 330, 30);
+		connectDeconnect.setLayout(new GridLayout(1,3));
+		connectDeconnect.setBackground(Color.red);
+		window.add(connectDeconnect);
+		
+		deconnect.setBackground(Color.lightGray);
+		deconnect.setFocusPainted(false);
+		deconnect.setBorder(null);
+		deconnect.addActionListener(this);
+		deconnect.setText("Deconnection");
+		connectDeconnect.add(deconnect);
+		
+		JPanel vide = new JPanel();
+		vide.setBackground(Color.darkGray);
+		connectDeconnect.add(vide);
+		
+		connect.setBackground(Color.lightGray);
+		connect.setFocusPainted(false);
+		connect.setBorder(null);
+		connect.addActionListener(this);
+		connect.setText("Connection");
+		connectDeconnect.add(connect);
+		
+		JPanel login = new JPanel();
+		login.setBounds(10, 220, 350, 240);
+		login.setBackground(Color.darkGray);
+		window.add(login);
+	
 		/*
 		 * 		PARAMETRES DE LA FENETRE POUR LE CLASSEMENT
 		 * 
@@ -231,7 +320,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		 */
 		
 		JPanel texteTableauDesScores = new JPanel();
-		texteTableauDesScores.setBounds(10,220,350,426);
+		texteTableauDesScores.setBounds(10,470,350,176);
 		texteTableauDesScores.setBackground(Color.darkGray);
 		window.add(texteTableauDesScores);
 		
@@ -701,7 +790,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			 * 		PARAMETRES DES FENETRES DE FOND POUR DEFINIR LES COULEURS
 			 * 
 			 * 		-> PARTOUT
-			 */      
+			 */   
+			
+			
 			
 		JPanel vagueMonstrePanel = new JPanel();
 		vagueMonstrePanel.setBounds(10, 10, 350, 200);
@@ -752,6 +843,21 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		window.setVisible(true);
 		
 	}
+	
+	public void connection(database myDatabase) {
+		String team = inputTeam.getText();
+		String name = inputName.getText();
+		String password = inputPassword.getText();
+		
+		model.myDatabase.playerConnection(name, password, team);
+	}
+	
+	public void deconnection(database myDatabase) {
+		String name = inputTeam.getText();
+		
+		model.myDatabase.gameDeconnection(name);
+	}
+	
 	/**
 	 * change l'affichage du hero dans la GUI
 	 * @param game : permet d'aller prendre l'image du hero 
@@ -898,6 +1004,12 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		}
 		if (x == buttonReborn) {
 			controller.reset();
+		}
+		if (x == connect) {
+			connection(model.myDatabase);
+		}
+		if (x == deconnect) {
+			deconnection(model.myDatabase);
 		}
 		if (x == archerChoice) {
 			controller.classChoice(1);

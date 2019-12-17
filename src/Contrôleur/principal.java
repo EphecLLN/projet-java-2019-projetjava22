@@ -9,7 +9,7 @@ import model.game.ArcherPetsDamages;
 import model.game.ChronoMonstre;
 import model.game.PetsDamages;
 
-public class Principal {
+public class principal {
 
 	public static void main(String[] args) {
 		//Creation du modele

@@ -31,6 +31,7 @@ public class game extends Observable {
 	public Monster myMonster = new Monster();
 	public Hero myHero = new Hero();
 	public Pets myPets = new Pets();
+	public database myDatabase = new database();
 	Console myConsole = new Console(this, null);
 	
 	/** 
