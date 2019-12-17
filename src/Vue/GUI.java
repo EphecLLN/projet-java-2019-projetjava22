@@ -14,6 +14,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractButton;
+import javax.swing.ComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -119,8 +120,9 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			+ ""
 			+ "/images/pyroBoss.png"));
 	
-	JButton connect = new JButton();
-	JButton deconnect = new JButton();
+	public JButton connect = new JButton();
+	public JButton deconnect = new JButton();
+	public JButton afficherTable = new JButton();
 
 	
 	public static JButton aqua = new JButton();
@@ -131,9 +133,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public TextField inputName = new TextField(20);
 	public TextField inputPassword = new TextField(20);
 
-	
-	public JComboBox table;
-	public JComboBox ordre;
+	private JComboBox table;
+
 
 	/**
 	 * methode qui genere l'interface graphique 
@@ -159,6 +160,28 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		 * 
 		 * 		-> En haut à droite
 		 */
+		
+		JPanel listeTable = new JPanel();
+		listeTable.setBounds(140, 510, 70, 40);
+		listeTable.setBackground(Color.darkGray);
+		window.add(listeTable); 
+			
+		Object[] essai = new Object[]{"Solo", "Team"};
+		table = new JComboBox(essai);
+		listeTable.add(table);
+		
+		JPanel afficherTablePanel = new JPanel();
+		afficherTablePanel.setBounds(100, 550, 200, 70);
+		afficherTablePanel.setBackground(Color.darkGray);
+		window.add(afficherTablePanel); 
+		
+		afficherTable.setBackground(Color.lightGray);
+		afficherTable.setFocusPainted(false);
+		afficherTable.setBorder(null);
+		afficherTable.setText("Afficher classement");
+		afficherTablePanel.add(afficherTable);
+		
+		
 		
 		//LOGOS DES EPEES EN DECOR
 		
@@ -791,8 +814,8 @@ public class GUI extends gameVue implements Observer, ActionListener{
 			 * 
 			 * 		-> PARTOUT
 			 */   
-			
-			
+		
+	
 			
 		JPanel vagueMonstrePanel = new JPanel();
 		vagueMonstrePanel.setBounds(10, 10, 350, 200);
@@ -842,6 +865,11 @@ public class GUI extends gameVue implements Observer, ActionListener{
 		ajouterTempsBoss(model.myMonster);
 		window.setVisible(true);
 		
+	}
+	
+	public void afficherTable() {
+		
+
 	}
 	
 	public void connection(database myDatabase) {
