@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import Contrôleur.gameController;
 import model.game;
-import model.game.PetsDamages;
 /**
  * 
  * @author Lucas Pastori
@@ -32,7 +31,7 @@ public class Console extends gameVue implements Observer{
 		Scanner myScan = new Scanner(System.in);
 		for (int i = 0; i < 1; ) {
 			
-			System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); // permet de toujours garder le texte au mï¿½me niveau 
+ 
 			System.out.println("-------------------------------------------------------------------------------------");
 			System.out.println("Solde : " + model.getGold());
 			System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
@@ -52,7 +51,7 @@ public class Console extends gameVue implements Observer{
 			System.out.println("Attaque 		(enter)				Passer en type Aqua (w)");
 			System.out.println("Amelioration 		(a) (" + model.getUpgradeMoneyValue() + ")			Passer en type Pyro (p)");
 			System.out.println("Acheter familier 	(f) (" + model.myPets.getPetCostBuy() + ")			Passer en type Tera (t)");
-			System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")");
+			System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")			Ameliorer les familers (p) (" + model.myPets.getPetCostBuy() + ")");
 			System.out.println("Redemarrer 		(r) (+"+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 + ")"));
 			
 			/* for(int j=0; j < 5; j++) {
@@ -73,12 +72,21 @@ public class Console extends gameVue implements Observer{
 			}
 			if (userAction.contentEquals("w")) {
 				controller.attributeChoice(1);
+				GUI.aqua.setEnabled(false);
+				GUI.pyro.setEnabled(true);
+				GUI.tera.setEnabled(true);
 			}
 			if (userAction.contentEquals("p")) {
 				controller.attributeChoice(2);	
+				GUI.aqua.setEnabled(true);
+				GUI.pyro.setEnabled(false);
+				GUI.tera.setEnabled(true);
 			}
 			if (userAction.contentEquals("t")) {
 				controller.attributeChoice(3);
+				GUI.aqua.setEnabled(true);
+				GUI.pyro.setEnabled(true);
+				GUI.tera.setEnabled(false);
 			}
 			if (userAction.contentEquals("f")) { 
 				controller.oneMorePet();
@@ -120,7 +128,6 @@ public class Console extends gameVue implements Observer{
 	@Override
 	public void update(Observable o, Object arg) { // remet regulierement a jour l'interface console 
 		
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 		System.out.println("-------------------------------------------------------------------------------------");
 		System.out.println("Solde : " + model.getGold());
 		System.out.println("Vous infligez : " + model.myHero.getDamage() + " degats");
@@ -140,7 +147,7 @@ public class Console extends gameVue implements Observer{
 		System.out.println("Attaque 		(enter)				Passer en type Aqua (w)");
 		System.out.println("Amelioration 		(a) (" + model.getUpgradeMoneyValue() + ")			Passer en type Pyro (p)");
 		System.out.println("Acheter familier 	(f) (" + model.myPets.getPetCostBuy() + ")			Passer en type Tera (t)");
-		System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")");
+		System.out.println("Acheter un artefact 	(x) (" + model.myHero.getArtefactCost() + ")			Ameliorer les familers (p) (" + model.myPets.getPetCostBuy() + ")");			
 		System.out.println("Redemarrer 		(r) (+"+ (model.myMonster.getWaveNumber() + model.getNbrUpgrade() / 10 + model.myPets.getPetNumber() /10 -1 + ")"));
 	}
 

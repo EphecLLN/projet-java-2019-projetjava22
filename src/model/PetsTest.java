@@ -8,7 +8,7 @@ class PetsTest {
 
 	@Test
 	void test() {
-		int petDamage, petNumber, petIncrease, gold, petCostUpgrade, resultatAttendu, resultatObtenu;
+		int petDamage, petNumber, gold, resultatAttendu, resultatObtenu;
 		int petCostBuy ;
 		Pets pets = new Pets();
 		game test = new game();
