@@ -57,7 +57,7 @@ public class Hero extends Observable {
 	 * Cet attribut permet de stocker l'argent spécial pour les artefact récolté durant la résurection (reborn)
 	 */
 	
-	private int artefactMoney = 310;
+	private int artefactMoney = 0;
 	
 	/**
 	 * Cet attribut stocke le prix d'achat d'un nouvel artefact. Cette valeur doit être strictement positive,

@@ -8,10 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractButton;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -84,16 +86,16 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public ImageIcon aquaIcon = new ImageIcon(game.class.getResource("/images/aqua.png"));
 	public ImageIcon pyroIcon = new ImageIcon(game.class.getResource("/images/fire.png"));
 	public ImageIcon teraIcon = new ImageIcon(game.class.getResource("/images/plant.png"));
-	public ImageIcon imageHero0 = new ImageIcon("./images/héro-1.png.png");
-	public ImageIcon imageHero1 = new ImageIcon("./images/héro-2.png.png");
-	public ImageIcon imageHero2 = new ImageIcon("./images/héro-3.png.png");
-	public ImageIcon imageHero3 = new ImageIcon("./images/héro-4.png.png");
-	public ImageIcon imageCoeur = new ImageIcon("./images/coeur.gif");
-	public ImageIcon bigGold = new ImageIcon("./images/bigGold.gif");
-	public ImageIcon littleGold = new ImageIcon("./images/littleGold.gif");
-	public ImageIcon bigArtefactGold = new ImageIcon("./images/bigArtefactGold.gif");
-	public ImageIcon littleArtefactGold = new ImageIcon("./images/littleArtefactGold.gif");
-	public ImageIcon epeeDegats = new ImageIcon("./images/epeeDegats.jpg");
+	public ImageIcon imageHero0 = new ImageIcon(game.class.getResource("/images/héro-1.png.png"));
+	public ImageIcon imageHero1 = new ImageIcon(game.class.getResource("/images/héro-2.png.png"));
+	public ImageIcon imageHero2 = new ImageIcon(game.class.getResource("/images/héro-3.png.png"));
+	public ImageIcon imageHero3 = new ImageIcon(game.class.getResource("/images/héro-4.png.png"));
+	public ImageIcon imageCoeur = new ImageIcon(game.class.getResource("/images/coeur.gif"));
+	public ImageIcon bigGold = new ImageIcon(game.class.getResource("/images/bigGold.gif"));
+	public ImageIcon littleGold = new ImageIcon(game.class.getResource("/images/littleGold.gif"));
+	public ImageIcon bigArtefactGold = new ImageIcon(game.class.getResource("/images/bigArtefactGold.gif"));
+	public ImageIcon littleArtefactGold = new ImageIcon(game.class.getResource("/images/littleArtefactGold.gif"));
+	public ImageIcon epeeDegats = new ImageIcon(game.class.getResource("/images/epeeDegats.jpg"));
 	
 	public JLabel tableauDesScores = new JLabel();
 	
@@ -106,16 +108,19 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	public JFrame window = new JFrame("Clicker");
 	public JPanel choiceClass = new JPanel();
 	
-	public static ImageIcon slimeBleu = new ImageIcon("./images/slime bleu.png"); //cr�ation d'une image en tant que ic�ne.
-	public static ImageIcon slimeVert = new ImageIcon("./images/slime vert.png");
-	public static ImageIcon slimeRouge = new ImageIcon("./images/slime rouge.png");
-	public static ImageIcon aquaBoss = new ImageIcon("./images/aquaBoss.png");
-	public static ImageIcon teraBoss = new ImageIcon("./images/teraBoss.png");
-	public static ImageIcon pyroBoss = new ImageIcon("./images/pyroBoss.png");
+	public static ImageIcon slimeBleu = new ImageIcon(game.class.getResource("/images/slime bleu.png")); //cr�ation d'une image en tant que ic�ne.
+	public static ImageIcon slimeVert = new ImageIcon(game.class.getResource("/images/slime vert.png"));
+	public static ImageIcon slimeRouge = new ImageIcon(game.class.getResource("/images/slime rouge.png"));
+	public static ImageIcon aquaBoss = new ImageIcon(game.class.getResource("/images/aquaBoss.png"));
+	public static ImageIcon teraBoss = new ImageIcon(game.class.getResource("/images/teraBoss.png"));
+	public static ImageIcon pyroBoss = new ImageIcon(game.class.getResource(""
+			+ ""
+			+ ""
+			+ "/images/pyroBoss.png"));
 	
-	public JButton aqua = new JButton();
-	public JButton tera = new JButton();
-	public JButton pyro = new JButton();
+	public static JButton aqua = new JButton();
+	public static JButton tera = new JButton();
+	public static JButton pyro = new JButton();
 	
 	public JComboBox table;
 	public JComboBox ordre;
@@ -129,7 +134,6 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	 */
 	public void genererUI(Monster monstre,Hero hero,Pets pet,game myGame) {		
 		window.setSize(1200, 700);
-		screenMonster(this, monstre);
 		ajouterTempsBoss(model.myMonster);
 		
 		JFrame window = new JFrame();
@@ -774,7 +778,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	 * @param myMonster : monstre a verifier
 	 */
 	public void screenMonster(GUI myGUI, Monster myMonster) {
-		if(myMonster.getNumber() == 10) {
+		if(myMonster.getNumber() == myMonster.getbossNumber()) {
 			if (myMonster.getAttribute() == "aqua") {
 				GUI.buttonMonster.setIcon(GUI.aquaBoss);
 			}
@@ -816,7 +820,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	 * @param monstre : permet de verifier que le monstre est bien un boss
 	 */
 	public void ajouterTempsBoss(Monster monstre) {
-		if(monstre.getNumber() == 10) {
+		if(monstre.getNumber() == monstre.getbossNumber()) {
 			tempsBoss1Label.setText("" + model.myMonster.getTimeBoss() + "");
 			tempsBoss2Label.setText("" + model.myMonster.getTimeBoss() + "");
 		}
@@ -836,7 +840,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 	@Override
 	public void update(Observable o, Object arg) {
 		
-		if(model.myMonster.getNumber() == 10) {
+		if(model.myMonster.getNumber() == model.myMonster.getbossNumber()) {
 			tempsBoss1Label.setText("" + model.myMonster.getTimeBoss() + "");
 			tempsBoss2Label.setText("" + model.myMonster.getTimeBoss() + "");
 		}
@@ -868,8 +872,7 @@ public class GUI extends gameVue implements Observer, ActionListener{
 
 	@Override
 	public void disableWarning() {
-		// TODO Auto-generated method stub
-		
+
 	}
 	/**
 	 * verifie quel bouton a ete active et agit en consuequence
