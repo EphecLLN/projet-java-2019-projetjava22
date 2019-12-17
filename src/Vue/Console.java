@@ -4,8 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
-
-import Contrôleur.gameController;
+import Controleur.gameController;
 import model.game;
 /**
  * 

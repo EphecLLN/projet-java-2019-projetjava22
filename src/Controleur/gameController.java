@@ -1,4 +1,4 @@
-package Contrôleur;
+package Controleur;
 
 import Vue.gameVue;
 import model.game;

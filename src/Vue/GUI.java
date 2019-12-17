@@ -25,7 +25,7 @@ import javax.swing.JPanel;
 
 import com.sun.glass.ui.Window;
 
-import Contrôleur.gameController;
+import Controleur.gameController;
 import model.Hero;
 import model.Monster;
 import model.Pets;
