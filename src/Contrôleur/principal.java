@@ -1,4 +1,4 @@
-package Controleur;
+package Contrôleur;
 
 import java.util.Timer;
 
@@ -13,8 +13,6 @@ public class principal {
 
 	public static void main(String[] args) {
 		//Creation du modele
-		
-		
 		
 		game myGame = new game();
 		//Creation des controleurs : Un pour chaque vue
